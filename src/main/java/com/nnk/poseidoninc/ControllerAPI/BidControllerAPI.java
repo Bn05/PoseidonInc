@@ -3,18 +3,17 @@ package com.nnk.poseidoninc.ControllerAPI;
 import com.nnk.poseidoninc.Model.Bid;
 import com.nnk.poseidoninc.Model.Dto.BidDto;
 import com.nnk.poseidoninc.Service.BidService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-public class BidController {
+public class BidControllerAPI {
 
     private BidService bidService;
 
-    public BidController(BidService bidService) {
+    public BidControllerAPI(BidService bidService) {
         this.bidService = bidService;
     }
 
@@ -24,7 +23,7 @@ public class BidController {
     }
 
     @PostMapping(value = "/bid")
-    public Bid createBid(@RequestBody BidDto bidDto) {
+    public Bid createBid(@RequestBody @Validated BidDto bidDto) {
 
         return bidService.addBid(bidDto);
     }
@@ -35,7 +34,7 @@ public class BidController {
     }
 
     @PutMapping(value = "/bid")
-    public BidDto updateBid(@RequestBody BidDto bidDto) {
+    public BidDto updateBid(@RequestBody @Validated BidDto bidDto) {
 
         return bidService.update(bidDto);
     }
