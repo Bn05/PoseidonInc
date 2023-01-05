@@ -2,7 +2,8 @@ package com.nnk.poseidoninc.ControllerAPI;
 
 import com.nnk.poseidoninc.Model.Bid;
 import com.nnk.poseidoninc.Model.Dto.BidDto;
-import com.nnk.poseidoninc.Service.BidService;
+import com.nnk.poseidoninc.Service.Implementation.BidServiceImpl;
+import com.nnk.poseidoninc.Service.Interface.IBidService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +12,10 @@ import java.util.List;
 @RestController
 public class BidControllerAPI {
 
-    private BidService bidService;
+    private IBidService bidService;
 
-    public BidControllerAPI(BidService bidService) {
-        this.bidService = bidService;
+    public BidControllerAPI(BidServiceImpl bidServiceImpl) {
+        this.bidService = bidServiceImpl;
     }
 
     @GetMapping(value = "/bidList")

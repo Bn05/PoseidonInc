@@ -1,9 +1,10 @@
-package com.nnk.poseidoninc.Service;
+package com.nnk.poseidoninc.Service.Implementation;
 
 import com.nnk.poseidoninc.Exeption.BidNotFoundException;
 import com.nnk.poseidoninc.Model.Bid;
 import com.nnk.poseidoninc.Model.Dto.BidDto;
 import com.nnk.poseidoninc.Repository.BidRepository;
+import com.nnk.poseidoninc.Service.Interface.IBidService;
 import jakarta.transaction.Transactional;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
@@ -15,15 +16,16 @@ import java.util.Optional;
 @Service
 @Transactional
 @DynamicUpdate
-public class BidService {
+public class BidServiceImpl implements IBidService {
 
     private BidRepository bidRepository;
 
-    public BidService(BidRepository bidRepository) {
+    public BidServiceImpl(BidRepository bidRepository) {
         this.bidRepository = bidRepository;
     }
 
 
+   @Override
     public List<BidDto> findAll() {
 
         Iterable<Bid> bids = bidRepository.findAll();
@@ -37,12 +39,14 @@ public class BidService {
         return bidList;
     }
 
+    @Override
     public Bid addBid(BidDto bidDto) {
 
         Bid bid = convertBidDtoToBid(bidDto);
         return bidRepository.save(bid);
     }
 
+    @Override
     public BidDto findById(int id) {
         Optional<Bid> bid = bidRepository.findById(id);
 
@@ -55,6 +59,7 @@ public class BidService {
 
     }
 
+    @Override
     public BidDto update(BidDto bidDto) {
 
         Optional<Bid> optionalBid = bidRepository.findById(bidDto.getBidId());
@@ -71,6 +76,7 @@ public class BidService {
         return convertBidToBidDto(bidRepository.save(bid));
     }
 
+    @Override
     public void delete(int id) {
 
         if (bidRepository.findById(id).isEmpty()) {
@@ -80,6 +86,7 @@ public class BidService {
         bidRepository.deleteById(id);
     }
 
+    @Override
     public Bid convertBidDtoToBid(BidDto bidDto) {
 
         Bid bid = new Bid();
@@ -90,6 +97,7 @@ public class BidService {
         return bid;
     }
 
+    @Override
     public BidDto convertBidToBidDto(Bid bid) {
         BidDto bidDto = new BidDto();
 
