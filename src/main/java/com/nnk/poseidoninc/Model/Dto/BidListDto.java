@@ -1,15 +1,12 @@
 package com.nnk.poseidoninc.Model.Dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
 @Validated
-public class BidDto {
+public class BidListDto {
 
-    private int bidId;
+    private int bidListId;
     @NotBlank
     @Size(min = 3, max = 30)
     private String account;
@@ -22,22 +19,22 @@ public class BidDto {
     @Max(value = 100, message = "bidQuantity must be < 100")
     private double bidQuantity;
 
-    public BidDto(String account, String type, Double bidQuantity) {
+    public BidListDto(String account, String type, Double bidQuantity) {
         this.account = account;
         this.type = type;
         this.bidQuantity = bidQuantity;
 
     }
 
-    public BidDto() {
+    public BidListDto() {
     }
 
-    public int getBidId() {
-        return bidId;
+    public int getBidListId() {
+        return bidListId;
     }
 
-    public void setBidId(int bidId) {
-        this.bidId = bidId;
+    public void setBidListId(int bidListId) {
+        this.bidListId = bidListId;
     }
 
     public String getAccount() {

@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class BidNotFoundException extends RuntimeException {
+public class BidListNotFoundException extends RuntimeException {
 
-    public BidNotFoundException(){
+    public BidListNotFoundException(){
         super();
     }
 }

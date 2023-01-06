@@ -1,28 +1,23 @@
 package com.nnk.poseidoninc.Model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDate;
 
 @Entity
 @DynamicUpdate
-@Table(name = "Bid")
-public class Bid {
+@Table(name = "Bid_list")
+public class BidList {
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bidId;
-    @NotNull
+    private int bidListId;
     private String account;
-    @NotNull
     private String type;
-    @NotNull
     private double bidQuantity;
     private double askQuantity;
-    private double bid;
+    private double bidList;
     private double ask;
     private String benchmark;
     private LocalDate bidListDate;
@@ -41,11 +36,11 @@ public class Bid {
     private String side;
 
     public int getBidId() {
-        return bidId;
+        return bidListId;
     }
 
     public void setBidId(int bidId) {
-        this.bidId = bidId;
+        this.bidListId = bidId;
     }
 
     public String getAccount() {
@@ -80,12 +75,12 @@ public class Bid {
         this.askQuantity = askQuantity;
     }
 
-    public double getBid() {
-        return bid;
+    public double getBidList() {
+        return bidList;
     }
 
-    public void setBid(double bid) {
-        this.bid = bid;
+    public void setBidList(double bidList) {
+        this.bidList = bidList;
     }
 
     public double getAsk() {

@@ -5,14 +5,14 @@ USE poseidondb;
 
 
 
-CREATE TABLE Bid
+CREATE TABLE Bid_list
 (
-    bid_id    INTEGER     NOT NULL AUTO_INCREMENT,
+    bid_list_id    INTEGER     NOT NULL AUTO_INCREMENT,
     account      VARCHAR(30) NOT NULL,
     type         VARCHAR(30) NOT NULL,
     bid_quantity  DOUBLE NOT NULL ,
     ask_quantity  DOUBLE,
-    bid          DOUBLE,
+    bid_list          DOUBLE,
     ask          DOUBLE,
     benchmark    VARCHAR(125),
     bid_list_date  TIMESTAMP,
@@ -30,7 +30,7 @@ CREATE TABLE Bid
     source_list_id VARCHAR(125),
     side         VARCHAR(125),
 
-    PRIMARY KEY (bid_id)
+    PRIMARY KEY (bid_list_id)
 );
 
 CREATE TABLE Trade
