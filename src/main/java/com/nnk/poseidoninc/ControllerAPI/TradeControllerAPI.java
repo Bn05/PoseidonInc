@@ -1,8 +1,6 @@
 package com.nnk.poseidoninc.ControllerAPI;
 
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
-import com.nnk.poseidoninc.Model.Trade;
-import com.nnk.poseidoninc.Repository.UserRepository;
 import com.nnk.poseidoninc.Service.Interface.ITradeService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class TradeController {
+public class TradeControllerAPI {
 
     private ITradeService tradeService;
 
-    public TradeController(ITradeService tradeService) {
+    public TradeControllerAPI(ITradeService tradeService) {
         this.tradeService = tradeService;
     }
 

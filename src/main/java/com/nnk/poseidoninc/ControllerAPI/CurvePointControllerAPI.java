@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class CurvePointController {
+public class CurvePointControllerAPI {
 
     private ICurvePointService curvePointService;
 
-    public CurvePointController(ICurvePointService curvePointService) {
+    public CurvePointControllerAPI(ICurvePointService curvePointService) {
         this.curvePointService = curvePointService;
     }
 

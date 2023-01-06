@@ -30,7 +30,6 @@ public class BidListListServiceImpl implements IBidListService {
     public List<BidListDto> findAll() {
 
         Iterable<BidList> bids = bidListRepository.findAll();
-
         List<BidListDto> bidList = new ArrayList<>();
 
         for (BidList bid : bids) {
@@ -44,9 +43,11 @@ public class BidListListServiceImpl implements IBidListService {
     public BidListDto create(BidListDto bidListDto) {
 
         BidList bidList = convertBidListDtoToBidList(bidListDto);
+
         bidList.setCreationDate(LocalDate.now());
         // TODO : AutomaticName -> authentificationNameCreation (when spring Security on)
         bidList.setCreationName("AutomaticNameCreation");
+
         return (convertBidListToBidListDto(bidListRepository.save(bidList)));
     }
 

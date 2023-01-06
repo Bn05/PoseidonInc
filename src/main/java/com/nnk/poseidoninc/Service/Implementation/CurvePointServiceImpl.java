@@ -40,10 +40,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
 
     @Override
     public CurvePointDto create(CurvePointDto curvePointDto) {
-        CurvePoint curvePoint = new CurvePoint();
-
-        curvePoint.setTerm(curvePointDto.getTerm());
-        curvePoint.setValue(curvePointDto.getValue());
+        CurvePoint curvePoint = convertCurvePointDtoToCurvePoint(curvePointDto);
 
         curvePoint.setCreationDate(LocalDate.now());
 

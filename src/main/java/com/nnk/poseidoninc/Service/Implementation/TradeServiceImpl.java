@@ -42,10 +42,7 @@ public class TradeServiceImpl implements ITradeService {
     @Override
     public TradeDto create(TradeDto tradeDto) {
 
-        Trade trade = new Trade();
-        trade.setAccount(tradeDto.getAccount());
-        trade.setType(tradeDto.getType());
-        trade.setBuyQuantity(tradeDto.getBuyQuantity());
+        Trade trade = convertTradeDtoToTrade(tradeDto);
 
         trade.setCreationDate(LocalDate.now());
         // TODO : AutomaticName -> AutomaticNameCreation (when spring Security on)
