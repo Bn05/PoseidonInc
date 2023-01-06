@@ -1,6 +1,6 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.Exeption.BidListNotFoundException;
+import com.nnk.poseidoninc.Exception.BidListNotFoundException;
 import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Repository.BidListRepository;

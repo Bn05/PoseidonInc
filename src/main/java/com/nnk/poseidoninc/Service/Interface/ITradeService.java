@@ -1,7 +1,5 @@
 package com.nnk.poseidoninc.Service.Interface;
 
-import com.nnk.poseidoninc.Model.BidList;
-import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
 import com.nnk.poseidoninc.Model.Trade;
 

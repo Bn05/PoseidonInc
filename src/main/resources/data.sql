@@ -60,7 +60,7 @@ CREATE TABLE Trade
     PRIMARY KEY (trade_id)
 );
 
-CREATE TABLE CurvePoint
+CREATE TABLE Curve_point
 (
     curve_point_id INTEGER NOT NULL AUTO_INCREMENT,
     as_of_date     TIMESTAMP,
@@ -75,14 +75,14 @@ CREATE TABLE Rating
 (
     rating_id     INTEGER NOT NULL AUTO_INCREMENT,
     moodys_rating VARCHAR(125),
-    sand_rating  VARCHAR(125),
+    sand_p_rating  VARCHAR(125),
     fitch_rating  VARCHAR(125),
     order_number  INTEGER,
 
     PRIMARY KEY (rating_id)
 );
 
-CREATE TABLE RuleName
+CREATE TABLE Rule_name
 (
     rule_name_id  INTEGER NOT NULL AUTO_INCREMENT,
     name        VARCHAR(125),

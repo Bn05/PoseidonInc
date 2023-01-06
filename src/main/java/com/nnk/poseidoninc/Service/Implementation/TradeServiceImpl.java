@@ -1,11 +1,12 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.Exeption.BidListNotFoundException;
-import com.nnk.poseidoninc.Exeption.TradeNotFoundException;
+import com.nnk.poseidoninc.Exception.TradeNotFoundException;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
 import com.nnk.poseidoninc.Model.Trade;
 import com.nnk.poseidoninc.Repository.TradeRepository;
 import com.nnk.poseidoninc.Service.Interface.ITradeService;
+import jakarta.transaction.Transactional;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
+@DynamicUpdate
 public class TradeServiceImpl implements ITradeService {
 
     private TradeRepository tradeRepository;
