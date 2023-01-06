@@ -7,19 +7,19 @@ import java.util.List;
 
 
 public interface IBidListService {
-    public List<BidListDto> findAll();
+    List<BidListDto> findAll();
 
-    public BidList addBid(BidListDto bidListDto);
+    BidListDto create(BidListDto bidListDto);
 
-    public BidListDto findById(int id);
+    BidListDto findById(int id);
 
-    public BidListDto update(BidListDto bidListDto, int bidListId);
+    BidListDto update(BidListDto bidListDto, int bidListId);
 
-    public void delete(int id);
+    void delete(int id);
 
-    public BidList convertBidDtoToBid(BidListDto bidListDto);
+    BidList convertBidListDtoToBidList(BidListDto bidListDto);
 
-    public BidListDto convertBidToBidDto(BidList bidList);
+    BidListDto convertBidListToBidListDto(BidList bidList);
 }
 
 

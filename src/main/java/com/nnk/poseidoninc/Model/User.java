@@ -2,7 +2,6 @@ package com.nnk.poseidoninc.Model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.validation.annotation.Validated;
 
 @Entity
 @DynamicUpdate

@@ -1,6 +1,5 @@
 package com.nnk.poseidoninc.ControllerAPI;
 
-import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Service.Implementation.BidListListServiceImpl;
 import com.nnk.poseidoninc.Service.Interface.IBidListService;
@@ -19,23 +18,23 @@ public class BidListControllerAPI {
     }
 
     @GetMapping(value = "/bidLists")
-    public List<BidListDto> getBidList() {
+    public List<BidListDto> findAll() {
         return bidService.findAll();
     }
 
     @PostMapping(value = "/bidList")
-    public BidList createBid(@RequestBody @Validated BidListDto bidListDto) {
+    public BidListDto createBid(@RequestBody @Validated BidListDto bidListDto) {
 
-        return bidService.addBid(bidListDto);
+        return bidService.create(bidListDto);
     }
 
     @GetMapping(value = "/bidList")
-    public BidListDto getBid(@RequestParam(value = "idBidList") int idBidList) {
+    public BidListDto findById(@RequestParam(value = "idBidList") int idBidList) {
         return bidService.findById(idBidList);
     }
 
     @PutMapping(value = "/bidList")
-    public BidListDto updateBid(
+    public BidListDto updateById(
             @RequestParam (value = "bidListId") int bidListId,
             @RequestBody @Validated BidListDto bidListDto) {
 
@@ -43,7 +42,7 @@ public class BidListControllerAPI {
     }
 
     @DeleteMapping(value = "/bidList")
-    public void deleteBid(@RequestParam(value = "bidListId") int bidListId) {
+    public void deleteById(@RequestParam(value = "bidListId") int bidListId) {
 
         bidService.delete(bidListId);
 

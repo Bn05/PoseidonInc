@@ -34,20 +34,20 @@ public class BidListListServiceImpl implements IBidListService {
         List<BidListDto> bidList = new ArrayList<>();
 
         for (BidList bid : bids) {
-            bidList.add(convertBidToBidDto(bid));
+            bidList.add(convertBidListToBidListDto(bid));
         }
 
         return bidList;
     }
 
     @Override
-    public BidList addBid(BidListDto bidListDto) {
+    public BidListDto create(BidListDto bidListDto) {
 
-        BidList bidList = convertBidDtoToBid(bidListDto);
+        BidList bidList = convertBidListDtoToBidList(bidListDto);
         bidList.setCreationDate(LocalDate.now());
         // TODO : AutomaticName -> authentificationNameCreation (when spring Security on)
         bidList.setCreationName("AutomaticNameCreation");
-        return bidListRepository.save(bidList);
+        return (convertBidListToBidListDto(bidListRepository.save(bidList)));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class BidListListServiceImpl implements IBidListService {
             throw new BidListNotFoundException();
         }
 
-        return convertBidToBidDto(bid.get());
+        return convertBidListToBidListDto(bid.get());
 
 
     }
@@ -82,7 +82,7 @@ public class BidListListServiceImpl implements IBidListService {
         bidList.setRevisionName("AutomaticNameRevision");
 
 
-        return convertBidToBidDto(bidListRepository.save(bidList));
+        return convertBidListToBidListDto(bidListRepository.save(bidList));
     }
 
     @Override
@@ -96,9 +96,9 @@ public class BidListListServiceImpl implements IBidListService {
     }
 
     @Override
-    public BidList convertBidDtoToBid(BidListDto bidListDto) {
-
+    public BidList convertBidListDtoToBidList(BidListDto bidListDto) {
         BidList bidList = new BidList();
+
         bidList.setAccount(bidListDto.getAccount());
         bidList.setType(bidListDto.getType());
         bidList.setBidQuantity(bidListDto.getBidQuantity());
@@ -107,7 +107,7 @@ public class BidListListServiceImpl implements IBidListService {
     }
 
     @Override
-    public BidListDto convertBidToBidDto(BidList bidList) {
+    public BidListDto convertBidListToBidListDto(BidList bidList) {
         BidListDto bidListDto = new BidListDto();
 
         bidListDto.setBidListId(bidList.getBidId());
