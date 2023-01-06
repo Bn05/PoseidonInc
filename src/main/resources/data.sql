@@ -62,37 +62,37 @@ CREATE TABLE Trade
 
 CREATE TABLE CurvePoint
 (
-    curvePointId INTEGER NOT NULL AUTO_INCREMENT,
-    asOfDate     TIMESTAMP,
+    curve_point_id INTEGER NOT NULL AUTO_INCREMENT,
+    as_of_date     TIMESTAMP,
     term         DOUBLE,
     value        DOUBLE,
-    creationDate TIMESTAMP,
+    creation_date TIMESTAMP,
 
-    PRIMARY KEY (curvePointId)
+    PRIMARY KEY (curve_point_id)
 );
 
 CREATE TABLE Rating
 (
-    ratingId     INTEGER NOT NULL AUTO_INCREMENT,
-    moodysRating VARCHAR(125),
-    sandPRating  VARCHAR(125),
-    fitchRating  VARCHAR(125),
-    orderNumber  INTEGER,
+    rating_id     INTEGER NOT NULL AUTO_INCREMENT,
+    moodys_rating VARCHAR(125),
+    sand_rating  VARCHAR(125),
+    fitch_rating  VARCHAR(125),
+    order_number  INTEGER,
 
-    PRIMARY KEY (ratingId)
+    PRIMARY KEY (rating_id)
 );
 
 CREATE TABLE RuleName
 (
-    ruleNameId  INTEGER NOT NULL AUTO_INCREMENT,
+    rule_name_id  INTEGER NOT NULL AUTO_INCREMENT,
     name        VARCHAR(125),
     description VARCHAR(125),
     json        VARCHAR(125),
     template    VARCHAR(512),
-    sqlStr      VARCHAR(125),
-    sqlPart     VARCHAR(125),
+    sql_str      VARCHAR(125),
+    sql_part     VARCHAR(125),
 
-    PRIMARY KEY (ruleNameId)
+    PRIMARY KEY (rule_name_id)
 );
 
 CREATE TABLE Users
@@ -100,13 +100,9 @@ CREATE TABLE Users
     user_id  INTEGER NOT NULL AUTO_INCREMENT,
     email    VARCHAR(125),
     password VARCHAR(125),
-    fullname VARCHAR(125),
+    full_name VARCHAR(125),
     role     VARCHAR(125),
 
     PRIMARY KEY (user_id)
 );
 
-insert into Users(fullname, email, password, role)
-values ("Administrator", "admin", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "ADMIN");
-insert into Users(fullname, email, password, role)
-values ("User", "user", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "USER");
