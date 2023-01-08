@@ -1,16 +1,10 @@
 package com.nnk.poseidoninc;
 
-import com.nnk.poseidoninc.Model.Dto.BidListDto;
-import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
-import com.nnk.poseidoninc.Model.Dto.RatingDto;
-import com.nnk.poseidoninc.Model.Dto.TradeDto;
-import com.nnk.poseidoninc.Model.Rating;
+import com.nnk.poseidoninc.Model.Dto.*;
+import com.nnk.poseidoninc.Model.RuleName;
 import com.nnk.poseidoninc.Service.Implementation.BidListListServiceImpl;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
-import com.nnk.poseidoninc.Service.Interface.IBidListService;
-import com.nnk.poseidoninc.Service.Interface.ICurvePointService;
-import com.nnk.poseidoninc.Service.Interface.IRatingService;
-import com.nnk.poseidoninc.Service.Interface.ITradeService;
+import com.nnk.poseidoninc.Service.Interface.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,12 +16,14 @@ public class PoseidonIncApplication implements CommandLineRunner {
     private ITradeService tradeService;
     private ICurvePointService curvePointService;
     private IRatingService ratingService;
+    private IRuleNameService ruleNameService;
 
-    public PoseidonIncApplication(BidListListServiceImpl bidListListService, TradeServiceImpl tradeService, ICurvePointService curvePointService, IRatingService ratingService) {
+    public PoseidonIncApplication(BidListListServiceImpl bidListListService, TradeServiceImpl tradeService, ICurvePointService curvePointService, IRatingService ratingService, IRuleNameService ruleNameService) {
         this.bidListListService = bidListListService;
         this.tradeService = tradeService;
         this.curvePointService = curvePointService;
         this.ratingService = ratingService;
+        this.ruleNameService = ruleNameService;
     }
 
     public static void main(String[] args) {
@@ -65,6 +61,16 @@ public class PoseidonIncApplication implements CommandLineRunner {
                 2
         );
         ratingService.create(ratingDto);
+
+        RuleNameDto ruleNameDto = new RuleNameDto(
+                "nameTest",
+                "descriptionTest",
+                "JsonTest",
+                "templateTest",
+                "sqlStrTest",
+                "sqlPartTest"
+        );
+        ruleNameService.create(ruleNameDto);
 
 
     }

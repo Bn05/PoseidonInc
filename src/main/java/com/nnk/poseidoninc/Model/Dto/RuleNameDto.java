@@ -1,22 +1,43 @@
-package com.nnk.poseidoninc.Model;
+package com.nnk.poseidoninc.Model.Dto;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.DynamicUpdate;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.springframework.validation.annotation.Validated;
 
-@Entity
-@DynamicUpdate
-@Table(name = "RuleName")
-public class RuleName {
+@Validated
+public class RuleNameDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ruleNameId;
+    @NotBlank
+    @Size(max = 125)
     private String name;
+    @NotBlank
+    @Size(max = 125)
     private String description;
+    @NotBlank
+    @Size(max = 125)
     private String json;
+    @NotBlank
+    @Size(max = 512)
     private String template;
+    @NotBlank
+    @Size(max = 125)
     private String sqlStr;
+    @NotBlank
+    @Size(max = 125)
     private String sqlPart;
+
+    public RuleNameDto(String name, String description, String json, String template, String sqlStr, String sqlPart) {
+        this.name = name;
+        this.description = description;
+        this.json = json;
+        this.template = template;
+        this.sqlStr = sqlStr;
+        this.sqlPart = sqlPart;
+    }
+
+    public RuleNameDto() {
+    }
 
     public int getRuleNameId() {
         return ruleNameId;
@@ -73,6 +94,4 @@ public class RuleName {
     public void setSqlPart(String sqlPart) {
         this.sqlPart = sqlPart;
     }
-
-
 }
