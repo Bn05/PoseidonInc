@@ -1,6 +1,6 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.Exception.BidListNotFoundException;
+import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Repository.BidListRepository;
@@ -56,7 +56,7 @@ public class BidListListServiceImpl implements IBidListService {
         Optional<BidList> bid = bidListRepository.findById(id);
 
         if (bid.isEmpty()) {
-            throw new BidListNotFoundException();
+            throw new NotFoundException();
         }
 
         return convertBidListToBidListDto(bid.get());
@@ -70,7 +70,7 @@ public class BidListListServiceImpl implements IBidListService {
         Optional<BidList> optionalBid = bidListRepository.findById(bidListId);
 
         if (optionalBid.isEmpty()) {
-            throw new BidListNotFoundException();
+            throw new NotFoundException();
         }
 
         BidList bidList = optionalBid.get();
@@ -90,7 +90,7 @@ public class BidListListServiceImpl implements IBidListService {
     public void delete(int id) {
 
         if (bidListRepository.findById(id).isEmpty()) {
-            throw new BidListNotFoundException();
+            throw new NotFoundException();
         }
 
         bidListRepository.deleteById(id);

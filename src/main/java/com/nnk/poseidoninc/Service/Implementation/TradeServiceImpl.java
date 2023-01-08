@@ -1,6 +1,6 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.Exception.TradeNotFoundException;
+import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
 import com.nnk.poseidoninc.Model.Trade;
 import com.nnk.poseidoninc.Repository.TradeRepository;
@@ -59,7 +59,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
-            throw new TradeNotFoundException();
+            throw new NotFoundException();
         }
 
         return convertTradeToTradeDto(tradeOptional.get());
@@ -70,7 +70,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
-            throw new TradeNotFoundException();
+            throw new NotFoundException();
         }
 
         Trade trade = tradeOptional.get();
@@ -92,7 +92,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
-            throw new TradeNotFoundException();
+            throw new NotFoundException();
         }
 
         tradeRepository.deleteById(tradeId);

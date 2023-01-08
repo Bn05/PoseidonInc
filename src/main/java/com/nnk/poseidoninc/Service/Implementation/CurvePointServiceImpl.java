@@ -1,6 +1,6 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.Exception.CurvePointNotFoundException;
+import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.CurvePoint;
 import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
 import com.nnk.poseidoninc.Repository.CurvePointRepository;
@@ -54,7 +54,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
-            throw new CurvePointNotFoundException();
+            throw new NotFoundException();
         }
 
         return convertCurvePointToCurvePointDto(curvePointOptional.get());
@@ -65,7 +65,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
-            throw new CurvePointNotFoundException();
+            throw new NotFoundException();
         }
 
         CurvePoint curvePoint = curvePointOptional.get();
@@ -83,7 +83,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
-            throw new CurvePointNotFoundException();
+            throw new NotFoundException();
         }
 
         curvePointRepository.delete(curvePointOptional.get());
