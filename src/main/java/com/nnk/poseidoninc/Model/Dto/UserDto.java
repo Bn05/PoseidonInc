@@ -1,20 +1,35 @@
-package com.nnk.poseidoninc.Model;
+package com.nnk.poseidoninc.Model.Dto;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.DynamicUpdate;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@DynamicUpdate
-@Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDto {
     private int userId;
+    @NotBlank
+    @Size(max = 125)
+    @Email
     private String email;
+    @NotBlank
+    //TODO : password validation
     private String password;
+    @NotBlank
+    @Size(max = 125)
     private String fullName;
+    @NotBlank
+    @Size(max = 125)
     private String role;
+
+    public UserDto(String email, String password, String fullName, String role) {
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.role = role;
+    }
+
+    public UserDto() {
+    }
+
 
     public int getUserId() {
         return userId;

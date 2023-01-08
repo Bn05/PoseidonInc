@@ -1,7 +1,6 @@
 package com.nnk.poseidoninc;
 
 import com.nnk.poseidoninc.Model.Dto.*;
-import com.nnk.poseidoninc.Model.RuleName;
 import com.nnk.poseidoninc.Service.Implementation.BidListListServiceImpl;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
 import com.nnk.poseidoninc.Service.Interface.*;
@@ -17,13 +16,15 @@ public class PoseidonIncApplication implements CommandLineRunner {
     private ICurvePointService curvePointService;
     private IRatingService ratingService;
     private IRuleNameService ruleNameService;
+    private IUserService userService;
 
-    public PoseidonIncApplication(BidListListServiceImpl bidListListService, TradeServiceImpl tradeService, ICurvePointService curvePointService, IRatingService ratingService, IRuleNameService ruleNameService) {
+    public PoseidonIncApplication(BidListListServiceImpl bidListListService, TradeServiceImpl tradeService, ICurvePointService curvePointService, IRatingService ratingService, IRuleNameService ruleNameService, IUserService userService) {
         this.bidListListService = bidListListService;
         this.tradeService = tradeService;
         this.curvePointService = curvePointService;
         this.ratingService = ratingService;
         this.ruleNameService = ruleNameService;
+        this.userService = userService;
     }
 
     public static void main(String[] args) {
@@ -72,6 +73,12 @@ public class PoseidonIncApplication implements CommandLineRunner {
         );
         ruleNameService.create(ruleNameDto);
 
-
+        UserDto userDto = new UserDto(
+                "emailTest",
+                "passwordTest",
+                "fullNameTest",
+                "roleTest"
+        );
+        userService.create(userDto);
     }
 }
