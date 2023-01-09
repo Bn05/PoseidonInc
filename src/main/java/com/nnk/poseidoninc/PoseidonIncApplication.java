@@ -1,7 +1,7 @@
 package com.nnk.poseidoninc;
 
 import com.nnk.poseidoninc.Model.Dto.*;
-import com.nnk.poseidoninc.Service.Implementation.BidListListServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
 import com.nnk.poseidoninc.Service.Interface.*;
 import org.springframework.boot.CommandLineRunner;
@@ -18,7 +18,7 @@ public class PoseidonIncApplication implements CommandLineRunner {
     private IRuleNameService ruleNameService;
     private IUserService userService;
 
-    public PoseidonIncApplication(BidListListServiceImpl bidListListService, TradeServiceImpl tradeService, ICurvePointService curvePointService, IRatingService ratingService, IRuleNameService ruleNameService, IUserService userService) {
+    public PoseidonIncApplication(BidListServiceImpl bidListListService, TradeServiceImpl tradeService, ICurvePointService curvePointService, IRatingService ratingService, IRuleNameService ruleNameService, IUserService userService) {
         this.bidListListService = bidListListService;
         this.tradeService = tradeService;
         this.curvePointService = curvePointService;

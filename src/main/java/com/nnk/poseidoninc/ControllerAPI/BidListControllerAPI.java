@@ -1,7 +1,7 @@
 package com.nnk.poseidoninc.ControllerAPI;
 
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
-import com.nnk.poseidoninc.Service.Implementation.BidListListServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
 import com.nnk.poseidoninc.Service.Interface.IBidListService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,7 @@ public class BidListControllerAPI {
 
     private static final Logger logger = LogManager.getLogger(BidListControllerAPI.class);
 
-    public BidListControllerAPI(BidListListServiceImpl bidListServiceImpl) {
+    public BidListControllerAPI(BidListServiceImpl bidListServiceImpl) {
         this.bidService = bidListServiceImpl;
     }
 

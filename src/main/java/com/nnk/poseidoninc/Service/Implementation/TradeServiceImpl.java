@@ -64,7 +64,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundTradeWithThisId");
             throw new NotFoundException();
         }
 
@@ -76,7 +76,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundTradeWithThisId");
             throw new NotFoundException();
         }
 
@@ -99,7 +99,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundTradeWithThisId");
             throw new NotFoundException();
         }
 

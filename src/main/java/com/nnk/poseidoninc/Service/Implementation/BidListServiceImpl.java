@@ -19,13 +19,13 @@ import java.util.Optional;
 @Service
 @Transactional
 @DynamicUpdate
-public class BidListListServiceImpl implements IBidListService {
+public class BidListServiceImpl implements IBidListService {
 
-    private static final Logger logger = LogManager.getLogger(BidListListServiceImpl.class);
+    private static final Logger logger = LogManager.getLogger(BidListServiceImpl.class);
 
     private BidListRepository bidListRepository;
 
-    public BidListListServiceImpl(BidListRepository bidListRepository) {
+    public BidListServiceImpl(BidListRepository bidListRepository) {
         this.bidListRepository = bidListRepository;
     }
 

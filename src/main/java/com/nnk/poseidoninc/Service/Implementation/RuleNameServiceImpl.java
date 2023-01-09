@@ -49,7 +49,7 @@ public class RuleNameServiceImpl implements IRuleNameService {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
         if (ruleNameOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundRuleNameWithThisId");
             throw new NotFoundException();
         }
 
@@ -61,7 +61,7 @@ public class RuleNameServiceImpl implements IRuleNameService {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
         if (ruleNameOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundRuleNameWithThisId");
             throw new NotFoundException();
         }
 
@@ -83,7 +83,7 @@ public class RuleNameServiceImpl implements IRuleNameService {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
         if (ruleNameOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundRuleNameWithThisId");
             throw new NotFoundException();
         }
 

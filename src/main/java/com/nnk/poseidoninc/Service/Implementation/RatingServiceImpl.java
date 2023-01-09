@@ -56,7 +56,7 @@ public class RatingServiceImpl implements IRatingService {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
         if (ratingOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundRatingWithThisId");
             throw new NotFoundException();
         }
 
@@ -68,7 +68,7 @@ public class RatingServiceImpl implements IRatingService {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
         if (ratingOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundRatingWithThisId");
             throw new NotFoundException();
         }
 
@@ -88,7 +88,7 @@ public class RatingServiceImpl implements IRatingService {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
         if (ratingOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundRatingWithThisId");
             throw new NotFoundException();
         }
 

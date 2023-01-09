@@ -50,7 +50,7 @@ public class UserServiceImpl implements IUserService {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundUserWithThisId");
             throw new NotFoundException();
         }
 
@@ -62,7 +62,7 @@ public class UserServiceImpl implements IUserService {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundUserWithThisId");
             throw new NotFoundException();
         }
 
@@ -82,7 +82,7 @@ public class UserServiceImpl implements IUserService {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundUserWithThisId");
             throw new NotFoundException();
         }
 

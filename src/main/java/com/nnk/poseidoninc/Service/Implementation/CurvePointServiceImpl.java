@@ -58,7 +58,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundCurvePointWithThisId");
             throw new NotFoundException();
         }
 
@@ -70,7 +70,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundCurvePointWithThisId");
             throw new NotFoundException();
         }
 
@@ -89,7 +89,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
-            logger.warn("NotFoundBidListWithThisId");
+            logger.warn("NotFoundCurvePointWithThisId");
             throw new NotFoundException();
         }
 
