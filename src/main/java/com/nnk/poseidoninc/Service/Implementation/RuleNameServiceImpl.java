@@ -5,6 +5,8 @@ import com.nnk.poseidoninc.Model.Dto.RuleNameDto;
 import com.nnk.poseidoninc.Model.RuleName;
 import com.nnk.poseidoninc.Repository.RuleNameRepository;
 import com.nnk.poseidoninc.Service.Interface.IRuleNameService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.Optional;
 
 @Service
 public class RuleNameServiceImpl implements IRuleNameService {
+
+    private static final Logger logger = LogManager.getLogger(RuleNameServiceImpl.class);
 
     private RuleNameRepository ruleNameRepository;
 
@@ -45,6 +49,7 @@ public class RuleNameServiceImpl implements IRuleNameService {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
         if (ruleNameOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -56,6 +61,7 @@ public class RuleNameServiceImpl implements IRuleNameService {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
         if (ruleNameOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -77,6 +83,7 @@ public class RuleNameServiceImpl implements IRuleNameService {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
         if (ruleNameOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 

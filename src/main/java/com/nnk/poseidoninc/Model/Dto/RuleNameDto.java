@@ -94,4 +94,17 @@ public class RuleNameDto {
     public void setSqlPart(String sqlPart) {
         this.sqlPart = sqlPart;
     }
+
+    @Override
+    public String toString() {
+        return "RuleNameDto{" +
+                "ruleNameId=" + ruleNameId +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", json='" + json + '\'' +
+                ", template='" + template + '\'' +
+                ", sqlStr='" + sqlStr + '\'' +
+                ", sqlPart='" + sqlPart + '\'' +
+                '}';
+    }
 }

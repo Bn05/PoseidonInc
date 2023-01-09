@@ -60,4 +60,14 @@ public class BidListDto {
     public void setBidQuantity(double bidQuantity) {
         this.bidQuantity = bidQuantity;
     }
+
+    @Override
+    public String toString() {
+        return "BidListDto{" +
+                "bidListId=" + bidListId +
+                ", account='" + account + '\'' +
+                ", type='" + type + '\'' +
+                ", bidQuantity=" + bidQuantity +
+                '}';
+    }
 }

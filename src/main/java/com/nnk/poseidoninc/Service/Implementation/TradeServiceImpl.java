@@ -1,11 +1,14 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
+import com.nnk.poseidoninc.ControllerAPI.TradeControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
 import com.nnk.poseidoninc.Model.Trade;
 import com.nnk.poseidoninc.Repository.TradeRepository;
 import com.nnk.poseidoninc.Service.Interface.ITradeService;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,8 @@ import java.util.Optional;
 @Transactional
 @DynamicUpdate
 public class TradeServiceImpl implements ITradeService {
+
+    private static final Logger logger = LogManager.getLogger(TradeServiceImpl.class);
 
     private TradeRepository tradeRepository;
 
@@ -59,6 +64,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -70,6 +76,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -92,6 +99,7 @@ public class TradeServiceImpl implements ITradeService {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
         if (tradeOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 

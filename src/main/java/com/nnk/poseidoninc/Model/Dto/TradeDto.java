@@ -23,7 +23,6 @@ public class TradeDto {
         this.type = type;
         this.buyQuantity = buyQuantity;
     }
-
     public TradeDto() {
     }
 
@@ -57,5 +56,15 @@ public class TradeDto {
 
     public void setBuyQuantity(double buyQuantity) {
         this.buyQuantity = buyQuantity;
+    }
+
+    @Override
+    public String toString() {
+        return "TradeDto{" +
+                "TradeId=" + TradeId +
+                ", account='" + account + '\'' +
+                ", type='" + type + '\'' +
+                ", buyQuantity=" + buyQuantity +
+                '}';
     }
 }

@@ -1,11 +1,14 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
+import com.nnk.poseidoninc.ControllerAPI.RatingControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
 import com.nnk.poseidoninc.Model.Rating;
 import com.nnk.poseidoninc.Repository.RatingRepository;
 import com.nnk.poseidoninc.Service.Interface.IRatingService;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +20,8 @@ import java.util.Optional;
 @Transactional
 @DynamicUpdate
 public class RatingServiceImpl implements IRatingService {
+
+    private static final Logger logger = LogManager.getLogger(RatingServiceImpl.class);
 
     private RatingRepository ratingRepository;
 
@@ -51,6 +56,7 @@ public class RatingServiceImpl implements IRatingService {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
         if (ratingOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -62,6 +68,7 @@ public class RatingServiceImpl implements IRatingService {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
         if (ratingOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -81,6 +88,7 @@ public class RatingServiceImpl implements IRatingService {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
         if (ratingOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 

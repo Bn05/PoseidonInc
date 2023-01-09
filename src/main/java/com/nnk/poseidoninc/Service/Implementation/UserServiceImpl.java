@@ -1,10 +1,13 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
+import com.nnk.poseidoninc.ControllerAPI.UserControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.User;
 import com.nnk.poseidoninc.Repository.UserRepository;
 import com.nnk.poseidoninc.Service.Interface.IUserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements IUserService {
+
+    private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -45,6 +50,7 @@ public class UserServiceImpl implements IUserService {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -56,6 +62,7 @@ public class UserServiceImpl implements IUserService {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -75,6 +82,7 @@ public class UserServiceImpl implements IUserService {
         Optional<User> userOptional = userRepository.findById(userId);
 
         if (userOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 

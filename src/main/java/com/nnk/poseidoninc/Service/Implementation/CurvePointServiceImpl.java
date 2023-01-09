@@ -6,6 +6,8 @@ import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
 import com.nnk.poseidoninc.Repository.CurvePointRepository;
 import com.nnk.poseidoninc.Service.Interface.ICurvePointService;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.Optional;
 @Transactional
 @DynamicUpdate
 public class CurvePointServiceImpl implements ICurvePointService {
+
+    private static final Logger logger = LogManager.getLogger(CurvePointServiceImpl.class);
 
     private CurvePointRepository curvePointRepository;
 
@@ -54,6 +58,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -65,6 +70,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -83,6 +89,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
         if (curvePointOptional.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 

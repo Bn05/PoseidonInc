@@ -6,6 +6,8 @@ import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Repository.BidListRepository;
 import com.nnk.poseidoninc.Service.Interface.IBidListService;
 import jakarta.transaction.Transactional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ import java.util.Optional;
 @Transactional
 @DynamicUpdate
 public class BidListListServiceImpl implements IBidListService {
+
+    private static final Logger logger = LogManager.getLogger(BidListListServiceImpl.class);
 
     private BidListRepository bidListRepository;
 
@@ -56,6 +60,7 @@ public class BidListListServiceImpl implements IBidListService {
         Optional<BidList> bid = bidListRepository.findById(id);
 
         if (bid.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -70,6 +75,7 @@ public class BidListListServiceImpl implements IBidListService {
         Optional<BidList> optionalBid = bidListRepository.findById(bidListId);
 
         if (optionalBid.isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
@@ -90,6 +96,7 @@ public class BidListListServiceImpl implements IBidListService {
     public void delete(int id) {
 
         if (bidListRepository.findById(id).isEmpty()) {
+            logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 

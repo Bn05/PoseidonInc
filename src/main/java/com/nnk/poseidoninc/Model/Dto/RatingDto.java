@@ -71,4 +71,15 @@ public class RatingDto {
     public void setOrderNumber(int orderNumber) {
         this.orderNumber = orderNumber;
     }
+
+    @Override
+    public String toString() {
+        return "RatingDto{" +
+                "ratingId=" + ratingId +
+                ", moodysRating='" + moodysRating + '\'' +
+                ", sandPRating='" + sandPRating + '\'' +
+                ", fitchRating='" + fitchRating + '\'' +
+                ", orderNumber=" + orderNumber +
+                '}';
+    }
 }

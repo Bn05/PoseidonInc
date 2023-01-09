@@ -50,4 +50,13 @@ public class CurvePointDto {
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "CurvePointDto{" +
+                "curvePointId=" + curvePointId +
+                ", term=" + term +
+                ", value=" + value +
+                '}';
+    }
 }
