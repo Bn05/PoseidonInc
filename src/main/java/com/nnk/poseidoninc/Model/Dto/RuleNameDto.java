@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Objects;
+
 @Validated
 public class RuleNameDto {
 
@@ -106,5 +108,33 @@ public class RuleNameDto {
                 ", sqlStr='" + sqlStr + '\'' +
                 ", sqlPart='" + sqlPart + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RuleNameDto that = (RuleNameDto) o;
+
+        if (ruleNameId != that.ruleNameId) return false;
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(description, that.description)) return false;
+        if (!Objects.equals(json, that.json)) return false;
+        if (!Objects.equals(template, that.template)) return false;
+        if (!Objects.equals(sqlStr, that.sqlStr)) return false;
+        return Objects.equals(sqlPart, that.sqlPart);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ruleNameId;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (json != null ? json.hashCode() : 0);
+        result = 31 * result + (template != null ? template.hashCode() : 0);
+        result = 31 * result + (sqlStr != null ? sqlStr.hashCode() : 0);
+        result = 31 * result + (sqlPart != null ? sqlPart.hashCode() : 0);
+        return result;
     }
 }
