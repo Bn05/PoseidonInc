@@ -4,6 +4,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.Objects;
+
 public class UserDto {
     private int userId;
     @NotBlank
@@ -80,5 +82,29 @@ public class UserDto {
                 ", fullName='" + fullName + '\'' +
                 ", role='" + role + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserDto userDto = (UserDto) o;
+
+        if (userId != userDto.userId) return false;
+        if (!Objects.equals(email, userDto.email)) return false;
+        if (!Objects.equals(password, userDto.password)) return false;
+        if (!Objects.equals(fullName, userDto.fullName)) return false;
+        return Objects.equals(role, userDto.role);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId;
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        return result;
     }
 }

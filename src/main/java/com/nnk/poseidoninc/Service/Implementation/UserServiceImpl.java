@@ -1,13 +1,14 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.ControllerAPI.UserControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.User;
 import com.nnk.poseidoninc.Repository.UserRepository;
 import com.nnk.poseidoninc.Service.Interface.IUserService;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,10 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
+@DynamicUpdate
 public class UserServiceImpl implements IUserService {
 
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;

@@ -35,6 +35,8 @@ public class PoseidonIncApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        /*
+
         BidListDto bidListDto = new BidListDto(
                 "accountTest",
                 "typeTest",
@@ -80,5 +82,9 @@ public class PoseidonIncApplication implements CommandLineRunner {
                 "roleTest"
         );
         userService.create(userDto);
+
+         */
     }
+
+
 }
