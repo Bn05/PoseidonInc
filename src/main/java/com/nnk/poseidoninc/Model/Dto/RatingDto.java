@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Objects;
+
 @Validated
 public class RatingDto {
     private int ratingId;
@@ -81,5 +83,31 @@ public class RatingDto {
                 ", fitchRating='" + fitchRating + '\'' +
                 ", orderNumber=" + orderNumber +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RatingDto ratingDto = (RatingDto) o;
+
+        if (ratingId != ratingDto.ratingId) return false;
+        if (orderNumber != ratingDto.orderNumber) return false;
+        if (!Objects.equals(moodysRating, ratingDto.moodysRating))
+            return false;
+        if (!Objects.equals(sandPRating, ratingDto.sandPRating))
+            return false;
+        return Objects.equals(fitchRating, ratingDto.fitchRating);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = ratingId;
+        result = 31 * result + (moodysRating != null ? moodysRating.hashCode() : 0);
+        result = 31 * result + (sandPRating != null ? sandPRating.hashCode() : 0);
+        result = 31 * result + (fitchRating != null ? fitchRating.hashCode() : 0);
+        result = 31 * result + orderNumber;
+        return result;
     }
 }
