@@ -1,6 +1,5 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.ControllerAPI.TradeControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
 import com.nnk.poseidoninc.Model.Trade;

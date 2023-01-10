@@ -78,13 +78,13 @@ class RatingServiceImplTest {
         ratingDtoList.add(ratingDto1);
         ratingDtoList.add(ratingDto2);
 
-        ratingUpdate.setRatingId(3);
+        ratingUpdate.setRatingId(1);
         ratingUpdate.setMoodysRating("moodysTestUpdate");
         ratingUpdate.setSandPRating("SandPRTestUpdate");
         ratingUpdate.setFitchRating("fitchTestUpdate");
         ratingUpdate.setOrderNumber(3);
 
-        ratingDtoUpdate.setRatingId(3);
+        ratingDtoUpdate.setRatingId(1);
         ratingDtoUpdate.setMoodysRating("moodysTestUpdate");
         ratingDtoUpdate.setSandPRating("SandPRTestUpdate");
         ratingDtoUpdate.setFitchRating("fitchTestUpdate");

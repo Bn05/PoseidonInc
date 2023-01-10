@@ -3,6 +3,8 @@ package com.nnk.poseidoninc.Model.Dto;
 import jakarta.validation.constraints.*;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Objects;
+
 @Validated
 public class TradeDto {
 
@@ -66,5 +68,30 @@ public class TradeDto {
                 ", type='" + type + '\'' +
                 ", buyQuantity=" + buyQuantity +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TradeDto tradeDto = (TradeDto) o;
+
+        if (TradeId != tradeDto.TradeId) return false;
+        if (Double.compare(tradeDto.buyQuantity, buyQuantity) != 0) return false;
+        if (!Objects.equals(account, tradeDto.account)) return false;
+        return Objects.equals(type, tradeDto.type);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = TradeId;
+        result = 31 * result + (account != null ? account.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        temp = Double.doubleToLongBits(buyQuantity);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

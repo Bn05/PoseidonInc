@@ -70,11 +70,11 @@ class CurvePointServiceImplTest {
         curvePointDtoList.add(curvePointDto1);
         curvePointDtoList.add(curvePointDto2);
 
-        curvePointUpdate.setCurvePointId(3);
+        curvePointUpdate.setCurvePointId(1);
         curvePointUpdate.setTerm(33);
         curvePointUpdate.setValue(33);
 
-        curvePointDtoUpdate.setCurvePointId(3);
+        curvePointDtoUpdate.setCurvePointId(1);
         curvePointDtoUpdate.setTerm(33);
         curvePointDtoUpdate.setValue(33);
     }

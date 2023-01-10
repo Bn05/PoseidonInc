@@ -87,7 +87,7 @@ class RuleNameServiceImplTest {
         ruleNameDtoList.add(ruleNameDto2);
 
 
-        ruleNameUpdate.setRuleNameId(3);
+        ruleNameUpdate.setRuleNameId(1);
         ruleNameUpdate.setName("nameTestUpdate");
         ruleNameUpdate.setDescription("descriptionTestUpdate");
         ruleNameUpdate.setJson("jsonTestUpdate");
@@ -95,7 +95,7 @@ class RuleNameServiceImplTest {
         ruleNameUpdate.setSqlStr("sqlStrTestUpdate");
         ruleNameUpdate.setSqlPart("sqlPartUpdate");
 
-        ruleNameDtoUpdate.setRuleNameId(3);
+        ruleNameDtoUpdate.setRuleNameId(1);
         ruleNameDtoUpdate.setName("nameTestUpdate");
         ruleNameDtoUpdate.setDescription("descriptionTestUpdate");
         ruleNameDtoUpdate.setJson("jsonTestUpdate");
