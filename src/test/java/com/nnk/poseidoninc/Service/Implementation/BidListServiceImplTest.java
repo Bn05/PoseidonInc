@@ -160,6 +160,7 @@ class BidListServiceImplTest {
         }
 
         verify(bidListRepositoryMock, times(1)).findById(any());
+        verify(bidListRepositoryMock, times(0)).save(any());
         assertFalse(errorTest);
 
     }
@@ -188,6 +189,7 @@ class BidListServiceImplTest {
             errorTest = false;
         }
 
+        verify(bidListRepositoryMock,times(0)).deleteById(any());
         assertFalse(errorTest);
     }
 

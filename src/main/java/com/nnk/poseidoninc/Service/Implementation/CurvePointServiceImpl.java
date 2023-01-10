@@ -93,7 +93,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
             throw new NotFoundException();
         }
 
-        curvePointRepository.delete(curvePointOptional.get());
+        curvePointRepository.deleteById(curvePointId);
     }
 
     @Override

@@ -59,4 +59,28 @@ public class CurvePointDto {
                 ", value=" + value +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CurvePointDto that = (CurvePointDto) o;
+
+        if (curvePointId != that.curvePointId) return false;
+        if (Double.compare(that.term, term) != 0) return false;
+        return Double.compare(that.value, value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = curvePointId;
+        temp = Double.doubleToLongBits(term);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(value);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
 }
