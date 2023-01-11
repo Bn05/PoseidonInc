@@ -234,6 +234,15 @@ class RuleNameControllerAPITest {
     }
 
     @Test
+    void deleteByIdBadParam() throws Exception {
+        doNothing().when(ruleNameServiceMock).delete(1);
+
+        mockMvc.perform(delete("/ruleName")
+                        .param("ruleNameId", "A"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void deleteByIdNotFoundException() throws Exception {
         doThrow(NotFoundException.class).when(ruleNameServiceMock).delete(1);
 

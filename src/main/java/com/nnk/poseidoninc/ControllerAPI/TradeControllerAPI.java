@@ -20,7 +20,7 @@ public class TradeControllerAPI {
         this.tradeService = tradeService;
     }
 
-    @GetMapping(value = "/trades")
+    @GetMapping(value = "/tradeList")
     public List<TradeDto> findAll() {
         logger.info("Request GET /trades");
         List<TradeDto> tradeDtoListValidation = tradeService.findAll();
