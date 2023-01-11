@@ -21,7 +21,7 @@ public class RatingControllerAPI {
     }
 
     @GetMapping(value = "/ratingList")
-    public List<RatingDto> findall() {
+    public List<RatingDto> findAll() {
         logger.info("Request GET /ratingList");
         List<RatingDto> ratingDtoListValidation = ratingService.findAll();
         logger.trace("Response to Request : " + ratingDtoListValidation.toString());
@@ -37,7 +37,7 @@ public class RatingControllerAPI {
     }
 
     @GetMapping(value = "/rating")
-    public RatingDto findbyId(@RequestParam(value = "ratingId") int ratingId) {
+    public RatingDto findById(@RequestParam(value = "ratingId") int ratingId) {
         logger.info("Request GET /rating, RequestParam ratingId = " + ratingId);
         RatingDto ratingDtoValidation = ratingService.findById(ratingId);
         logger.trace("Response to Request : " + ratingDtoValidation.toString());
