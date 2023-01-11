@@ -1,6 +1,5 @@
 package com.nnk.poseidoninc;
 
-import com.nnk.poseidoninc.Model.Dto.*;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
 import com.nnk.poseidoninc.Service.Interface.*;
@@ -10,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class PoseidonIncApplication implements CommandLineRunner {
-
     private IBidListService bidListListService;
     private ITradeService tradeService;
     private ICurvePointService curvePointService;
