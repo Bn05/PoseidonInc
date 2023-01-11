@@ -38,7 +38,7 @@ public class CurvePointControllerAPI {
     }
 
     @GetMapping(value = "/curvePoint")
-    public CurvePointDto findById(int curvePointId) {
+    public CurvePointDto findById(@RequestParam(value = "curvePointId") int curvePointId) {
         logger.info("Request GET /curvePoint, ParamRequest = " + curvePointId);
         CurvePointDto curvePointDtoValidation = curvePointService.findById(curvePointId);
         logger.trace("Response to Request : " + curvePointDtoValidation.toString());
@@ -55,7 +55,7 @@ public class CurvePointControllerAPI {
     }
 
     @DeleteMapping(value = "/curvePoint")
-    public void delete(int curvePointId) {
+    public void delete(@RequestParam(value = "curvePointId") int curvePointId) {
         logger.info("Request to DELETE /curvePoint, ParamRequest = "+curvePointId);
         curvePointService.delete(curvePointId);
         logger.trace("Delete validated");

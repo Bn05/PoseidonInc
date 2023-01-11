@@ -55,9 +55,11 @@ class BidListControllerAPITest {
     List<BidListDto> bidListDtoList = new ArrayList<>();
 
     ObjectMapper objectMapper = new ObjectMapper();
+    String bidListDto1Json;
+    String bidListDtoListJson;
 
     @BeforeAll
-    void buildTest() {
+    void buildTest() throws JsonProcessingException {
 
         bidList1.setBidId(1);
         bidList1.setAccount("accountTest1");
@@ -99,13 +101,15 @@ class BidListControllerAPITest {
         bidListUpdate.setAccount("accountTestUpdate");
         bidListUpdate.setType("typeTestUpdate");
         bidListUpdate.setBidQuantity(50d);
+
+        bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
+        bidListDtoListJson = objectMapper.writeValueAsString(bidListDtoList);
     }
 
 
     @Test
     void findAll() throws Exception {
         when(bidListServiceMock.findAll()).thenReturn(bidListDtoList);
-        String bidListDtoListJson = objectMapper.writeValueAsString(bidListDtoList);
 
         mockMvc.perform(get("/bidLists"))
                 .andExpect(content().json(bidListDtoListJson))
@@ -117,7 +121,7 @@ class BidListControllerAPITest {
     @Test
     void createBid() throws Exception {
         when(bidListServiceMock.create(bidListDto1)).thenReturn(bidListDto1);
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
+
 
         mockMvc.perform(post("/bidList")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,7 +133,6 @@ class BidListControllerAPITest {
     @Test
     void createBidBadRequest() throws Exception {
         when(bidListServiceMock.create(bidListDto1)).thenReturn(bidListDto1);
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
 
         mockMvc.perform(post("/bidList"))
                 .andExpect(status().isBadRequest());
@@ -138,7 +141,6 @@ class BidListControllerAPITest {
     @Test
     void findById() throws Exception {
         when(bidListServiceMock.findById(1)).thenReturn(bidListDto1);
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
 
         mockMvc.perform(get("/bidList")
                         .param("idBidList", "1"))
@@ -148,7 +150,6 @@ class BidListControllerAPITest {
 
     @Test
     void findByIdBadRequest() throws Exception {
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
 
         mockMvc.perform(get("/bidList")
                         .param("idBidList", "A"))
@@ -158,7 +159,6 @@ class BidListControllerAPITest {
     @Test
     void findByIdNotFoundException() throws Exception {
         when(bidListServiceMock.findById(1)).thenThrow(NotFoundException.class);
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
 
         mockMvc.perform(get("/bidList")
                         .param("idBidList", "1"))
@@ -168,7 +168,6 @@ class BidListControllerAPITest {
     @Test
     void updateById() throws Exception {
         when(bidListServiceMock.update(bidListDto1, 1)).thenReturn(bidListDto1);
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
 
         mockMvc.perform(put("/bidList")
                         .param("bidListId", "1")
@@ -181,7 +180,6 @@ class BidListControllerAPITest {
     @Test
     void updateByIdBadParam() throws Exception {
         when(bidListServiceMock.update(bidListDto1, 1)).thenReturn(bidListDto1);
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
 
         mockMvc.perform(put("/bidList")
                         .param("bidListId", "A")
@@ -196,14 +194,13 @@ class BidListControllerAPITest {
 
 
         mockMvc.perform(put("/bidList")
-                .param("bidListId", "1"))
+                        .param("bidListId", "1"))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void updateByIdNotFound() throws Exception {
         when(bidListServiceMock.update(bidListDto1, 1)).thenThrow(NotFoundException.class);
-        String bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
 
         mockMvc.perform(put("/bidList")
                         .param("bidListId", "1")
@@ -217,16 +214,25 @@ class BidListControllerAPITest {
         doNothing().when(bidListServiceMock).delete(1);
 
         mockMvc.perform(delete("/bidList")
-                .param("bidListId","1"))
+                        .param("bidListId", "1"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void deleteByIdNotFound() throws Exception {
-       doThrow(NotFoundException.class).when(bidListServiceMock).delete(1);
+    void deleteByIdBadRequest() throws Exception {
+        doNothing().when(bidListServiceMock).delete(1);
 
         mockMvc.perform(delete("/bidList")
-                        .param("bidListId","1"))
+                        .param("bidListId", "A"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void deleteByIdNotFound() throws Exception {
+        doThrow(NotFoundException.class).when(bidListServiceMock).delete(1);
+
+        mockMvc.perform(delete("/bidList")
+                        .param("bidListId", "1"))
                 .andExpect(status().isNotFound());
     }
 }
