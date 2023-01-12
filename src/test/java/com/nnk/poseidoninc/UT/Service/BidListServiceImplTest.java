@@ -1,9 +1,10 @@
-package com.nnk.poseidoninc.Service.Implementation;
+package com.nnk.poseidoninc.UT.Service;
 
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Repository.BidListRepository;
+import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

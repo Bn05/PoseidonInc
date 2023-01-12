@@ -1,9 +1,10 @@
-package com.nnk.poseidoninc.Service.Implementation;
+package com.nnk.poseidoninc.UT.Service;
 
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.User;
 import com.nnk.poseidoninc.Repository.UserRepository;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

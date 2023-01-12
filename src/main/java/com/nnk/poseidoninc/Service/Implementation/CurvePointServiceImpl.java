@@ -77,7 +77,7 @@ public class CurvePointServiceImpl implements ICurvePointService {
         CurvePoint curvePoint = curvePointOptional.get();
 
         curvePoint.setTerm(curvePointDto.getTerm());
-        curvePoint.setValue(curvePoint.getValue());
+        curvePoint.setValue(curvePointDto.getValue());
 
         curvePoint = curvePointRepository.save(curvePoint);
 

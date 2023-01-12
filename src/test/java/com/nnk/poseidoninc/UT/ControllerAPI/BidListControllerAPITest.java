@@ -1,7 +1,8 @@
-package com.nnk.poseidoninc.ControllerAPI;
+package com.nnk.poseidoninc.UT.ControllerAPI;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nnk.poseidoninc.ControllerAPI.BidListControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
@@ -143,7 +144,7 @@ class BidListControllerAPITest {
         when(bidListServiceMock.findById(1)).thenReturn(bidListDto1);
 
         mockMvc.perform(get("/bidList")
-                        .param("idBidList", "1"))
+                        .param("bidListId", "1"))
                 .andExpect(content().json(bidListDto1Json))
                 .andExpect(status().isOk());
     }
@@ -161,7 +162,7 @@ class BidListControllerAPITest {
         when(bidListServiceMock.findById(1)).thenThrow(NotFoundException.class);
 
         mockMvc.perform(get("/bidList")
-                        .param("idBidList", "1"))
+                        .param("bidListId", "1"))
                 .andExpect(status().isNotFound());
     }
 

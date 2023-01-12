@@ -1,7 +1,8 @@
-package com.nnk.poseidoninc.ControllerAPI;
+package com.nnk.poseidoninc.UT.ControllerAPI;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nnk.poseidoninc.ControllerAPI.RatingControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
 import com.nnk.poseidoninc.Model.Rating;

@@ -1,9 +1,10 @@
-package com.nnk.poseidoninc.Service.Implementation;
+package com.nnk.poseidoninc.UT.Service;
 
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
 import com.nnk.poseidoninc.Model.Rating;
 import com.nnk.poseidoninc.Repository.RatingRepository;
+import com.nnk.poseidoninc.Service.Implementation.RatingServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

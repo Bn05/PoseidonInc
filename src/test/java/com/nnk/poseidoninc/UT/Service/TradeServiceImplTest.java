@@ -1,9 +1,10 @@
-package com.nnk.poseidoninc.Service.Implementation;
+package com.nnk.poseidoninc.UT.Service;
 
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
 import com.nnk.poseidoninc.Model.Trade;
 import com.nnk.poseidoninc.Repository.TradeRepository;
+import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

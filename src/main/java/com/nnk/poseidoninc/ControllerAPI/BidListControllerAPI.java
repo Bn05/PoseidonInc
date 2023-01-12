@@ -38,7 +38,7 @@ public class BidListControllerAPI {
     }
 
     @GetMapping(value = "/bidList")
-    public BidListDto findById(@RequestParam(value = "idBidList") int idBidList) {
+    public BidListDto findById(@RequestParam(value = "bidListId") int idBidList) {
         logger.info("Request GET /bidList, RequestParam : idBidList = " + idBidList);
         BidListDto bidListDtoValidation = bidService.findById(idBidList);
         logger.trace("Response to Request : " + bidListDtoValidation.toString());
