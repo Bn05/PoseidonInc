@@ -37,7 +37,6 @@ public class BidListIT {
     BidListDto bidListDto2NoId = new BidListDto();
 
     BidListDto bidListDtoUpdate = new BidListDto();
-
     List<BidListDto> bidListDtoList = new ArrayList<>();
 
     ObjectMapper objectMapper = new ObjectMapper();
