@@ -1,6 +1,5 @@
 package com.nnk.poseidoninc.Service.Implementation;
 
-import com.nnk.poseidoninc.ControllerAPI.RatingControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
 import com.nnk.poseidoninc.Model.Rating;

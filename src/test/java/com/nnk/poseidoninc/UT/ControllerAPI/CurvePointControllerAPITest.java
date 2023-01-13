@@ -146,7 +146,7 @@ class CurvePointControllerAPITest {
     }
 
     @Test
-    void findByIdNotFoundExeption() throws Exception {
+    void findByIdNotFoundException() throws Exception {
         when(curvePointServiceMock.findById(1)).thenThrow(NotFoundException.class);
 
         mockMvc.perform(get("/curvePoint")

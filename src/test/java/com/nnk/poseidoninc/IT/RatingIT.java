@@ -3,7 +3,6 @@ package com.nnk.poseidoninc.IT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
-import com.nnk.poseidoninc.Model.Rating;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

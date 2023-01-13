@@ -6,7 +6,6 @@ import com.nnk.poseidoninc.Model.Rating;
 import com.nnk.poseidoninc.Repository.RatingRepository;
 import com.nnk.poseidoninc.Service.Implementation.RatingServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;

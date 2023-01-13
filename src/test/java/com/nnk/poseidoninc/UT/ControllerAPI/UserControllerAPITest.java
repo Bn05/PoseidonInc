@@ -6,7 +6,6 @@ import com.nnk.poseidoninc.ControllerAPI.UserControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.User;
-import com.nnk.poseidoninc.Repository.UserRepository;
 import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;

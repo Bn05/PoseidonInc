@@ -39,9 +39,9 @@ public class TradeControllerAPI {
     @GetMapping(value = "/trade")
     public TradeDto findById(@RequestParam(value = "tradeId") int tradeId) {
         logger.info("Request GET /trade, RequestParam tradeId = " + tradeId);
-        TradeDto tradeDtoValdiation = tradeService.findById(tradeId);
-        logger.trace("Response to Request : " + tradeDtoValdiation.toString());
-        return tradeDtoValdiation;
+        TradeDto tradeDtoValidation = tradeService.findById(tradeId);
+        logger.trace("Response to Request : " + tradeDtoValidation.toString());
+        return tradeDtoValidation;
     }
 
     @PutMapping(value = "/trade")

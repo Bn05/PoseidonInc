@@ -57,7 +57,7 @@ public class BidListControllerAPI {
 
     @DeleteMapping(value = "/bidList")
     public void deleteById(@RequestParam(value = "bidListId") int bidListId) {
-        logger.info("Resquest DELETE /bidList, RequestParam bidListId = "+bidListId);
+        logger.info("Request DELETE /bidList, RequestParam bidListId = "+bidListId);
         bidService.delete(bidListId);
         logger.trace("Validation Delete");
 

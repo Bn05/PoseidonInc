@@ -6,7 +6,6 @@ import com.nnk.poseidoninc.Model.RuleName;
 import com.nnk.poseidoninc.Repository.RuleNameRepository;
 import com.nnk.poseidoninc.Service.Implementation.RuleNameServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;

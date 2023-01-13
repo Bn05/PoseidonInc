@@ -1,7 +1,6 @@
 package com.nnk.poseidoninc.ControllerAPI;
 
 import com.nnk.poseidoninc.Model.Dto.UserDto;
-import com.nnk.poseidoninc.Model.User;
 import com.nnk.poseidoninc.Service.Interface.IUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
