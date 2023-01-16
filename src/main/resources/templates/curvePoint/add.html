@@ -3,42 +3,34 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>BidListAdd</title>
+    <title>Home</title>
     <link rel="stylesheet" href="../../bootstrap.min.css">
-
 </head>
 <body>
 <div class="container">
 
     <div class="row">
-        <h2>Add New Bid</h2>
+        <h2>Add New Curve Point</h2>
     </div>
 
     <div class="row">
-        <form th:action="@{/BidList/add}" th:object="${bidListDto}"
+        <form th:action="@{/CurvePoint/add}" th:object="${curvePointDto}"
               method="post" class="form-horizontal" style="width: 100%">
 
             <div class="form-group">
-                <label for="account" class="col-form-label"> Account </label>
+                <label class="col-form-label"> Term </label>
                 <div class="col-md-8">
-                    <input type="text" id="account" minlength="3" maxlength="30" required th:field="*{account}"><br>
+                    <input type="number" min="5" max="100" required step="0.01"  th:field="*{term}"><br>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="type" class="col-form-label"> type </label>
+                <label class="col-form-label"> Value </label>
                 <div class="col-md-8">
-                    <input type="text" id="type" minlength="3" maxlength="30" required th:field="*{type}"><br>
+                    <input type="number" min="5" max="100" required step="0.01"  th:field="*{value}"><br>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="bidQuantity" class="col-form-label"> bidQuantity </label>
-                <div class="col-md-8">
-                    <input type="number" id="bidQuantity" min="5" max="100" required step="0.01"
-                           th:field="*{bidQuantity}"><br>
-                </div>
-            </div>
             <div class="form-group" style="margin-top: 20px">
                 <div class="col-md-8">
                     <button type="submit">Add BidList !</button>
@@ -48,7 +40,7 @@
 
         <div class="form-group" style="margin-top: 20px">
             <div class="col-md-8">
-                <button onclick="window.location.href = '/BidList';">Annuler</button>
+                <button onclick="window.location.href = '/CurvePoint';">Annuler</button>
             </div>
         </div>
 

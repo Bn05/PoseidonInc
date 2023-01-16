@@ -1,24 +1,62 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8"/>
-<title>Home</title>
-<link rel="stylesheet" href="../../css/bootstrap.min.css" >
+    <meta charset="utf-8"/>
+    <title>BidListUpdate</title>
+    <link rel="stylesheet" href="../../bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-	<div class="row">
-		<h2>Update Bid</h2>
-	</div>
+    <div class="row">
+        <h2>Update Bid</h2>
+    </div>
 
-	<div class="row">
-		<form action="#" th:action="@{/bidList/update/{id}(id=${bidList.bidListId})}" th:object="${bidList}" method="post" class="form-horizontal" style="width: 100%">
-			<!--
-			TODO: Create a form to edit the values of Bid, there are 2 buttons: Update data and Cancel to the list Bid
-			 -->
-		</form>
-	</div>
+    <div class="row">
+        <form th:action="@{/BidList/update/{id}(id=${bidListDto.bidListId})}" th:object="${bidListDto}"
+              method="post" class="form-horizontal" style="width: 100%">
+
+            <div class="form-group">
+                <label> Account </label>
+                <div class="col-md-8">
+                    <input type="text" minlength="3" maxlength="30" required th:field="*{account}"
+                           th:placeholder="${bidListDto.account}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label> type </label>
+                <div class="col-md-8">
+                    <input type="text" minlength="3" maxlength="30" required th:field="*{type}"
+                           th:placeholder="${bidListDto.type}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label> bidQuantity </label>
+                <div class="col-md-8">
+                    <input type="number" min="5" max="100" required step="0.01" th:field="*{bidQuantity}"
+                           th:placeholder="${bidListDto.bidQuantity}"><br>
+                </div>
+            </div>
+
+
+            <div class="form-group" style="margin-top: 20px">
+                <div class="col-md-8">
+                    <button type="submit">Modifier</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="form-group" style="margin-top: 20px">
+            <div class="col-md-8">
+                <button onclick="window.location.href = '/BidList';">Annuler</button>
+            </div>
+        </div>
+
+
+    </div>
+
 
 </div>
 </body>

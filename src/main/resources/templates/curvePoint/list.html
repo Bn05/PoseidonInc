@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>BidList</title>
+    <title>Home</title>
     <link rel="stylesheet" href="../../bootstrap.min.css">
 </head>
 <body>
@@ -17,39 +17,36 @@
             <a href="/ruleName/list">Rule</a>
         </div>
         <div class="col-6 text-right">
-            Logged in user: <b th:inline="text" class="user"> <span th:text="${user}"/> </b>
+            Logged in user: <b th:inline="text" class="user"> <span th:text="${user}"/></b>
             <form th:action="@{/app-logout}" method="POST">
                 <input type="submit" value="Logout"/>
             </form>
         </div>
     </div>
-    <div class="row"><h2>Bid List</h2></div>
+    <div class="row"><h2>Curve Point List</h2></div>
     <div class="row">
-        <a href="/BidList/add" class="btn btn-primary btn-sm">Add New</a>
+        <a href="/CurvePoint/add" class="btn btn-primary btn-sm">Add New</a>
         <table class="table table-bordered">
             <thead>
             <tr>
-                <th>Id</th>
-                <th>Account</th>
-                <th>Type</th>
-                <th>Bid Quantity</th>
+                <th>CurvePointId</th>
+                <th>Term</th>
+                <th>Value</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="bidListDto : ${bidListDtoList}">
-                <td th:text="${bidListDto.bidListId}"/>
-                <td th:text="${bidListDto.account}"/>
-                <td th:text="${bidListDto.type}"/>
-                <td th:text="${bidListDto.bidQuantity}"/>
+            <tr th:each="curvePointDto : ${curvePointDtoList}">
+                <td th:text="${curvePointDto.curvePointId}"/>
+                <td th:text="${curvePointDto.term}"/>
+                <td th:text="${curvePointDto.value}"/>
                 <td>
-                    <a th:href="@{/BidList/update/{id}(id=${bidListDto.bidListId})}">Edit</a>&nbsp;|&nbsp;
-                    <a th:href="@{/BidList/delete/{id}(id=${bidListDto.bidListId})}">Delete</a>
+                    <a th:href="@{/CurvePoint/update/{id}(id=${curvePointDto.curvePointId})}">Edit</a>&nbsp;|&nbsp;
+                    <a th:href="@{/CurvePoint/delete/{id}(id=${curvePointDto.curvePointId})}">Delete</a>
 
                 </td>
 
             </tr>
-
 
             </tbody>
         </table>

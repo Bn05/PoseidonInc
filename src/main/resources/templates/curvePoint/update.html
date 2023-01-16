@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="../../bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <h2>Update CurvePoint</h2>
+    </div>
+
+    <div class="row">
+        <form action="#" th:action="@{/CurvePoint/update/{id}(id=${curvePointDto.curvePointId})}"
+              th:object="${curvePointDto}"
+              method="post" class="form-horizontal" style="width: 100%">
+
+            <div class="form-group">
+                <label class="col-form-label"> Term </label>
+                <div class="col-md-8">
+                    <input type="number" min="5" max="100" required step="0.01" th:field="*{term}"
+                           th:placeholder="${curvePointDto.term}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-form-label"> Value </label>
+                <div class="col-md-8">
+                    <input type="number" min="5" max="100" required step="0.01" th:field="*{value}"
+                           th:placeholder="${curvePointDto.value}"><br>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px">
+                <div class="col-md-8">
+                    <button type="submit">Modifier</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="form-group" style="margin-top: 20px">
+            <div class="col-md-8">
+                <button onclick="window.location.href = '/CurvePoint';">Annuler</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
