@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <title>BidList</title>
+    <title>Home</title>
     <link rel="stylesheet" href="../../bootstrap.min.css">
 </head>
 <body>
@@ -23,34 +23,35 @@
             </form>
         </div>
     </div>
-    <div class="row"><h2>Bid List</h2></div>
+    <div class="row"><h2>Rating List</h2></div>
     <div class="row">
-        <a href="/BidList/add" class="btn btn-primary btn-sm">Add New</a>
+        <a href="/Rating/add" class="btn btn-primary btn-sm">Add New</a>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Account</th>
-                <th>Type</th>
-                <th>Bid Quantity</th>
+                <th>MoodysRating</th>
+                <th>SandPRating</th>
+                <th>FitchRating</th>
+                <th>Order</th>
                 <th>Action</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="bidListDto : ${bidListDtoList}">
-                <td th:text="${bidListDto.bidListId}"/>
-                <td th:text="${bidListDto.account}"/>
-                <td th:text="${bidListDto.type}"/>
-                <td th:text="${bidListDto.bidQuantity}"/>
+
+            <tr th:each="ratingDto : ${ratingDtoList}">
+                <td th:text="${ratingDto.ratingId}"/>
+                <td th:text="${ratingDto.moodysRating}"/>
+                <td th:text="${ratingDto.sandPRating}"/>
+                <td th:text="${ratingDto.fitchRating}"/>
+                <td th:text="${ratingDto.orderNumber}"/>
                 <td>
-                    <a th:href="@{/BidList/update/{id}(id=${bidListDto.bidListId})}">Edit</a>&nbsp;|&nbsp;
-                    <a th:href="@{/BidList/delete/{id}(id=${bidListDto.bidListId})}">Delete</a>
+                    <a th:href="@{/Rating/update/{id}(id=${ratingDto.ratingId})}">Edit</a>&nbsp;|&nbsp;
+                    <a th:href="@{/Rating/delete/{id}(id=${ratingDto.ratingId})}">Delete</a>
 
                 </td>
 
             </tr>
-
-
             </tbody>
         </table>
     </div>
