@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="../../bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <a href="/BidList">Bid List</a>&nbsp;|&nbsp;
+            <a href="/CurvePoint">Curve Points</a>&nbsp;|&nbsp;
+            <a href="/Rating">Ratings</a>&nbsp;|&nbsp;
+            <a href="/Trade">Trade</a>&nbsp;|&nbsp;
+            <a href="/RuleName">Rule</a>
+        </div>
+        <div class="col-6 text-right">
+            Logged in user: <b th:inline="text" class="user"> <span th:text="${user}"/> </b>
+            <form th:action="@{/app-logout}" method="POST">
+                <input type="submit" value="Logout"/>
+            </form>
+        </div>
+    </div>
+    <div class="row"><h2>Trade List</h2></div>
+    <div class="row">
+        <a href="/Trade/add" class="btn btn-primary btn-sm">Add New</a>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Buy Quantity</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="tradeDto : ${tradeDtoList}">
+                <td th:text="${tradeDto.tradeId}"/>
+                <td th:text="${tradeDto.account}"/>
+                <td th:text="${tradeDto.type}"/>
+                <td th:text="${tradeDto.buyQuantity}"/>
+
+                <td>
+                    <a th:href="@{/Trade/update/{id}(id=${tradeDto.tradeId})}">Edit</a>&nbsp;|&nbsp;
+                    <a th:href="@{/Trade/delete/{id}(id=${tradeDto.tradeId})}">Delete</a>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
