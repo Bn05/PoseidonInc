@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="../../bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="row">
+        <h2>Update New Rule</h2>
+    </div>
+
+    <div class="row">
+        <form action="#" th:action="@{/RuleName/update/{id}(id=${ruleNameDto.ruleNameId})}" th:object="${ruleNameDto}"
+              method="post"
+              class="form-horizontal"
+              style="width: 100%">
+
+            <div class="form-group">
+                <label for="name" class="col-form-label"> Name </label>
+                <div class="col-md-8">
+                    <input type="text" id="name" minlength="5" maxlength="125" required
+                           th:field="*{name}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="col-form-label"> Description </label>
+                <div class="col-md-8">
+                    <input type="text" id="description" minlength="5" maxlength="125" required
+                           th:field="*{description}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="json" class="col-form-label"> Json </label>
+                <div class="col-md-8">
+                    <input type="text" id="json" minlength="5" maxlength="125" required
+                           th:field="*{json}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="template" class="col-form-label"> Template </label>
+                <div class="col-md-8">
+                    <input type="text" id="template" minlength="5" maxlength="125" required
+                           th:field="*{template}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sqlStr" class="col-form-label"> sql </label>
+                <div class="col-md-8">
+                    <input type="text" id="sqlStr" minlength="5" maxlength="125" required
+                           th:field="*{sqlStr}"><br>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="sqlPart" class="col-form-label"> sqlPart </label>
+                <div class="col-md-8">
+                    <input type="text" id="sqlPart" minlength="5" maxlength="125" required
+                           th:field="*{sqlPart}"><br>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px">
+                <div class="col-md-8">
+                    <button type="submit">Modifier</button>
+                </div>
+            </div>
+
+        </form>
+
+        <div class="form-group" style="margin-top: 20px">
+            <div class="col-md-8">
+                <button onclick="window.location.href = '/RuleName';">Annuler</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
