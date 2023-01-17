@@ -1,5 +1,6 @@
 package com.nnk.poseidoninc.Model.Dto;
 
+import com.nnk.poseidoninc.Security.ValidPassword.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -8,16 +9,16 @@ import java.util.Objects;
 
 public class UserDto {
     private int userId;
-    @NotBlank
+    @NotBlank(message = "Username is mandatory")
     @Size(max = 125)
     private String userName;
-    @NotBlank
-    //TODO : password validation
+    @NotBlank(message = "Password is mandatory")
+    @ValidPassword
     private String password;
-    @NotBlank
+    @NotBlank(message = "FullName is mandatory")
     @Size(max = 125)
     private String fullName;
-    @NotBlank
+    @NotBlank(message = "Role is mandatory")
     @Size(max = 125)
     private String role;
 

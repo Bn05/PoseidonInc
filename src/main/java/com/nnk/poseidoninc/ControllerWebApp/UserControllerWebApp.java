@@ -4,6 +4,7 @@ import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,12 @@ public class UserControllerWebApp {
     }
 
     @PostMapping(value = "/User/add")
-    public String addUser(@Validated UserDto userDto) {
+    public String addUser(@Validated UserDto userDto, BindingResult result) {
+
+        if (result.hasErrors()) {
+            return "/user/add";
+        }
+
         userService.create(userDto);
 
         return "redirect:/User";
