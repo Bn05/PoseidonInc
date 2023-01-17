@@ -64,14 +64,14 @@ class UserServiceImplTest {
 
 
         userDto1.setUserId(1);
-        userDto1.setEmail("email@test1.com");
+        userDto1.setUserName("email@test1.com");
         userDto1.setPassword("passwordTest1");
         userDto1.setFullName("fullnameTest1");
         userDto1.setRole("roleTest1");
 
 
         userDto2.setUserId(2);
-        userDto2.setEmail("email@test2.com");
+        userDto2.setUserName("email@test2.com");
         userDto2.setPassword("passwordTest2");
         userDto2.setFullName("fullnameTest2");
         userDto2.setRole("roleTest2");
@@ -87,7 +87,7 @@ class UserServiceImplTest {
         userUpdate.setRole("roleTestUpdate");
 
         userDtoUpdate.setUserId(1);
-        userDtoUpdate.setEmail("email@testUpdate.com");
+        userDtoUpdate.setUserName("email@testUpdate.com");
         userDtoUpdate.setPassword("passwordTestUpdate");
         userDtoUpdate.setFullName("fullnameTestUpdate");
         userDtoUpdate.setRole("roleTestUpdate");

@@ -10,8 +10,7 @@ public class UserDto {
     private int userId;
     @NotBlank
     @Size(max = 125)
-    @Email
-    private String email;
+    private String userName;
     @NotBlank
     //TODO : password validation
     private String password;
@@ -22,8 +21,8 @@ public class UserDto {
     @Size(max = 125)
     private String role;
 
-    public UserDto(String email, String password, String fullName, String role) {
-        this.email = email;
+    public UserDto(String userName, String password, String fullName, String role) {
+        this.userName = userName;
         this.password = password;
         this.fullName = fullName;
         this.role = role;
@@ -41,12 +40,12 @@ public class UserDto {
         this.userId = userId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -77,7 +76,7 @@ public class UserDto {
     public String toString() {
         return "UserDto{" +
                 "userId=" + userId +
-                ", email='" + email + '\'' +
+                ", email='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", role='" + role + '\'' +
@@ -92,7 +91,7 @@ public class UserDto {
         UserDto userDto = (UserDto) o;
 
         if (userId != userDto.userId) return false;
-        if (!Objects.equals(email, userDto.email)) return false;
+        if (!Objects.equals(userName, userDto.userName)) return false;
         if (!Objects.equals(password, userDto.password)) return false;
         if (!Objects.equals(fullName, userDto.fullName)) return false;
         return Objects.equals(role, userDto.role);
@@ -101,7 +100,7 @@ public class UserDto {
     @Override
     public int hashCode() {
         int result = userId;
-        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
