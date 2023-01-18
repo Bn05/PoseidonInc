@@ -51,24 +51,24 @@ public class UserIT {
 
         userDto1.setUserId(1);
         userDto1.setUserName("email@test1.com");
-        userDto1.setPassword("passwordTest1");
+        userDto1.setPassword("Password1234!");
         userDto1.setFullName("fullnameTest1");
         userDto1.setRole("roleTest1");
 
         userDto1NoId.setUserName("email@test1.com");
-        userDto1NoId.setPassword("passwordTest1");
+        userDto1NoId.setPassword("Password1234!");
         userDto1NoId.setFullName("fullnameTest1");
         userDto1NoId.setRole("roleTest1");
 
 
         userDto2.setUserId(2);
         userDto2.setUserName("email@test2.com");
-        userDto2.setPassword("passwordTest2");
+        userDto2.setPassword("Password1234!");
         userDto2.setFullName("fullnameTest2");
         userDto2.setRole("roleTest2");
 
         userDto2NoId.setUserName("email@test2.com");
-        userDto2NoId.setPassword("passwordTest2");
+        userDto2NoId.setPassword("Password1234!");
         userDto2NoId.setFullName("fullnameTest2");
         userDto2NoId.setRole("roleTest2");
 
@@ -77,7 +77,7 @@ public class UserIT {
 
         userDtoUpdate.setUserId(1);
         userDtoUpdate.setUserName("email@testUpdate.com");
-        userDtoUpdate.setPassword("passwordTestUpdate");
+        userDtoUpdate.setPassword("Password1234!");
         userDtoUpdate.setFullName("fullnameTestUpdate");
         userDtoUpdate.setRole("roleTestUpdate");
 

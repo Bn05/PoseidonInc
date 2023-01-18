@@ -81,7 +81,7 @@ class UserControllerAPITest {
 
         userDto1.setUserId(1);
         userDto1.setUserName("email@test1.com");
-        userDto1.setPassword("passwordTest1");
+        userDto1.setPassword("Password1234!");
         userDto1.setFullName("fullnameTest1");
         userDto1.setRole("roleTest1");
 
@@ -104,7 +104,7 @@ class UserControllerAPITest {
 
         userDtoUpdate.setUserId(1);
         userDtoUpdate.setUserName("email@testUpdate.com");
-        userDtoUpdate.setPassword("passwordTestUpdate");
+        userDtoUpdate.setPassword("Password1234!");
         userDtoUpdate.setFullName("fullnameTestUpdate");
         userDtoUpdate.setRole("roleTestUpdate");
 
