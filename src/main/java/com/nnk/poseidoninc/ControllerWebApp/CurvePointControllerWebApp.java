@@ -2,7 +2,6 @@ package com.nnk.poseidoninc.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
 import com.nnk.poseidoninc.Service.Implementation.CurvePointServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
