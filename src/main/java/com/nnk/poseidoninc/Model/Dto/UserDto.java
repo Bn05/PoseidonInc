@@ -9,16 +9,16 @@ import java.util.Objects;
 
 public class UserDto {
     private int userId;
-    @NotBlank(message = "Username is mandatory")
+    @NotBlank(groups = BasicInfo.class, message = "Username is mandatory")
     @Size(max = 125)
     private String userName;
-    @NotBlank(message = "Password is mandatory")
+    @NotBlank(groups = BasicInfo.class, message = "Password is mandatory")
     @ValidPassword
     private String password;
-    @NotBlank(message = "FullName is mandatory")
+    @NotBlank(groups = BasicInfo.class, message = "FullName is mandatory")
     @Size(max = 125)
     private String fullName;
-    @NotBlank(message = "Role is mandatory")
+    @NotBlank(groups = AdvanceInfo.class,message = "Role is mandatory")
     @Size(max = 125)
     private String role;
 

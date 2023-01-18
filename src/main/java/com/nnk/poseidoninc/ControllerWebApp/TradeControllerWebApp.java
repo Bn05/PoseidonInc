@@ -4,6 +4,7 @@ import com.nnk.poseidoninc.Model.Dto.TradeDto;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +38,11 @@ public class TradeControllerWebApp {
     }
 
     @PostMapping(value = "/Trade/add")
-    public String addTrade(@Validated TradeDto tradeDto) {
-
+    public String addTrade(@Validated TradeDto tradeDto,
+                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "/trade/add";
+        }
         tradeService.create(tradeDto);
 
         return "redirect:/Trade";
@@ -56,8 +60,12 @@ public class TradeControllerWebApp {
 
     @PostMapping(value = "/Trade/update/{id}")
     public String updateTrade(@PathVariable(value = "id") int tradeId,
-                              @Validated TradeDto tradeDto) {
+                              @Validated TradeDto tradeDto,
+                              BindingResult bindingResult) {
 
+        if(bindingResult.hasErrors()){
+            return "trade/update";
+        }
         tradeService.update(tradeDto, tradeId);
 
         return "redirect:/Trade";

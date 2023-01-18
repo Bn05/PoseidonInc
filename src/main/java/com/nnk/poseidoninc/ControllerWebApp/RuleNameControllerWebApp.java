@@ -5,6 +5,7 @@ import com.nnk.poseidoninc.Service.Implementation.RuleNameServiceImpl;
 import org.h2.bnf.Rule;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +38,12 @@ public class RuleNameControllerWebApp {
     }
 
     @PostMapping(value = "/RuleName/add")
-    public String addRuleName(@Validated RuleNameDto ruleNameDto) {
+    public String addRuleName(@Validated RuleNameDto ruleNameDto,
+                              BindingResult bindingResult) {
 
+        if (bindingResult.hasErrors()) {
+            return "ruleName/add";
+        }
         ruleNameService.create(ruleNameDto);
 
         return "redirect:/RuleName";
@@ -57,8 +62,12 @@ public class RuleNameControllerWebApp {
 
     @PostMapping(value = "RuleName/update/{id}")
     public String updateRuleName(@PathVariable(value = "id") int ruleNameId,
-                                 @Validated RuleNameDto ruleNameDto) {
+                                 @Validated RuleNameDto ruleNameDto,
+                                 BindingResult bindingResult) {
 
+        if (bindingResult.hasErrors()) {
+            return "ruleName/update";
+        }
         ruleNameService.update(ruleNameDto, ruleNameId);
 
         return "redirect:/RuleName";

@@ -21,36 +21,35 @@
             <div class="form-group">
                 <label for="account" class="col-form-label"> Account </label>
                 <div class="col-md-8">
-                    <input type="text" id="account" minlength="3" maxlength="30" required th:field="*{account}"><br>
+                    <input type="text" id="account" th:field="*{account}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="type" class="col-form-label"> type </label>
                 <div class="col-md-8">
-                    <input type="text" id="type" minlength="3" maxlength="30" required th:field="*{type}"><br>
+                    <input type="text" id="type" th:field="*{type}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="bidQuantity" class="col-form-label"> bidQuantity </label>
                 <div class="col-md-8">
-                    <input type="number" id="bidQuantity" min="5" max="100" required step="0.01"
-                           th:field="*{bidQuantity}"><br>
+                    <input type="number" id="bidQuantity" step="0.01" th:field="*{bidQuantity}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('bidQuantity')}" th:errors="*{bidQuantity}"></p>
                 </div>
             </div>
-            <div class="form-group" style="margin-top: 20px">
-                <div class="col-md-8">
-                    <button type="submit">Add BidList !</button>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <a class="btn btn-danger btn-sm" href="/BidList">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add BidList !!">
                 </div>
             </div>
         </form>
 
-        <div class="form-group" style="margin-top: 20px">
-            <div class="col-md-8">
-                <button onclick="window.location.href = '/BidList';">Annuler</button>
-            </div>
-        </div>
+
 
     </div>
 

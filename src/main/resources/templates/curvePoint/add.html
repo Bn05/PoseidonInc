@@ -20,29 +20,28 @@
             <div class="form-group">
                 <label class="col-form-label"> Term </label>
                 <div class="col-md-8">
-                    <input type="number" min="5" max="100" required step="0.01"  th:field="*{term}"><br>
+                    <input type="number" step="0.01" th:field="*{term}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('term')}" th:errors="*{term}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-form-label"> Value </label>
                 <div class="col-md-8">
-                    <input type="number" min="5" max="100" required step="0.01"  th:field="*{value}"><br>
+                    <input type="number" step="0.01" th:field="*{value}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
                 </div>
             </div>
 
-            <div class="form-group" style="margin-top: 20px">
-                <div class="col-md-8">
-                    <button type="submit">Add BidList !</button>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <a class="btn btn-danger btn-sm" href="/CurvePoint">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add CurvePoint">
                 </div>
             </div>
         </form>
 
-        <div class="form-group" style="margin-top: 20px">
-            <div class="col-md-8">
-                <button onclick="window.location.href = '/CurvePoint';">Annuler</button>
-            </div>
-        </div>
+
 
     </div>
 

@@ -5,6 +5,7 @@ import com.nnk.poseidoninc.Service.Implementation.CurvePointServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +40,12 @@ public class CurvePointControllerWebApp {
     }
 
     @PostMapping("/CurvePoint/add")
-    public String addCurvePoint(@Validated CurvePointDto curvePointDto) {
+    public String addCurvePoint(@Validated CurvePointDto curvePointDto,
+                                BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "curvePoint/add";
+        }
 
         curvePointService.create(curvePointDto);
 
@@ -58,11 +64,15 @@ public class CurvePointControllerWebApp {
     }
 
     @PostMapping(value = "/CurvePoint/update/{id}")
-    public  String update (
+    public String update(
             @PathVariable(value = "id") int curePointId,
-            @Validated CurvePointDto curvePointDto
-    ){
+            @Validated CurvePointDto curvePointDto,
+            BindingResult bindingResult
+    ) {
 
+        if (bindingResult.hasErrors()) {
+            return "/curvePoint/update";
+        }
         curvePointService.update(curvePointDto, curePointId);
         return "redirect:/CurvePoint";
 

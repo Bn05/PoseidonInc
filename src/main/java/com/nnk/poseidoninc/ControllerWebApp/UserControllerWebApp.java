@@ -1,7 +1,10 @@
 package com.nnk.poseidoninc.ControllerWebApp;
 
+import com.nnk.poseidoninc.Model.Dto.AdvanceInfo;
+import com.nnk.poseidoninc.Model.Dto.BasicInfo;
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +39,10 @@ public class UserControllerWebApp {
     }
 
     @PostMapping(value = "/User/add")
-    public String addUser(@Validated UserDto userDto, BindingResult result) {
+    public String addUser(@Validated(BasicInfo.class) UserDto userDto,
+                          BindingResult result) {
+
+        userDto.setRole("USER");
 
         if (result.hasErrors()) {
             return "/user/add";
@@ -59,7 +65,17 @@ public class UserControllerWebApp {
 
     @PostMapping(value = "/User/update/{id}")
     public String updateUser(@PathVariable(value = "id") int userId,
-                             UserDto userDto) {
+                             @Validated({AdvanceInfo.class}) UserDto userDto,
+                             BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "/user/update";
+        }
+
+        if(userDto.getPassword().isEmpty()){
+            String password = userService.findById(userId).getPassword();
+            userDto.setPassword(password);
+        }
         userService.update(userDto, userId);
 
         return "redirect:/User";

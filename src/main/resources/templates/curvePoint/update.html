@@ -20,31 +20,29 @@
             <div class="form-group">
                 <label class="col-form-label"> Term </label>
                 <div class="col-md-8">
-                    <input type="number" min="5" max="100" required step="0.01" th:field="*{term}"
+                    <input type="number" step="0.01" th:field="*{term}"
                            th:placeholder="${curvePointDto.term}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('term')}" th:errors="*{term}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-form-label"> Value </label>
                 <div class="col-md-8">
-                    <input type="number" min="5" max="100" required step="0.01" th:field="*{value}"
+                    <input type="number" step="0.01" th:field="*{value}"
                            th:placeholder="${curvePointDto.value}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></p>
                 </div>
             </div>
-
-            <div class="form-group" style="margin-top: 20px">
-                <div class="col-md-8">
-                    <button type="submit">Modifier</button>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input type="hidden" th:field="*{curvePointId}">
+                    <a class="btn btn-danger btn-sm" href="/CurvePoint">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Update CurvePoint">
                 </div>
             </div>
         </form>
 
-        <div class="form-group" style="margin-top: 20px">
-            <div class="col-md-8">
-                <button onclick="window.location.href = '/CurvePoint';">Annuler</button>
-            </div>
-        </div>
 
     </div>
 

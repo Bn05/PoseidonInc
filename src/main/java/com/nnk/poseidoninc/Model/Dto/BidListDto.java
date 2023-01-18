@@ -9,10 +9,10 @@ import java.util.Objects;
 public class BidListDto {
 
     private int bidListId;
-    @NotBlank
+    @NotBlank(message = "Account is mandatory")
     @Size(min = 3, max = 30)
     private String account;
-    @NotBlank
+    @NotBlank (message = "Account is mandatory")
     @Size(min = 3, max = 30)
     private String type;
 

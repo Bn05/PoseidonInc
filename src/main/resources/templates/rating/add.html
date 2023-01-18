@@ -21,48 +21,45 @@
             <div class="form-group">
                 <label for="moodysRating" class="col-form-label"> Moodys Rating </label>
                 <div class="col-md-8">
-                    <input type="text" id="moodysRating" minlength="5" maxlength="125" required
-                           th:field="*{moodysRating}"><br>
+                    <input type="text" id="moodysRating" th:field="*{moodysRating}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('moodysRating')}" th:errors="*{moodysRating}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="sandPRating" class="col-form-label"> SandP Rating </label>
                 <div class="col-md-8">
-                    <input type="text" id="sandPRating" minlength="5" maxlength="125" required
-                           th:field="*{sandPRating}"><br>
+                    <input type="text" id="sandPRating" th:field="*{sandPRating}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('sandPRating')}" th:errors="*{sandPRating}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="fitchRating" class="col-form-label"> Fitch Rating </label>
                 <div class="col-md-8">
-                    <input type="text" id="fitchRating" minlength="5" maxlength="125" required
-                           th:field="*{fitchRating}"><br>
+                    <input type="text" id="fitchRating" th:field="*{fitchRating}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('fitchRating')}" th:errors="*{fitchRating}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="orderNumber" class="col-form-label"> Order Number </label>
                 <div class="col-md-8">
-                    <input type="number" id="orderNumber" min="1" max="100" required step="0.01"
-                           th:field="*{orderNumber}"><br>
+                    <input type="number" id="orderNumber" step="0.01" th:field="*{orderNumber}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('orderNumber')}" th:errors="*{orderNumber}"></p>
                 </div>
             </div>
-            <div class="form-group" style="margin-top: 20px">
-                <div class="col-md-8">
-                    <button type="submit">Add Rating !</button>
+
+
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <a class="btn btn-danger btn-sm" href="/Rating">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add Rating">
                 </div>
             </div>
 
 
         </form>
-
-        <div class="form-group" style="margin-top: 20px">
-            <div class="col-md-8">
-                <button onclick="window.location.href = '/Rating';">Annuler</button>
-            </div>
-        </div>
 
 
     </div>

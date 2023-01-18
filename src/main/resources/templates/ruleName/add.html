@@ -20,64 +20,60 @@
             <div class="form-group">
                 <label for="name" class="col-form-label"> Name </label>
                 <div class="col-md-8">
-                    <input type="text" id="name" minlength="5" maxlength="125" required
-                           th:field="*{name}"><br>
+                    <input type="text" id="name" th:field="*{name}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="description" class="col-form-label"> Description </label>
                 <div class="col-md-8">
-                    <input type="text" id="description" minlength="5" maxlength="125" required
-                           th:field="*{description}"><br>
+                    <input type="text" id="description" th:field="*{description}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="json" class="col-form-label"> Json </label>
                 <div class="col-md-8">
-                    <input type="text" id="json" minlength="5" maxlength="125" required
-                           th:field="*{json}"><br>
+                    <input type="text" id="json" th:field="*{json}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('json')}" th:errors="*{json}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="template" class="col-form-label"> Template </label>
                 <div class="col-md-8">
-                    <input type="text" id="template" minlength="5" maxlength="125" required
-                           th:field="*{template}"><br>
+                    <input type="text" id="template" th:field="*{template}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('template')}" th:errors="*{template}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="sqlStr" class="col-form-label"> sql </label>
                 <div class="col-md-8">
-                    <input type="text" id="sqlStr" minlength="5" maxlength="125" required
-                           th:field="*{sqlStr}"><br>
+                    <input type="text" id="sqlStr" th:field="*{sqlStr}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('sqlStr')}" th:errors="*{sqlStr}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="sqlPart" class="col-form-label"> sqlPart </label>
                 <div class="col-md-8">
-                    <input type="text" id="sqlPart" minlength="5" maxlength="125" required
-                           th:field="*{sqlPart}"><br>
+                    <input type="text" id="sqlPart" th:field="*{sqlPart}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('sqlPart')}" th:errors="*{sqlPart}"></p>
                 </div>
             </div>
 
-            <div class="form-group" style="margin-top: 20px">
-                <div class="col-md-8">
-                    <button type="submit">Add RuleName !</button>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <a class="btn btn-danger btn-sm" href="/RuleName">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add Rule Name">
                 </div>
             </div>
+
 
         </form>
-
-        <div class="form-group" style="margin-top: 20px">
-            <div class="col-md-8">
-                <button onclick="window.location.href = '/RuleName';">Annuler</button>
-            </div>
-        </div>
 
     </div>
 

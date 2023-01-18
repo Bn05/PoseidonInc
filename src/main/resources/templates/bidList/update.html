@@ -19,40 +19,37 @@
             <div class="form-group">
                 <label> Account </label>
                 <div class="col-md-8">
-                    <input type="text" minlength="3" maxlength="30" required th:field="*{account}"
-                           th:placeholder="${bidListDto.account}"><br>
+                    <input type="text" th:field="*{account}" th:placeholder="${bidListDto.account}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label> type </label>
                 <div class="col-md-8">
-                    <input type="text" minlength="3" maxlength="30" required th:field="*{type}"
-                           th:placeholder="${bidListDto.type}"><br>
+                    <input type="text" th:field="*{type}" th:placeholder="${bidListDto.type}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label> bidQuantity </label>
                 <div class="col-md-8">
-                    <input type="number" min="5" max="100" required step="0.01" th:field="*{bidQuantity}"
+                    <input type="number" step="0.01" th:field="*{bidQuantity}"
                            th:placeholder="${bidListDto.bidQuantity}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('bidQuantity')}" th:errors="*{bidQuantity}"></p>
                 </div>
             </div>
 
 
-            <div class="form-group" style="margin-top: 20px">
-                <div class="col-md-8">
-                    <button type="submit">Modifier</button>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input type="hidden" th:field="*{bidListId}">
+                    <a class="btn btn-danger btn-sm" href="/BidList">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Update BidList">
                 </div>
             </div>
         </form>
-
-        <div class="form-group" style="margin-top: 20px">
-            <div class="col-md-8">
-                <button onclick="window.location.href = '/BidList';">Annuler</button>
-            </div>
-        </div>
 
 
     </div>

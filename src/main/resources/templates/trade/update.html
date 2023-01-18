@@ -1,60 +1,58 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" 
-	  xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8"/>
-<title>Home</title>
-	<link rel="stylesheet" href="../../bootstrap.min.css">
+    <meta charset="utf-8"/>
+    <title>Home</title>
+    <link rel="stylesheet" href="../../bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-	<div class="row">
-		<h2>Update Trade</h2>
-	</div>
+    <div class="row">
+        <h2>Update Trade</h2>
+    </div>
 
-	<div class="row">
-		<form action="#" th:action="@{/Trade/update/{id}(id=${tradeDto.tradeId})}" th:object="${tradeDto}" method="post" class="form-horizontal"
-			  style="width: 100%">
-
-
-			<div class="form-group">
-				<label for="account" class="col-form-label"> Account </label>
-				<div class="col-md-8">
-					<input type="text" id="account" minlength="5" maxlength="30" required th:field="*{account}"><br>
-				</div>
-			</div>
+    <div class="row">
+        <form action="#" th:action="@{/Trade/update/{id}(id=${tradeDto.tradeId})}" th:object="${tradeDto}" method="post"
+              class="form-horizontal"
+              style="width: 100%">
 
 
-			<div class="form-group">
-				<label for="type" class="col-form-label"> Type </label>
-				<div class="col-md-8">
-					<input type="text" id="type" minlength="5" maxlength="30" required th:field="*{type}"><br>
-				</div>
-			</div>
+            <div class="form-group">
+                <label for="account" class="col-form-label"> Account </label>
+                <div class="col-md-8">
+                    <input type="text" id="account" th:field="*{account}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('account')}" th:errors="*{account}"></p>
+                </div>
+            </div>
 
-			<div class="form-group">
-				<label for="buyQuantity" class="col-form-label"> Buy Quantity </label>
-				<div class="col-md-8">
-					<input type="number" id="buyQuantity" min="5" max="100" required step="0.01"
-						   th:field="*{buyQuantity}"><br>
-				</div>
-			</div>
 
-			<div class="form-group" style="margin-top: 20px">
-				<div class="col-md-8">
-					<button type="submit">Modifier</button>
-				</div>
-			</div>
+            <div class="form-group">
+                <label for="type" class="col-form-label"> Type </label>
+                <div class="col-md-8">
+                    <input type="text" id="type" th:field="*{type}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+                </div>
+            </div>
 
-		</form>
+            <div class="form-group">
+                <label for="buyQuantity" class="col-form-label"> Buy Quantity </label>
+                <div class="col-md-8">
+                    <input type="number" id="buyQuantity" step="0.01" th:field="*{buyQuantity}"><br>
+                    <p class="text-danger" th:if="${#fields.hasErrors('buyQuantity')}" th:errors="*{buyQuantity}"></p>
+                </div>
+            </div>
 
-		<div class="form-group" style="margin-top: 20px">
-			<div class="col-md-8">
-				<button onclick="window.location.href = '/Trade';">Annuler</button>
-			</div>
-		</div>
-	</div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input type="hidden" th:field="*{tradeId}">
+                    <a class="btn btn-danger btn-sm" href="/Trade">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Update Trade">
+                </div>
+            </div>
 
-</div>
+        </form>
+
+        </div>
 </body>
 </html>
