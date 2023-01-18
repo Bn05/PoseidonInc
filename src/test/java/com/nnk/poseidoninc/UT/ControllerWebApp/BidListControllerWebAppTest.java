@@ -15,14 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,6 +39,12 @@ class BidListControllerWebAppTest {
 
     @MockBean
     BidListServiceImpl bidListServiceMock;
+
+    @Mock
+    BidListServiceImpl bidListService;
+
+    @Mock
+    Model model;
 
     @Autowired
     MockMvc mockMvc;
@@ -129,26 +137,47 @@ class BidListControllerWebAppTest {
     @Test
     void addBidList() throws Exception {
 
-        mockMvc.perform(post("/bidList/add")
-                        .param("account","accountTest1")
-                        .param("type","typeTest1")
+        when(bidListServiceMock.create(any())).thenReturn(bidListDto1);
+
+        mockMvc.perform(post("/BidList/add")
+                        .param("account", "accountTest1")
+                        .param("type", "typeTest1")
                         .param("bidQuantity", "45"))
-                .andExpect(forwardedUrl("/BidList"));
+                .andExpect(status().is3xxRedirection());
+    }
 
+    @Test
+    void updatePage() throws Exception {
 
+        when(bidListService.findById(anyInt())).thenReturn(bidListDto1);
+
+        model.addAttribute("bidListDto", bidListDto1);
+
+        String test = bidListControllerWebApp.updatePage(1, model);
+
+        assertEquals("bidList/update", test);
 
 
     }
 
     @Test
-    void updatePage() {
+    void update() throws Exception {
+
+        when(bidListServiceMock.update(any(), anyInt())).thenReturn(bidListDtoUpdate);
+
+        mockMvc.perform(post("/BidList/update/1")
+                        .param("account", "accountTest1")
+                        .param("type", "typeTest1")
+                        .param("bidQuantity", "45"))
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
-    void update() {
-    }
+    void delete() throws Exception {
 
-    @Test
-    void delete() {
+        doNothing().when(bidListServiceMock).delete(1);
+
+        mockMvc.perform(get("/BidList/delete/1"))
+                .andExpect(status().is3xxRedirection());
     }
 }
