@@ -2,7 +2,7 @@ package com.nnk.poseidoninc.UT.ControllerWebApp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nnk.poseidoninc.ControllerWebApp.BidListControllerWebApp;
+import com.nnk.poseidoninc.Controller.ControllerWebApp.BidListControllerWebApp;
 import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 
@@ -32,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@WithMockUser(username = "userTEst", authorities = {"USER"})
 class BidListControllerWebAppTest {
 
     @InjectMocks

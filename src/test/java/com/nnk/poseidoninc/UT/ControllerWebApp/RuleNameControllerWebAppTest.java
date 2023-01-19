@@ -2,11 +2,10 @@ package com.nnk.poseidoninc.UT.ControllerWebApp;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nnk.poseidoninc.ControllerWebApp.RuleNameControllerWebApp;
+import com.nnk.poseidoninc.Controller.ControllerWebApp.RuleNameControllerWebApp;
 import com.nnk.poseidoninc.Model.Dto.RuleNameDto;
 import com.nnk.poseidoninc.Model.RuleName;
 import com.nnk.poseidoninc.Service.Implementation.RuleNameServiceImpl;
-import org.h2.bnf.Rule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 
@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@WithMockUser(username = "userTEst", authorities = {"USER"})
 class RuleNameControllerWebAppTest {
 
     @InjectMocks

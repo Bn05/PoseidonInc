@@ -1,4 +1,4 @@
-package com.nnk.poseidoninc.ControllerAPI;
+package com.nnk.poseidoninc.Controller.ControllerAPI;
 
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;

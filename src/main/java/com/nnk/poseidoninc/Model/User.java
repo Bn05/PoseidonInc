@@ -8,6 +8,11 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "users")
 public class User {
 
+    public enum Provider {
+        LOCAL,
+        GOOGLE
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
@@ -15,6 +20,8 @@ public class User {
     private String password;
     private String fullName;
     private String role;
+    private Provider provider;
+
 
     public int getUserId() {
         return userId;
@@ -54,5 +61,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Provider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
     }
 }

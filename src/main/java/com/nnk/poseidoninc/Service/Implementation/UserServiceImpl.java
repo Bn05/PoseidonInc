@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +29,9 @@ public class UserServiceImpl implements IUserService {
         this.userRepository = userRepository;
     }
 
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
     @Override
     public List<UserDto> findAll() {
         Iterable<User> userIterable = userRepository.findAll();
@@ -42,6 +47,13 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDto create(UserDto userDto) {
         User user = convertUserDtoToUser(userDto);
+
+        String password = user.getPassword();
+        String passwordBcrypt = passwordEncoder().encode(password);
+
+        user.setPassword(passwordBcrypt);
+        user.setRole("USER");
+        user.setProvider(User.Provider.LOCAL);
 
         user = userRepository.save(user);
 

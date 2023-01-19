@@ -1,4 +1,4 @@
-package com.nnk.poseidoninc.ControllerAPI;
+package com.nnk.poseidoninc.Controller.ControllerAPI;
 
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
 import com.nnk.poseidoninc.Service.Interface.IRatingService;

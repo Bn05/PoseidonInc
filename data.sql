@@ -64,9 +64,9 @@ CREATE TABLE Curve_point
 (
     curve_point_id INTEGER NOT NULL AUTO_INCREMENT,
     as_of_date     TIMESTAMP,
-    term         DOUBLE,
-    value        DOUBLE,
-    creation_date TIMESTAMP,
+    term           DOUBLE,
+    value          DOUBLE,
+    creation_date  TIMESTAMP,
 
     PRIMARY KEY (curve_point_id)
 );
@@ -75,7 +75,7 @@ CREATE TABLE Rating
 (
     rating_id     INTEGER NOT NULL AUTO_INCREMENT,
     moodys_rating VARCHAR(125),
-    sandprating  VARCHAR(125),
+    sandprating   VARCHAR(125),
     fitch_rating  VARCHAR(125),
     order_number  INTEGER,
 
@@ -84,11 +84,11 @@ CREATE TABLE Rating
 
 CREATE TABLE Rule_name
 (
-    rule_name_id  INTEGER NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(125),
-    description VARCHAR(125),
-    json        VARCHAR(125),
-    template    VARCHAR(512),
+    rule_name_id INTEGER NOT NULL AUTO_INCREMENT,
+    name         VARCHAR(125),
+    description  VARCHAR(125),
+    json         VARCHAR(125),
+    template     VARCHAR(512),
     sql_str      VARCHAR(125),
     sql_part     VARCHAR(125),
 
@@ -97,11 +97,12 @@ CREATE TABLE Rule_name
 
 CREATE TABLE Users
 (
-    user_id  INTEGER NOT NULL AUTO_INCREMENT,
-    email    VARCHAR(125),
-    password VARCHAR(125),
+    user_id   INTEGER NOT NULL AUTO_INCREMENT,
+    user_name     VARCHAR(125),
+    password  VARCHAR(125),
     full_name VARCHAR(125),
-    role     VARCHAR(125),
+    role      VARCHAR(125),
+    provider  VARCHAR(7),
 
     PRIMARY KEY (user_id)
 );

@@ -1,4 +1,4 @@
-package com.nnk.poseidoninc.ControllerWebApp;
+package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.AdvanceInfo;
 import com.nnk.poseidoninc.Model.Dto.BasicInfo;
