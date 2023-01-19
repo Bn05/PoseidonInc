@@ -70,7 +70,7 @@ public class UserServiceImpl implements IUserService {
         }
 
         User user = userOptional.get();
-        user.setEmail(userDto.getUserName());
+        user.setUserName(userDto.getUserName());
         user.setPassword(userDto.getPassword());
         user.setFullName(userDto.getFullName());
         user.setRole(userDto.getRole());
@@ -97,7 +97,7 @@ public class UserServiceImpl implements IUserService {
         UserDto userDto = new UserDto();
 
         userDto.setUserId(user.getUserId());
-        userDto.setUserName(user.getEmail());
+        userDto.setUserName(user.getUserName());
         userDto.setPassword(user.getPassword());
         userDto.setFullName(user.getFullName());
         userDto.setRole(user.getRole());
@@ -109,7 +109,7 @@ public class UserServiceImpl implements IUserService {
     public User convertUserDtoToUser(UserDto userDto) {
         User user = new User();
 
-        user.setEmail(userDto.getUserName());
+        user.setUserName(userDto.getUserName());
         user.setPassword(userDto.getPassword());
         user.setFullName(userDto.getFullName());
         user.setRole(userDto.getRole());

@@ -62,14 +62,14 @@ class UserControllerAPITest {
     void buildTest() throws JsonProcessingException {
 
         user1.setUserId(1);
-        user1.setEmail("email@test1.com");
+        user1.setUserName("email@test1.com");
         user1.setPassword("passwordTest1");
         user1.setFullName("fullnameTest1");
         user1.setRole("roleTest1");
         userOptional1 = Optional.of(user1);
 
         user2.setUserId(2);
-        user2.setEmail("email@test2.com");
+        user2.setUserName("email@test2.com");
         user2.setPassword("passwordTest2");
         user2.setFullName("fullnameTest2");
         user2.setRole("roleTest2");
@@ -97,7 +97,7 @@ class UserControllerAPITest {
 
 
         userUpdate.setUserId(1);
-        userUpdate.setEmail("email@testUpdate.com");
+        userUpdate.setUserName("email@testUpdate.com");
         userUpdate.setPassword("passwordTestUpdate");
         userUpdate.setFullName("fullnameTestUpdate");
         userUpdate.setRole("roleTestUpdate");
