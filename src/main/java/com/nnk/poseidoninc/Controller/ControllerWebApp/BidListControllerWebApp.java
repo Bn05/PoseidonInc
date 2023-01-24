@@ -1,7 +1,10 @@
 package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
+import com.nnk.poseidoninc.Model.User;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-
 import java.util.List;
 
 
@@ -20,19 +22,21 @@ import java.util.List;
 public class BidListControllerWebApp {
 
     private BidListServiceImpl bidListService;
+    private UserServiceImpl userService;
 
-    public BidListControllerWebApp(BidListServiceImpl bidListService) {
+    public BidListControllerWebApp(BidListServiceImpl bidListService, UserServiceImpl userService) {
         this.bidListService = bidListService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/BidList")
     public String home(Model model, Authentication authentication) {
 
-
+        UserDto userDto = userService.getCurrentUser(authentication);
 
         List<BidListDto> bidListDtoList = bidListService.findAll();
 
-        model.addAttribute("user", "userTESTA");
+        model.addAttribute("user", userDto);
         model.addAttribute("bidListDtoList", bidListDtoList);
 
         return "bidList/list";

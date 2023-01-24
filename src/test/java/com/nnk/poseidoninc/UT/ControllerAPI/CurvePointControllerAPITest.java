@@ -6,7 +6,10 @@ import com.nnk.poseidoninc.Controller.ControllerAPI.CurvePointControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.CurvePoint;
 import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
+import com.nnk.poseidoninc.Security.TokenService;
 import com.nnk.poseidoninc.Service.Implementation.CurvePointServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -15,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
 class CurvePointControllerAPITest {
 
     @InjectMocks
@@ -40,8 +44,14 @@ class CurvePointControllerAPITest {
     @MockBean
     CurvePointServiceImpl curvePointServiceMock;
 
+    @MockBean
+    UserServiceImpl userServiceMock;
+
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    TokenService tokenService;
 
 
     CurvePointDto curvePointDto1 = new CurvePointDto();
@@ -61,6 +71,9 @@ class CurvePointControllerAPITest {
     ObjectMapper objectMapper = new ObjectMapper();
     String curvePointDto1Json;
     String curvePointDtoListJson;
+
+    UserDto userDto1 = new UserDto();
+    String token;
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -99,13 +112,25 @@ class CurvePointControllerAPITest {
 
         curvePointDto1Json = objectMapper.writeValueAsString(curvePointDto1);
         curvePointDtoListJson = objectMapper.writeValueAsString(curvePointDtoList);
+
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("ADMIN");
+
+
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
+
     }
 
     @Test
     void findAll() throws Exception {
         when(curvePointServiceMock.findAll()).thenReturn(curvePointDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
-        mockMvc.perform(get("/curvePointList"))
+        mockMvc.perform(get("/api/curvePointList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(curvePointDtoListJson))
                 .andExpect(status().isOk());
     }
@@ -114,7 +139,8 @@ class CurvePointControllerAPITest {
     void create() throws Exception {
         when(curvePointServiceMock.create(curvePointDto1)).thenReturn(curvePointDto1);
 
-        mockMvc.perform(post("/curvePoint")
+        mockMvc.perform(post("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDto1Json))
                 .andExpect(content().json(curvePointDto1Json))
@@ -125,7 +151,8 @@ class CurvePointControllerAPITest {
     void createBadRequest() throws Exception {
         when(curvePointServiceMock.create(curvePointDto1)).thenReturn(curvePointDto1);
 
-        mockMvc.perform(post("/curvePoint"))
+        mockMvc.perform(post("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isBadRequest());
     }
 
@@ -133,7 +160,8 @@ class CurvePointControllerAPITest {
     void findById() throws Exception {
         when(curvePointServiceMock.findById(1)).thenReturn(curvePointDto1);
 
-        mockMvc.perform(get("/curvePoint")
+        mockMvc.perform(get("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1"))
                 .andExpect(content().json(curvePointDto1Json))
                 .andExpect(status().isOk());
@@ -142,7 +170,8 @@ class CurvePointControllerAPITest {
     @Test
     void findByIdBadRequest() throws Exception {
 
-        mockMvc.perform(get("/curvePoint")
+        mockMvc.perform(get("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "A"))
                 .andExpect(status().isBadRequest());
     }
@@ -151,7 +180,8 @@ class CurvePointControllerAPITest {
     void findByIdNotFoundException() throws Exception {
         when(curvePointServiceMock.findById(1)).thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get("/curvePoint")
+        mockMvc.perform(get("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1"))
                 .andExpect(status().isNotFound());
     }
@@ -160,7 +190,8 @@ class CurvePointControllerAPITest {
     void update() throws Exception {
         when(curvePointServiceMock.update(curvePointDto1, 1)).thenReturn(curvePointDto1);
 
-        mockMvc.perform(put("/curvePoint")
+        mockMvc.perform(put("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDto1Json))
@@ -172,7 +203,8 @@ class CurvePointControllerAPITest {
     void updateBadParam() throws Exception {
         when(curvePointServiceMock.update(curvePointDto1, 1)).thenReturn(curvePointDto1);
 
-        mockMvc.perform(put("/curvePoint")
+        mockMvc.perform(put("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "A")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDto1Json))
@@ -183,7 +215,8 @@ class CurvePointControllerAPITest {
     void updateBadBody() throws Exception {
         when(curvePointServiceMock.update(curvePointDto1, 1)).thenReturn(curvePointDto1);
 
-        mockMvc.perform(put("/curvePoint")
+        mockMvc.perform(put("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDtoListJson))
@@ -194,7 +227,8 @@ class CurvePointControllerAPITest {
     void updateNotFoundException() throws Exception {
         when(curvePointServiceMock.update(curvePointDto1, 1)).thenThrow(NotFoundException.class);
 
-        mockMvc.perform(put("/curvePoint")
+        mockMvc.perform(put("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDto1Json))
@@ -205,7 +239,8 @@ class CurvePointControllerAPITest {
     void deleteById() throws Exception {
         doNothing().when(curvePointServiceMock).delete(1);
 
-        mockMvc.perform(delete("/curvePoint")
+        mockMvc.perform(delete("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                 .param("curvePointId", "1"))
                 .andExpect(status().isOk());
     }
@@ -214,7 +249,8 @@ class CurvePointControllerAPITest {
     void deleteByIdBadRequest() throws Exception {
         doNothing().when(curvePointServiceMock).delete(1);
 
-        mockMvc.perform(delete("/curvePoint")
+        mockMvc.perform(delete("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "A"))
                 .andExpect(status().isBadRequest());
     }
@@ -223,7 +259,8 @@ class CurvePointControllerAPITest {
     void deleteByIdNotFound() throws Exception {
         doThrow(NotFoundException.class).when(curvePointServiceMock).delete(1);
 
-        mockMvc.perform(delete("/curvePoint")
+        mockMvc.perform(delete("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1"))
                 .andExpect(status().isNotFound());
     }

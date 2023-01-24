@@ -1,8 +1,10 @@
 package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.RuleNameDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.RuleNameServiceImpl;
-import org.h2.bnf.Rule;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,17 +19,20 @@ import java.util.List;
 public class RuleNameControllerWebApp {
 
     private RuleNameServiceImpl ruleNameService;
+    private UserServiceImpl userService;
 
-    public RuleNameControllerWebApp(RuleNameServiceImpl ruleNameService) {
+    public RuleNameControllerWebApp(RuleNameServiceImpl ruleNameService, UserServiceImpl userService) {
         this.ruleNameService = ruleNameService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/RuleName")
-    public String home(Model model) {
+    public String home(Model model, Authentication authentication) {
+        UserDto userDto = userService.getCurrentUser(authentication);
         List<RuleNameDto> ruleNameDtoList = ruleNameService.findAll();
 
         model.addAttribute("ruleNameDtoList", ruleNameDtoList);
-        model.addAttribute("user", "userTESTA");
+        model.addAttribute("user", userDto);
 
         return "ruleName/list";
     }

@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Controller.ControllerAPI.TradeControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.Trade;
+import com.nnk.poseidoninc.Security.TokenService;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -15,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
 class TradeControllerAPITest {
 
     @InjectMocks
@@ -39,6 +43,12 @@ class TradeControllerAPITest {
 
     @MockBean
     TradeServiceImpl tradeServiceMock;
+
+    @MockBean
+    UserServiceImpl userServiceMock;
+
+    @Autowired
+    TokenService tokenService;
 
     @Autowired
     MockMvc mockMvc;
@@ -59,6 +69,10 @@ class TradeControllerAPITest {
     ObjectMapper objectMapper = new ObjectMapper();
     String tradeDto1Json;
     String tradeDtoListJson;
+
+    UserDto userDto1 = new UserDto();
+
+    String token;
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -103,13 +117,24 @@ class TradeControllerAPITest {
 
         tradeDto1Json = objectMapper.writeValueAsString(tradeDto1);
         tradeDtoListJson = objectMapper.writeValueAsString(tradeDtoList);
+
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("ADMIN");
+
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
+
     }
 
     @Test
     void findAll() throws Exception {
         when(tradeServiceMock.findAll()).thenReturn(tradeDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
-        mockMvc.perform(get("/tradeList"))
+        mockMvc.perform(get("/api/tradeList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(tradeDtoListJson))
                 .andExpect(status().isOk());
     }
@@ -118,7 +143,8 @@ class TradeControllerAPITest {
     void create() throws Exception {
         when(tradeServiceMock.create(tradeDto1)).thenReturn(tradeDto1);
 
-        mockMvc.perform(post("/trade")
+        mockMvc.perform(post("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDto1Json))
                 .andExpect(content().json(tradeDto1Json))
@@ -129,7 +155,8 @@ class TradeControllerAPITest {
     void createBadRequest() throws Exception {
         when(tradeServiceMock.create(tradeDto1)).thenReturn(tradeDto1);
 
-        mockMvc.perform(post("/trade")
+        mockMvc.perform(post("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDtoListJson))
                 .andExpect(status().isBadRequest());
@@ -139,7 +166,8 @@ class TradeControllerAPITest {
     void findById() throws Exception {
         when(tradeServiceMock.findById(1)).thenReturn(tradeDto1);
 
-        mockMvc.perform(get("/trade")
+        mockMvc.perform(get("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(content().json(tradeDto1Json))
                 .andExpect(status().isOk());
@@ -149,7 +177,8 @@ class TradeControllerAPITest {
     void findByIdBadParam() throws Exception {
         when(tradeServiceMock.findById(1)).thenReturn(tradeDto1);
 
-        mockMvc.perform(get("/trade")
+        mockMvc.perform(get("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "A"))
                 .andExpect(status().isBadRequest());
     }
@@ -158,7 +187,8 @@ class TradeControllerAPITest {
     void findByIdNotFoundException() throws Exception {
         when(tradeServiceMock.findById(1)).thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get("/trade")
+        mockMvc.perform(get("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(status().isNotFound());
     }
@@ -167,7 +197,8 @@ class TradeControllerAPITest {
     void update() throws Exception {
         when(tradeServiceMock.update(tradeDto1, 1)).thenReturn(tradeDto1);
 
-        mockMvc.perform(put("/trade")
+        mockMvc.perform(put("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDto1Json))
@@ -178,7 +209,8 @@ class TradeControllerAPITest {
     @Test
     void updateBadParam() throws Exception {
 
-        mockMvc.perform(put("/trade")
+        mockMvc.perform(put("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "A")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDto1Json))
@@ -188,7 +220,8 @@ class TradeControllerAPITest {
     @Test
     void updateBadBody() throws Exception {
 
-        mockMvc.perform(put("/trade")
+        mockMvc.perform(put("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDtoListJson))
@@ -200,7 +233,8 @@ class TradeControllerAPITest {
     void updateNotFoundException() throws Exception {
         when(tradeServiceMock.update(tradeDto1, 1)).thenThrow(NotFoundException.class);
 
-        mockMvc.perform(put("/trade")
+        mockMvc.perform(put("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDto1Json))
@@ -211,7 +245,8 @@ class TradeControllerAPITest {
     void deleteById() throws Exception {
         doNothing().when(tradeServiceMock).delete(1);
 
-        mockMvc.perform(delete("/trade")
+        mockMvc.perform(delete("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(status().isOk());
     }
@@ -219,7 +254,8 @@ class TradeControllerAPITest {
     @Test
     void deleteByIdBadParam() throws Exception {
 
-        mockMvc.perform(delete("/trade")
+        mockMvc.perform(delete("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "A"))
                 .andExpect(status().isBadRequest());
     }
@@ -228,7 +264,8 @@ class TradeControllerAPITest {
     void deleteByIdNotFoundException() throws Exception {
         doThrow(NotFoundException.class).when(tradeServiceMock).delete(1);
 
-        mockMvc.perform(delete("/trade")
+        mockMvc.perform(delete("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(status().isNotFound());
     }

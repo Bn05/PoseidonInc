@@ -3,13 +3,16 @@ package com.nnk.poseidoninc.IT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Model.Dto.RuleNameDto;
+import com.nnk.poseidoninc.Security.TokenService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +34,9 @@ public class RuleNameIT {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    TokenService tokenService;
+
     RuleNameDto ruleNameDto1 = new RuleNameDto();
     RuleNameDto ruleNameDto1NoId = new RuleNameDto();
 
@@ -47,6 +53,7 @@ public class RuleNameIT {
     String ruleNameDto2NoIdJson;
     String ruleNameDtoUpdateJson;
     String ruleNameDtoListJson;
+    String token;
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -101,38 +108,44 @@ public class RuleNameIT {
         ruleNameDtoUpdateJson = objectMapper.writeValueAsString(ruleNameDtoUpdate);
         ruleNameDtoListJson = objectMapper.writeValueAsString(ruleNameDtoList);
 
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
+
     }
 
     @Test
     public void ruleNameIT() throws Exception {
 
         //create ruleName
-        mockMvc.perform(post("/ruleName")
+        mockMvc.perform(post("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDto1NoIdJson))
                 .andExpect(content().json(ruleNameDto1Json))
                 .andExpect(status().isOk());
 
         //findById
-        mockMvc.perform(get("/ruleName")
+        mockMvc.perform(get("/api/ruleName")
                         .param("ruleNameId", "1"))
                 .andExpect(content().json(ruleNameDto1Json))
                 .andExpect(status().isOk());
 
         // add new ruleName
-        mockMvc.perform(post("/ruleName")
+        mockMvc.perform(post("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDto2NoIdJson))
                 .andExpect(content().json(ruleNameDto2Json))
                 .andExpect(status().isOk());
 
         //verify all ruleName
-        mockMvc.perform(get("/ruleNameList"))
+        mockMvc.perform(get("/api/ruleNameList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(ruleNameDtoListJson))
                 .andExpect(status().isOk());
 
         //update ruleName
-        mockMvc.perform(put("/ruleName")
+        mockMvc.perform(put("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDtoUpdateJson))
@@ -140,18 +153,21 @@ public class RuleNameIT {
                 .andExpect(status().isOk());
 
         //verify update with findById
-        mockMvc.perform(get("/ruleName")
+        mockMvc.perform(get("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1"))
                 .andExpect(content().json(ruleNameDtoUpdateJson))
                 .andExpect(status().isOk());
 
         //delete
-        mockMvc.perform(delete("/ruleName")
+        mockMvc.perform(delete("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1"))
                 .andExpect(status().isOk());
 
         //verify delete with findById
-        mockMvc.perform(get("/ruleName")
+        mockMvc.perform(get("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1"))
                 .andExpect(status().isNotFound());
 

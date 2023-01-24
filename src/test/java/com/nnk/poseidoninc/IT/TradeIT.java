@@ -3,13 +3,16 @@ package com.nnk.poseidoninc.IT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
+import com.nnk.poseidoninc.Security.TokenService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,6 +34,9 @@ public class TradeIT {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    TokenService tokenService;
+
     TradeDto tradeDto1 = new TradeDto();
     TradeDto tradeDto1NoId = new TradeDto();
     TradeDto tradeDto2 = new TradeDto();
@@ -45,6 +51,7 @@ public class TradeIT {
     String tradeDto2NoIdJson;
     String tradeDtoUpdateJson;
     String tradeDtoListJson;
+    String token;
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -81,38 +88,46 @@ public class TradeIT {
         tradeDto2NoIdJson = objectMapper.writeValueAsString(tradeDto2NoId);
         tradeDtoUpdateJson = objectMapper.writeValueAsString(tradeDtoUpdate);
         tradeDtoListJson = objectMapper.writeValueAsString(tradeDtoList);
+
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
+
     }
 
     @Test
     public void tradeIT() throws Exception {
 
         //create trade
-        mockMvc.perform(post("/trade")
+        mockMvc.perform(post("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDto1NoIdJson))
                 .andExpect(content().json(tradeDto1Json))
                 .andExpect(status().isOk());
 
         //findById
-        mockMvc.perform(get("/trade")
+        mockMvc.perform(get("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(content().json(tradeDto1Json))
                 .andExpect(status().isOk());
 
         //add trade
-        mockMvc.perform(post("/trade")
+        mockMvc.perform(post("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDto2NoIdJson))
                 .andExpect(content().json(tradeDto2Json))
                 .andExpect(status().isOk());
 
         //find all trade
-        mockMvc.perform(get("/tradeList"))
+        mockMvc.perform(get("/api/tradeList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(tradeDtoListJson))
                 .andExpect(status().isOk());
 
         //update
-        mockMvc.perform(put("/trade")
+        mockMvc.perform(put("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(tradeDtoUpdateJson))
@@ -120,18 +135,21 @@ public class TradeIT {
                 .andExpect(status().isOk());
 
         //verify update with findById
-        mockMvc.perform(get("/trade")
+        mockMvc.perform(get("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(content().json(tradeDtoUpdateJson))
                 .andExpect(status().isOk());
 
         //delete
-        mockMvc.perform(delete("/trade")
+        mockMvc.perform(delete("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(status().isOk());
 
         //verify delete with findById
-        mockMvc.perform(get("/trade")
+        mockMvc.perform(get("/api/trade")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("tradeId", "1"))
                 .andExpect(status().isNotFound());
 

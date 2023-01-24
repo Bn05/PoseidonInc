@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Controller.ControllerWebApp.CurvePointControllerWebApp;
 import com.nnk.poseidoninc.Model.CurvePoint;
 import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.CurvePointServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,6 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,11 +38,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
+@WithMockUser(username = "user", authorities = {"Admin"})
 class CurvePointControllerWebAppTest {
 
     @InjectMocks
     CurvePointControllerWebApp curvePointControllerWebApp;
+
+    @MockBean
+    UserServiceImpl userServiceMock;
 
     @MockBean
     CurvePointServiceImpl curvePointServiceMock;
@@ -70,6 +76,8 @@ class CurvePointControllerWebAppTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String curvePointDto1Json;
     String curvePointDtoListJson;
+
+    UserDto userDto1 = new UserDto();
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -108,15 +116,23 @@ class CurvePointControllerWebAppTest {
 
         curvePointDto1Json = objectMapper.writeValueAsString(curvePointDto1);
         curvePointDtoListJson = objectMapper.writeValueAsString(curvePointDtoList);
+
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("roleTest1");
     }
 
     @Test
     void home() throws Exception {
 
         when(curvePointServiceMock.findAll()).thenReturn(curvePointDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
         mockMvc.perform(get("/CurvePoint"))
                 .andExpect(model().attribute("curvePointDtoList", curvePointDtoList))
+                .andExpect(model().attribute("user", userDto1))
                 .andExpect(status().isOk());
 
     }
@@ -132,7 +148,7 @@ class CurvePointControllerWebAppTest {
     void addCurvePoint() throws Exception {
         when(curvePointServiceMock.create(any())).thenReturn(curvePointDto1);
 
-        mockMvc.perform(post("/CurvePoint/add")
+        mockMvc.perform(post("/CurvePoint/add").with(csrf())
                         .param("term", "7")
                         .param("value", "7"))
                 .andExpect(status().is3xxRedirection());
@@ -153,7 +169,7 @@ class CurvePointControllerWebAppTest {
     void update() throws Exception {
         when(curvePointServiceMock.update(any(), anyInt())).thenReturn(curvePointDtoUpdate);
 
-        mockMvc.perform(post("/CurvePoint/update/1")
+        mockMvc.perform(post("/CurvePoint/update/1").with(csrf())
                         .param("term", "7")
                         .param("value", "7"))
                 .andExpect(status().is3xxRedirection());
@@ -163,7 +179,7 @@ class CurvePointControllerWebAppTest {
     void delete() throws Exception {
         doNothing().when(curvePointServiceMock).delete(1);
 
-        mockMvc.perform(get("/CurvePoint/delete/1"))
+        mockMvc.perform(get("/CurvePoint/delete/1").with(csrf()))
                 .andExpect(status().is3xxRedirection());
     }
 }

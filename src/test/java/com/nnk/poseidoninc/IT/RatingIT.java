@@ -3,13 +3,16 @@ package com.nnk.poseidoninc.IT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
+import com.nnk.poseidoninc.Security.TokenService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,11 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
 public class RatingIT {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    TokenService tokenService;
 
     RatingDto ratingDto1 = new RatingDto();
     RatingDto ratingDto1NoId = new RatingDto();
@@ -46,6 +51,7 @@ public class RatingIT {
     String ratingDto2NoIdJson;
     String ratingDtoUpdateJson;
     String ratingDtoListJson;
+    String token;
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -91,38 +97,46 @@ public class RatingIT {
 
         ratingDtoUpdateJson = objectMapper.writeValueAsString(ratingDtoUpdate);
         ratingDtoListJson = objectMapper.writeValueAsString(ratingDtoList);
+
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
+
     }
 
     @Test
     public void ratingIT() throws Exception {
 
         //add rating
-        mockMvc.perform(post("/rating")
+        mockMvc.perform(post("/api/rating")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ratingDto1NoIdJson))
                 .andExpect(content().json(ratingDto1Json))
                 .andExpect(status().isOk());
 
         //findById rating
-        mockMvc.perform(get("/rating")
+        mockMvc.perform(get("/api/rating")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ratingId", "1"))
                 .andExpect(content().json(ratingDto1Json))
                 .andExpect(status().isOk());
 
         //add new rating
-        mockMvc.perform(post("/rating")
+        mockMvc.perform(post("/api/rating")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ratingDto2NoIdJson))
                 .andExpect(content().json(ratingDto2Json))
                 .andExpect(status().isOk());
 
         //verify all rating
-        mockMvc.perform(get("/ratingList"))
+        mockMvc.perform(get("/api/ratingList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(ratingDtoListJson))
                 .andExpect(status().isOk());
 
         //update rating
-        mockMvc.perform(put("/rating")
+        mockMvc.perform(put("/api/rating")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ratingId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ratingDtoUpdateJson))
@@ -130,18 +144,21 @@ public class RatingIT {
                 .andExpect(status().isOk());
 
         //verify update with findById
-        mockMvc.perform(get("/rating")
+        mockMvc.perform(get("/api/rating")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ratingId", "1"))
                 .andExpect(content().json(ratingDtoUpdateJson))
                 .andExpect(status().isOk());
 
         //delete rating
-        mockMvc.perform(delete("/rating")
+        mockMvc.perform(delete("/api/rating")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ratingId", "1"))
                 .andExpect(status().isOk());
 
         //verify delete with findById
-        mockMvc.perform(get("/rating")
+        mockMvc.perform(get("/api/rating")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ratingId", "1"))
                 .andExpect(status().isNotFound());
 

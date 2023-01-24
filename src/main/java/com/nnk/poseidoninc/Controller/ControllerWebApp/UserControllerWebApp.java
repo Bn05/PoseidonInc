@@ -3,6 +3,7 @@ package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,16 +25,34 @@ public class UserControllerWebApp {
     }
 
     @GetMapping(value = "/User")
-    public String home(Model model) {
-        List<UserDto> userDtoList = userService.findAll();
+    public String home(Model model, Authentication authentication) {
+        UserDto userDto = userService.getCurrentUser(authentication);
+
+        List<UserDto> userDtoList = new ArrayList<>();
+        if (userDto.getRole().equals("ADMIN")) {
+            userDtoList = userService.findAll();
+        } else {
+            userDtoList.add(userDto);
+        }
+
 
         model.addAttribute("userDtoList", userDtoList);
+        model.addAttribute("user", userDto);
 
         return "user/list";
     }
 
     @GetMapping(value = "/User/add")
-    public String addUserPage(UserDto userDto) {
+    public String addUserPage(UserDto userDto, Authentication authentication, Model model) {
+
+        Boolean authenticated = false;
+        if (authentication!=null) {
+            authenticated = true;
+        }
+
+        model.addAttribute("authenticated", authenticated);
+
+
         return "user/add";
     }
 
@@ -53,10 +73,20 @@ public class UserControllerWebApp {
 
     @GetMapping(value = "/User/update/{id}")
     public String updateUserPage(@PathVariable(value = "id") int userId,
-                                 Model model) {
+                                 Model model,
+                                 Authentication authentication) {
+
         UserDto userDto = userService.findById(userId);
 
+        String role = userService.getCurrentUser(authentication).getRole();
+        Boolean admin = false;
+        if (role.equals("ADMIN")) {
+            admin = true;
+        }
+
+
         model.addAttribute("userDto", userDto);
+        model.addAttribute("admin", admin);
 
         return "user/update";
     }
@@ -64,19 +94,28 @@ public class UserControllerWebApp {
     @PostMapping(value = "/User/update/{id}")
     public String updateUser(@PathVariable(value = "id") int userId,
                              @Validated UserDto userDto,
-                             BindingResult bindingResult) {
+                             BindingResult bindingResult,
+                             Authentication authentication) {
 
         if (bindingResult.hasErrors()) {
             return "/user/update";
         }
 
-        if(userDto.getPassword().isEmpty()){
+        if (userDto.getPassword().isEmpty()) {
             String password = userService.findById(userId).getPassword();
             userDto.setPassword(password);
         }
         userService.update(userDto, userId);
 
-        return "redirect:/User";
+        UserDto userDtoSec = userService.getCurrentUser(authentication);
+
+        if (userDtoSec.getRole().equals("ADMIN")) {
+            return "redirect:/User";
+        }
+
+        return "redirect:/BidList";
+
+
     }
 
 

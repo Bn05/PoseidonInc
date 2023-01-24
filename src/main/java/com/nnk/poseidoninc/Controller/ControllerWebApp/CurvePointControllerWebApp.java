@@ -1,7 +1,10 @@
 package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.CurvePointServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,17 +19,21 @@ import java.util.List;
 public class CurvePointControllerWebApp {
 
     private CurvePointServiceImpl curvePointService;
+    private UserServiceImpl userService;
 
-    public CurvePointControllerWebApp(CurvePointServiceImpl curvePointService) {
+    public CurvePointControllerWebApp(CurvePointServiceImpl curvePointService, UserServiceImpl userService) {
         this.curvePointService = curvePointService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/CurvePoint")
-    public String home(Model model) {
+    public String home(Model model, Authentication authentication) {
+
+        UserDto userDto = userService.getCurrentUser(authentication);
         List<CurvePointDto> curvePointDtoList = curvePointService.findAll();
 
         model.addAttribute("curvePointDtoList", curvePointDtoList);
-        model.addAttribute("user", "USER TESTA");
+        model.addAttribute("user", userDto);
 
         return "curvePoint/list";
     }

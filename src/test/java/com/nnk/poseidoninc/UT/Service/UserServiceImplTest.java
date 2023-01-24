@@ -4,13 +4,16 @@ import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.User;
 import com.nnk.poseidoninc.Repository.UserRepository;
+import com.nnk.poseidoninc.Security.TokenService;
 import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@WithMockUser(username = "user", authorities = {"ADMIN"})
 class UserServiceImplTest {
 
     @InjectMocks
@@ -142,17 +146,21 @@ class UserServiceImplTest {
     void updateExist() {
         when(userRepositoryMock.findById(1)).thenReturn(userOptional1);
         when(userRepositoryMock.save(any())).thenReturn(user1);
+        when(userRepositoryMock.findUserByUserName(any())).thenReturn(userOptional1);
+
 
         UserDto userDtoResult = userService.update(userDto1, 1);
 
         verify(userRepositoryMock, times(1)).findById(1);
         verify(userRepositoryMock, times(1)).save(any());
-        assertEquals(userDto1, userDtoResult);
+        assertEquals(userDto1.getUserId(), userDtoResult.getUserId());
+        assertEquals(userDto1.getUserName(), userDtoResult.getUserName());
     }
 
     @Test
     void updateNoExist() {
         when(userRepositoryMock.findById(1)).thenReturn(userOptional0);
+        when(userRepositoryMock.findUserByUserName(any())).thenReturn(userOptional1);
         boolean errorTest = true;
 
         try {

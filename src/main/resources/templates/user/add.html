@@ -40,10 +40,16 @@
             </div>
 
 
-
-            <div class="form-group">
+            <div th:if="${authenticated}" class="form-group">
                 <div class="col-sm-12">
                     <a class="btn btn-danger btn-sm" href="/User">Cancel</a>
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add user">
+                </div>
+            </div>
+
+            <div th:if="${!authenticated}" class="form-group">
+                <div class="col-sm-12">
+                    <a class="btn btn-danger btn-sm" href="/home">Cancel</a>
                     <input class="btn btn-primary btn-sm" type="submit" value="Add user">
                 </div>
             </div>

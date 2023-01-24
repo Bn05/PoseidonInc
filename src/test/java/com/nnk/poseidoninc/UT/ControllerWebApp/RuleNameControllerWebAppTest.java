@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Controller.ControllerWebApp.RuleNameControllerWebApp;
 import com.nnk.poseidoninc.Model.Dto.RuleNameDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.RuleName;
 import com.nnk.poseidoninc.Service.Implementation.RuleNameServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,6 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
+@WithMockUser(username = "user", authorities = {"USER"})
 class RuleNameControllerWebAppTest {
 
     @InjectMocks
@@ -43,6 +46,9 @@ class RuleNameControllerWebAppTest {
 
     @MockBean
     RuleNameServiceImpl ruleNameServiceMock;
+
+    @MockBean
+    UserServiceImpl userServiceMock;
 
     @Mock
     RuleNameServiceImpl ruleNameService;
@@ -70,6 +76,8 @@ class RuleNameControllerWebAppTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String ruleNameDto1Json;
     String ruleNameDtoListJson;
+
+    UserDto userDto1 = new UserDto();
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -134,11 +142,18 @@ class RuleNameControllerWebAppTest {
         ruleNameDto1Json = objectMapper.writeValueAsString(ruleNameDto1);
         ruleNameDtoListJson = objectMapper.writeValueAsString(ruleNameDtoList);
 
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("roleTest1");
+
     }
 
     @Test
     void home() throws Exception {
         when(ruleNameServiceMock.findAll()).thenReturn(ruleNameDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
         mockMvc.perform(get("/RuleName"))
                 .andExpect(model().attribute("ruleNameDtoList", ruleNameDtoList))
@@ -156,7 +171,7 @@ class RuleNameControllerWebAppTest {
     void addRuleName() throws Exception {
         when(ruleNameServiceMock.create(any())).thenReturn(ruleNameDto1);
 
-        mockMvc.perform(post("/RuleName/add")
+        mockMvc.perform(post("/RuleName/add").with(csrf())
                         .param("name", "nameTest")
                         .param("description", "descriptionTest")
                         .param("json", "jsonTest")
@@ -179,17 +194,17 @@ class RuleNameControllerWebAppTest {
 
     @Test
     void updateRuleName() throws Exception {
-        when(ruleNameServiceMock.update(any(),anyInt())).thenReturn(ruleNameDtoUpdate);
+        when(ruleNameServiceMock.update(any(), anyInt())).thenReturn(ruleNameDtoUpdate);
 
-        mockMvc.perform(post("/RuleName/update/1")
-                .param("name", "nameTest")
-                .param("description", "descriptionTest")
-                .param("json", "jsonTest")
-                .param("template", "templateTest")
-                .param("sqlStr", "sqlStrTest")
-                .param("sqlPart", "sqlPartTest"))
+        mockMvc.perform(post("/RuleName/update/1").with(csrf())
+                        .param("name", "nameTest")
+                        .param("description", "descriptionTest")
+                        .param("json", "jsonTest")
+                        .param("template", "templateTest")
+                        .param("sqlStr", "sqlStrTest")
+                        .param("sqlPart", "sqlPartTest"))
                 .andExpect(status().is3xxRedirection());
-            }
+    }
 
     @Test
     void delete() throws Exception {

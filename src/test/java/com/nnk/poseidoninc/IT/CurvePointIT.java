@@ -3,6 +3,7 @@ package com.nnk.poseidoninc.IT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Model.Dto.CurvePointDto;
+import com.nnk.poseidoninc.Security.TokenService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,7 +11,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,10 +29,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
 public class CurvePointIT {
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    TokenService tokenService;
 
     CurvePointDto curvePointDto1 = new CurvePointDto();
     CurvePointDto curvePointDto1NoId = new CurvePointDto();
@@ -48,6 +53,7 @@ public class CurvePointIT {
     String curvePointDto2NoIdJson;
     String curvePointDtoUpdateJson;
     String curvePointDtoListJson;
+    String token;
 
 
     @BeforeAll
@@ -84,6 +90,8 @@ public class CurvePointIT {
         curvePointDto2NoIdJson = objectMapper.writeValueAsString(curvePointDto2NoId);
         curvePointDtoUpdateJson = objectMapper.writeValueAsString(curvePointDtoUpdate);
         curvePointDtoListJson = objectMapper.writeValueAsString(curvePointDtoList);
+
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
     }
 
 
@@ -91,32 +99,37 @@ public class CurvePointIT {
     public void curvePointIT() throws Exception {
 
         //create curvePoint
-        mockMvc.perform(post("/curvePoint")
+        mockMvc.perform(post("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDto1NoIdJson))
                 .andExpect(content().json(curvePointDto1Json))
                 .andExpect(status().isOk());
 
         //findById curvePoint
-        mockMvc.perform(get("/curvePoint")
+        mockMvc.perform(get("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1"))
                 .andExpect(content().json(curvePointDto1Json))
                 .andExpect(status().isOk());
 
         //add new curvePoint
-        mockMvc.perform(post("/curvePoint")
+        mockMvc.perform(post("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDto2NoIdJson))
                 .andExpect(content().json(curvePointDto2Json))
                 .andExpect(status().isOk());
 
         //verify all bidList
-        mockMvc.perform(get("/curvePointList"))
+        mockMvc.perform(get("/api/curvePointList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(curvePointDtoListJson))
                 .andExpect(status().isOk());
 
         //update curvePoint
-        mockMvc.perform(put("/curvePoint")
+        mockMvc.perform(put("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(curvePointDtoUpdateJson))
@@ -124,18 +137,21 @@ public class CurvePointIT {
                 .andExpect(status().isOk());
 
         //verify update curvePoint with findById
-        mockMvc.perform(get("/curvePoint")
+        mockMvc.perform(get("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1"))
                 .andExpect(content().json(curvePointDtoUpdateJson))
                 .andExpect(status().isOk());
 
         //delete curvePoint
-        mockMvc.perform(delete("/curvePoint")
+        mockMvc.perform(delete("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1"))
                 .andExpect(status().isOk());
 
         //verify delete curvePoint with findById
-        mockMvc.perform(get("/curvePoint")
+        mockMvc.perform(get("/api/curvePoint")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("curvePointId", "1"))
                 .andExpect(status().isNotFound());
 

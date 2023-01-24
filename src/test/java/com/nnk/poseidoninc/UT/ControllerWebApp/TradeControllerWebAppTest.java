@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Controller.ControllerWebApp.TradeControllerWebApp;
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.Trade;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
+@WithMockUser(username = "user", authorities = {"USER"})
 class TradeControllerWebAppTest {
 
     @InjectMocks
@@ -42,6 +45,9 @@ class TradeControllerWebAppTest {
 
     @MockBean
     TradeServiceImpl tradeServiceMock;
+
+    @MockBean
+    UserServiceImpl userServiceMock;
 
     @Mock
     TradeServiceImpl tradeService;
@@ -68,6 +74,8 @@ class TradeControllerWebAppTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String tradeDto1Json;
     String tradeDtoListJson;
+
+    UserDto userDto1 = new UserDto();
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -112,12 +120,19 @@ class TradeControllerWebAppTest {
 
         tradeDto1Json = objectMapper.writeValueAsString(tradeDto1);
         tradeDtoListJson = objectMapper.writeValueAsString(tradeDtoList);
+
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("roleTest1");
     }
 
     @Test
     void home() throws Exception {
 
         when(tradeServiceMock.findAll()).thenReturn(tradeDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
         mockMvc.perform(get("/Trade"))
                 .andExpect(model().attribute("tradeDtoList", tradeDtoList))
@@ -135,7 +150,7 @@ class TradeControllerWebAppTest {
     void addTrade() throws Exception {
         when(tradeServiceMock.create(any())).thenReturn(tradeDto1);
 
-        mockMvc.perform(post("/Trade/add")
+        mockMvc.perform(post("/Trade/add").with(csrf())
                         .param("account", "accountTest")
                         .param("type", "typeTest")
                         .param("buyQuantity", "7"))
@@ -157,7 +172,7 @@ class TradeControllerWebAppTest {
     void updateTrade() throws Exception {
         when(tradeServiceMock.update(any(), anyInt())).thenReturn(tradeDtoUpdate);
 
-        mockMvc.perform(post("/Trade/update/1")
+        mockMvc.perform(post("/Trade/update/1").with(csrf())
                         .param("account", "accountTest")
                         .param("type", "typeTest")
                         .param("buyQuantity", "7"))

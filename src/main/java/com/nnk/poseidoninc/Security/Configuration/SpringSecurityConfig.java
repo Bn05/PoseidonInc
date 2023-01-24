@@ -85,11 +85,11 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .requestMatchers("", "/", "/home", "/login","/User/add").permitAll()
-                .requestMatchers("/User", "/User/**").hasAuthority("ADMIN")
+                .requestMatchers("", "/", "/home", "/login", "/User/add").permitAll()
+                .requestMatchers("/User", "User/delete").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().defaultSuccessUrl("/home")
+                .formLogin().defaultSuccessUrl("/BidList")
                 .and()
                 .build();
     }

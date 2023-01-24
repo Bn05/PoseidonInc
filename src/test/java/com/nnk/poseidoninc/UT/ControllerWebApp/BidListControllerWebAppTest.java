@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Controller.ControllerWebApp.BidListControllerWebApp;
 import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -26,6 +28,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
+@WithMockUser(username = "user", authorities = {"USER"})
 class BidListControllerWebAppTest {
 
     @InjectMocks
@@ -41,6 +44,9 @@ class BidListControllerWebAppTest {
 
     @MockBean
     BidListServiceImpl bidListServiceMock;
+
+    @MockBean
+    UserServiceImpl userServiceMock;
 
     @Mock
     BidListServiceImpl bidListService;
@@ -68,6 +74,8 @@ class BidListControllerWebAppTest {
     ObjectMapper objectMapper = new ObjectMapper();
     String bidListDto1Json;
     String bidListDtoListJson;
+
+    UserDto userDto1 = new UserDto();
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -115,15 +123,23 @@ class BidListControllerWebAppTest {
 
         bidListDto1Json = objectMapper.writeValueAsString(bidListDto1);
         bidListDtoListJson = objectMapper.writeValueAsString(bidListDtoList);
+
+
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("roleTest1");
     }
 
 
     @Test
     void home() throws Exception {
         when(bidListServiceMock.findAll()).thenReturn(bidListDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
         mockMvc.perform(get("/BidList"))
-                .andExpect(model().attribute("user", "userTESTA"))
+                .andExpect(model().attribute("user", userDto1))
                 .andExpect(model().attribute("bidListDtoList", bidListDtoList))
                 .andExpect(status().isOk());
 
@@ -141,10 +157,11 @@ class BidListControllerWebAppTest {
 
         when(bidListServiceMock.create(any())).thenReturn(bidListDto1);
 
-        mockMvc.perform(post("/BidList/add")
+        mockMvc.perform(post("/BidList/add").with(csrf())
                         .param("account", "accountTest1")
                         .param("type", "typeTest1")
                         .param("bidQuantity", "45"))
+
                 .andExpect(status().is3xxRedirection());
     }
 
@@ -167,7 +184,7 @@ class BidListControllerWebAppTest {
 
         when(bidListServiceMock.update(any(), anyInt())).thenReturn(bidListDtoUpdate);
 
-        mockMvc.perform(post("/BidList/update/1")
+        mockMvc.perform(post("/BidList/update/1").with(csrf())
                         .param("account", "accountTest1")
                         .param("type", "typeTest1")
                         .param("bidQuantity", "45"))
@@ -179,7 +196,7 @@ class BidListControllerWebAppTest {
 
         doNothing().when(bidListServiceMock).delete(1);
 
-        mockMvc.perform(get("/BidList/delete/1"))
+        mockMvc.perform(get("/BidList/delete/1").with(csrf()))
                 .andExpect(status().is3xxRedirection());
     }
 }

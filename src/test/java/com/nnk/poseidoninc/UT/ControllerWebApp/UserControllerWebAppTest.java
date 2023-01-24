@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
@@ -28,6 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -35,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
+@WithMockUser(username = "user", authorities = {"ADMIN"})
 class UserControllerWebAppTest {
 
     @InjectMocks
@@ -74,8 +76,8 @@ class UserControllerWebAppTest {
     void buildTest() throws JsonProcessingException {
 
         user1.setUserId(1);
-        user1.setUserName("email@test1.com");
-        user1.setPassword("passwordTest1");
+        user1.setUserName("user");
+        user1.setPassword("passwordTest1!");
         user1.setFullName("fullnameTest1");
         user1.setRole("roleTest1");
         userOptional1 = Optional.of(user1);
@@ -95,7 +97,7 @@ class UserControllerWebAppTest {
         userDto1.setUserName("email@test1.com");
         userDto1.setPassword("Password1234!");
         userDto1.setFullName("fullnameTest1");
-        userDto1.setRole("roleTest1");
+        userDto1.setRole("ADMIN");
 
 
         userDto2.setUserId(2);
@@ -122,11 +124,15 @@ class UserControllerWebAppTest {
 
         userDto1Json = objectMapper.writeValueAsString(userDto1);
         userDtoListJson = objectMapper.writeValueAsString(userDtoList);
+
+
     }
 
     @Test
     void home() throws Exception {
         when(userServiceMock.findAll()).thenReturn(userDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
+
 
         mockMvc.perform(get("/User"))
                 .andExpect(model().attribute("userDtoList", userDtoList))
@@ -143,33 +149,38 @@ class UserControllerWebAppTest {
     @Test
     void addUser() throws Exception {
         when(userServiceMock.create(any())).thenReturn(userDto1);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
-        mockMvc.perform(post("/User/add")
+        mockMvc.perform(post("/User/add").with(csrf())
                         .param("userName", "userName")
-                        .param("password", "passwordTest1")
+                        .param("password", "Password1234!")
                         .param("fullName", "fullNameTest")
                         .param("role", "USER"))
                 .andExpect(status().is3xxRedirection());
     }
 
-    @Test
+  @Test
     void updateUserPage() {
+        Authentication authentication = null;
         when(userService.findById(anyInt())).thenReturn(userDto1);
+        when(userService.getCurrentUser(any())).thenReturn(userDto1);
 
         model.addAttribute("userDto", userDto1);
 
-        String test = userControllerWebApp.updateUserPage(1, model);
+       String test = userControllerWebApp.updateUserPage(1, model,authentication);
 
         assertEquals("user/update", test);
     }
 
+
     @Test
     void updateUser() throws Exception {
         when(userServiceMock.update(any(), anyInt())).thenReturn(userDtoUpdate);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
-        mockMvc.perform(post("/User/update/1")
+        mockMvc.perform(post("/User/update/1").with(csrf())
                         .param("userName", "userName")
-                        .param("password", "passwordTest1")
+                        .param("password", "Password1234!")
                         .param("fullName", "fullNameTest")
                         .param("role", "USER"))
                 .andExpect(status().is3xxRedirection());

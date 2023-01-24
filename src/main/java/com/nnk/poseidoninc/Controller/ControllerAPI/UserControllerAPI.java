@@ -46,7 +46,7 @@ public class UserControllerAPI {
     }
 
     @PostMapping(value = "${apiPrefix}/user")
-    public UserDto create(@RequestBody @Valid UserDto userDto) {
+    public UserDto create(@RequestBody @Validated UserDto userDto) {
         logger.info("Request POST /user, RequestBody : " + userDto.toString());
         UserDto userDtoValidation = userService.create(userDto);
         logger.trace("Response to Request : " + userDtoValidation.toString());

@@ -1,7 +1,10 @@
 package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.RatingDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.RatingServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,18 +19,21 @@ import java.util.List;
 public class RatingControllerWebApp {
 
     private RatingServiceImpl ratingService;
+    private UserServiceImpl userService;
 
-    public RatingControllerWebApp(RatingServiceImpl ratingService) {
+    public RatingControllerWebApp(RatingServiceImpl ratingService, UserServiceImpl userService) {
         this.ratingService = ratingService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/Rating")
-    public String home(Model model) {
+    public String home(Model model, Authentication authentication) {
 
+        UserDto userDto = userService.getCurrentUser(authentication);
         List<RatingDto> ratingDtoList = ratingService.findAll();
 
         model.addAttribute("ratingDtoList", ratingDtoList);
-        model.addAttribute("user", "USER TESTA");
+        model.addAttribute("user", userDto);
 
         return "rating/list";
     }

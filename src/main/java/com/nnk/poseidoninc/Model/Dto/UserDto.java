@@ -79,7 +79,7 @@ public class UserDto {
     public String toString() {
         return "UserDto{" +
                 "userId=" + userId +
-                ", email='" + userName + '\'' +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", role='" + role + '\'' +

@@ -3,13 +3,16 @@ package com.nnk.poseidoninc.IT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
+import com.nnk.poseidoninc.Security.TokenService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -26,11 +29,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
 public class BidListIT {
 
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    TokenService tokenService;
+
 
     BidListDto bidListDto1 = new BidListDto();
     BidListDto bidListDto1NoId = new BidListDto();
@@ -48,6 +53,8 @@ public class BidListIT {
     String bidListDto2NoIdJson;
     String bidListDtoUpdateJson;
     String bidListDtoListJson;
+
+    String token;
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -91,38 +98,46 @@ public class BidListIT {
 
         bidListDtoUpdateJson = objectMapper.writeValueAsString(bidListDtoUpdate);
         bidListDtoListJson = objectMapper.writeValueAsString(bidListDtoList);
+
+
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
     }
 
     @Test
     public void bidListIT() throws Exception {
 
         //add bidList
-        mockMvc.perform(post("/bidList")
+        mockMvc.perform(post("/api/bidList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bidListDto1NoIdJson))
                 .andExpect(content().json(bidListDto1Json))
                 .andExpect(status().isOk());
 
         //findById bidList
-        mockMvc.perform(get("/bidList")
+        mockMvc.perform(get("/api/bidList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("bidListId", "1"))
                 .andExpect(content().json(bidListDto1Json))
                 .andExpect(status().isOk());
 
         //add new bidList
-        mockMvc.perform(post("/bidList")
+        mockMvc.perform(post("/api/bidList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bidListDto2NoIdJson))
                 .andExpect(content().json(bidListDto2Json))
                 .andExpect(status().isOk());
 
         //verify all bidList
-        mockMvc.perform(get("/bidLists"))
+        mockMvc.perform(get("/api/bidLists")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(bidListDtoListJson))
                 .andExpect(status().isOk());
 
         //update bidList
-        mockMvc.perform(put("/bidList")
+        mockMvc.perform(put("/api/bidList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("bidListId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(bidListDtoUpdateJson))
@@ -130,18 +145,21 @@ public class BidListIT {
                 .andExpect(status().isOk());
 
         //verify update bidList with findById
-        mockMvc.perform(get("/bidList")
+        mockMvc.perform(get("/api/bidList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("bidListId", "1"))
                 .andExpect(content().json(bidListDtoUpdateJson))
                 .andExpect(status().isOk());
 
         //delete bidList
-        mockMvc.perform(delete("/bidList")
+        mockMvc.perform(delete("/api/bidList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("bidListId", "1"))
                 .andExpect(status().isOk());
 
         //verify delete bidList with findByID
-        mockMvc.perform(get("/bidList")
+        mockMvc.perform(get("/api/bidList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("bidListId", "1"))
                 .andExpect(status().isNotFound());
     }

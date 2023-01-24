@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Controller.ControllerAPI.RuleNameControllerAPI;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.Dto.RuleNameDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Model.RuleName;
+import com.nnk.poseidoninc.Security.TokenService;
 import com.nnk.poseidoninc.Service.Implementation.RuleNameServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -15,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -31,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WithMockUser(username = "userTEst", authorities = {"USER"})
 class RuleNameControllerAPITest {
 
     @InjectMocks
@@ -39,6 +43,12 @@ class RuleNameControllerAPITest {
 
     @MockBean
     RuleNameServiceImpl ruleNameServiceMock;
+
+    @MockBean
+    UserServiceImpl userServiceMock;
+
+    @Autowired
+    TokenService tokenService;
 
     @Autowired
     MockMvc mockMvc;
@@ -59,6 +69,10 @@ class RuleNameControllerAPITest {
     ObjectMapper objectMapper = new ObjectMapper();
     String ruleNameDto1Json;
     String ruleNameDtoListJson;
+
+    UserDto userDto1 = new UserDto();
+
+    String token;
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -123,13 +137,23 @@ class RuleNameControllerAPITest {
         ruleNameDto1Json = objectMapper.writeValueAsString(ruleNameDto1);
         ruleNameDtoListJson = objectMapper.writeValueAsString(ruleNameDtoList);
 
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("ADMIN");
+
+        token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
+
     }
 
     @Test
     void findAll() throws Exception {
         when(ruleNameServiceMock.findAll()).thenReturn(ruleNameDtoList);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
-        mockMvc.perform(get("/ruleNameList"))
+        mockMvc.perform(get("/api/ruleNameList")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andExpect(content().json(ruleNameDtoListJson))
                 .andExpect(status().isOk());
     }
@@ -138,7 +162,8 @@ class RuleNameControllerAPITest {
     void create() throws Exception {
         when(ruleNameServiceMock.create(ruleNameDto1)).thenReturn(ruleNameDto1);
 
-        mockMvc.perform(post("/ruleName")
+        mockMvc.perform(post("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDto1Json))
                 .andExpect(content().json(ruleNameDto1Json))
@@ -149,7 +174,8 @@ class RuleNameControllerAPITest {
     void createBadRequest() throws Exception {
         when(ruleNameServiceMock.create(ruleNameDto1)).thenReturn(ruleNameDto1);
 
-        mockMvc.perform(post("/ruleName")
+        mockMvc.perform(post("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDtoListJson))
                 .andExpect(status().isBadRequest());
@@ -159,7 +185,8 @@ class RuleNameControllerAPITest {
     void findById() throws Exception {
         when(ruleNameServiceMock.findById(1)).thenReturn(ruleNameDto1);
 
-        mockMvc.perform(get("/ruleName")
+        mockMvc.perform(get("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1"))
                 .andExpect(content().json(ruleNameDto1Json))
                 .andExpect(status().isOk());
@@ -168,7 +195,8 @@ class RuleNameControllerAPITest {
     @Test
     void findByIdBadRequest() throws Exception {
 
-        mockMvc.perform(get("/ruleName")
+        mockMvc.perform(get("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "A"))
                 .andExpect(status().isBadRequest());
     }
@@ -177,7 +205,8 @@ class RuleNameControllerAPITest {
     void findByIdNotFoundException() throws Exception {
         when(ruleNameServiceMock.findById(1)).thenThrow(NotFoundException.class);
 
-        mockMvc.perform(get("/ruleName")
+        mockMvc.perform(get("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1"))
                 .andExpect(status().isNotFound());
     }
@@ -186,7 +215,8 @@ class RuleNameControllerAPITest {
     void update() throws Exception {
         when(ruleNameServiceMock.update(ruleNameDto1, 1)).thenReturn(ruleNameDto1);
 
-        mockMvc.perform(put("/ruleName")
+        mockMvc.perform(put("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDto1Json))
@@ -197,7 +227,8 @@ class RuleNameControllerAPITest {
     @Test
     void updateBadParam() throws Exception {
 
-        mockMvc.perform(put("/ruleName")
+        mockMvc.perform(put("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "A")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDto1Json))
@@ -207,7 +238,8 @@ class RuleNameControllerAPITest {
     @Test
     void updateBadBody() throws Exception {
 
-        mockMvc.perform(put("/ruleName")
+        mockMvc.perform(put("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDtoListJson))
@@ -218,7 +250,8 @@ class RuleNameControllerAPITest {
     void updateNotFoundException() throws Exception {
         when(ruleNameServiceMock.update(ruleNameDto1, 1)).thenThrow(NotFoundException.class);
 
-        mockMvc.perform(put("/ruleName")
+        mockMvc.perform(put("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(ruleNameDto1Json))
@@ -229,7 +262,8 @@ class RuleNameControllerAPITest {
     void deleteById() throws Exception {
         doNothing().when(ruleNameServiceMock).delete(1);
 
-        mockMvc.perform(delete("/ruleName")
+        mockMvc.perform(delete("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1"))
                 .andExpect(status().isOk());
     }
@@ -238,7 +272,8 @@ class RuleNameControllerAPITest {
     void deleteByIdBadParam() throws Exception {
         doNothing().when(ruleNameServiceMock).delete(1);
 
-        mockMvc.perform(delete("/ruleName")
+        mockMvc.perform(delete("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "A"))
                 .andExpect(status().isBadRequest());
     }
@@ -247,7 +282,8 @@ class RuleNameControllerAPITest {
     void deleteByIdNotFoundException() throws Exception {
         doThrow(NotFoundException.class).when(ruleNameServiceMock).delete(1);
 
-        mockMvc.perform(delete("/ruleName")
+        mockMvc.perform(delete("/api/ruleName")
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                         .param("ruleNameId", "1"))
                 .andExpect(status().isNotFound());
     }

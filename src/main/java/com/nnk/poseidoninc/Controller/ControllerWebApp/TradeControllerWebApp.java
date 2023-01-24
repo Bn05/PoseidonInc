@@ -1,7 +1,10 @@
 package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.TradeDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,18 +19,20 @@ import java.util.List;
 public class TradeControllerWebApp {
 
     private TradeServiceImpl tradeService;
+    private UserServiceImpl userService;
 
-    public TradeControllerWebApp(TradeServiceImpl tradeService) {
+    public TradeControllerWebApp(TradeServiceImpl tradeService, UserServiceImpl userService) {
         this.tradeService = tradeService;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/Trade")
-    public String home(Model model) {
-
+    public String home(Model model, Authentication authentication) {
+        UserDto userDto = userService.getCurrentUser(authentication);
         List<TradeDto> tradeDtoList = tradeService.findAll();
 
         model.addAttribute("tradeDtoList", tradeDtoList);
-        model.addAttribute("user", "testauser");
+        model.addAttribute("user", userDto);
 
         return "trade/list";
     }
