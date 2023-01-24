@@ -1,5 +1,6 @@
 package com.nnk.poseidoninc.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -8,19 +9,16 @@ import org.hibernate.annotations.DynamicUpdate;
 @Table(name = "users")
 public class User {
 
-    public enum Provider {
-        LOCAL,
-        GOOGLE
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+    @Column(unique = true)
     private String userName;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String fullName;
     private String role;
-    private Provider provider;
 
 
     public int getUserId() {
@@ -63,11 +61,4 @@ public class User {
         this.role = role;
     }
 
-    public Provider getProvider() {
-        return provider;
-    }
-
-    public void setProvider(Provider provider) {
-        this.provider = provider;
-    }
 }

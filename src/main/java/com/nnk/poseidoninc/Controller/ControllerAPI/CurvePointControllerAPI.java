@@ -20,7 +20,7 @@ public class CurvePointControllerAPI {
         this.curvePointService = curvePointService;
     }
 
-    @GetMapping(value = "/curvePointList")
+    @GetMapping(value = "${apiPrefix}/curvePointList")
     public List<CurvePointDto> findAll() {
         logger.info("Request GET /curvePointList");
         List<CurvePointDto> curvePointDtoListValidation = curvePointService.findAll();
@@ -28,7 +28,7 @@ public class CurvePointControllerAPI {
         return curvePointDtoListValidation;
     }
 
-    @PostMapping(value = "/curvePoint")
+    @PostMapping(value = "${apiPrefix}/curvePoint")
     public CurvePointDto create(@Validated @RequestBody CurvePointDto curvePointDto) {
         logger.info("Request POST /curePoint, BodyRequest = " + curvePointDto.toString());
         CurvePointDto curvePointDtoValidation = curvePointService.create(curvePointDto);
@@ -37,7 +37,7 @@ public class CurvePointControllerAPI {
 
     }
 
-    @GetMapping(value = "/curvePoint")
+    @GetMapping(value = "${apiPrefix}/curvePoint")
     public CurvePointDto findById(@RequestParam(value = "curvePointId") int curvePointId) {
         logger.info("Request GET /curvePoint, ParamRequest = " + curvePointId);
         CurvePointDto curvePointDtoValidation = curvePointService.findById(curvePointId);
@@ -45,7 +45,7 @@ public class CurvePointControllerAPI {
         return curvePointDtoValidation;
     }
 
-    @PutMapping(value = "/curvePoint")
+    @PutMapping(value = "${apiPrefix}/curvePoint")
     public CurvePointDto update(@Validated @RequestBody CurvePointDto curvePointDto,
                                 @RequestParam(value = "curvePointId") int curvePointId) {
         logger.info("Request PUT /curvePoint, ParamRequest = " + curvePointId + " || BodyRequest : " + curvePointDto.toString());
@@ -54,7 +54,7 @@ public class CurvePointControllerAPI {
         return curvePointDtoValidation;
     }
 
-    @DeleteMapping(value = "/curvePoint")
+    @DeleteMapping(value = "${apiPrefix}/curvePoint")
     public void delete(@RequestParam(value = "curvePointId") int curvePointId) {
         logger.info("Request to DELETE /curvePoint, ParamRequest = "+curvePointId);
         curvePointService.delete(curvePointId);

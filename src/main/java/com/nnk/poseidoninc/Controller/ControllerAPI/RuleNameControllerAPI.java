@@ -20,7 +20,7 @@ public class RuleNameControllerAPI {
         this.ruleNameService = ruleNameService;
     }
 
-    @GetMapping(value = "/ruleNameList")
+    @GetMapping(value = "${apiPrefix}/ruleNameList")
     public List<RuleNameDto> findAll() {
         logger.info("Request GET /ruleNameList");
         List<RuleNameDto> ruleNameDtoListValidation = ruleNameService.findAll();
@@ -28,7 +28,7 @@ public class RuleNameControllerAPI {
         return ruleNameDtoListValidation;
     }
 
-    @PostMapping(value = "/ruleName")
+    @PostMapping(value = "${apiPrefix}/ruleName")
     public RuleNameDto create(@Validated @RequestBody RuleNameDto ruleNameDto) {
         logger.info("Request POST /ruleName, RequestBody :" + ruleNameDto.toString());
         RuleNameDto ruleNameDtoValidation = ruleNameService.create(ruleNameDto);
@@ -36,7 +36,7 @@ public class RuleNameControllerAPI {
         return ruleNameDtoValidation;
     }
 
-    @GetMapping(value = "/ruleName")
+    @GetMapping(value = "${apiPrefix}/ruleName")
     public RuleNameDto findById(@RequestParam(value = "ruleNameId") int ruleNameId) {
         logger.info("Request GET /ruleName, RequestParam ruleNameId = " + ruleNameId);
         RuleNameDto ruleNameDtoValidation = ruleNameService.findById(ruleNameId);
@@ -44,7 +44,7 @@ public class RuleNameControllerAPI {
         return ruleNameDtoValidation;
     }
 
-    @PutMapping(value = "/ruleName")
+    @PutMapping(value = "${apiPrefix}/ruleName")
     public RuleNameDto update(@Validated @RequestBody RuleNameDto ruleNameDto,
                               @RequestParam(value = "ruleNameId") int ruleNameId) {
         logger.info("Request PUT /ruleName RequestParam ruleNameId = " + ruleNameId + " || RequestBody : " + ruleNameDto.toString());
@@ -53,7 +53,7 @@ public class RuleNameControllerAPI {
         return ruleNameDtoValidation;
     }
 
-    @DeleteMapping(value = "/ruleName")
+    @DeleteMapping(value = "${apiPrefix}/ruleName")
     public void delete(@RequestParam(value = "ruleNameId") int ruleNameId) {
         logger.info("Request DELETE /ruleName, RequestParam ruleNameId = "+ruleNameId);
         ruleNameService.delete(ruleNameId);

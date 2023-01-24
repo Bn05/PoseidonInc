@@ -21,7 +21,7 @@ public class BidListControllerAPI {
         this.bidService = bidListServiceImpl;
     }
 
-    @GetMapping(value = "/bidLists")
+    @GetMapping(value = "${apiPrefix}/bidLists")
     public List<BidListDto> findAll() {
         logger.info("Request GET /bidLists");
         List<BidListDto> bidListDtoList = bidService.findAll();
@@ -29,7 +29,7 @@ public class BidListControllerAPI {
         return bidListDtoList;
     }
 
-    @PostMapping(value = "/bidList")
+    @PostMapping(value = "${apiPrefix}/bidList")
     public BidListDto createBid(@RequestBody @Validated BidListDto bidListDto) {
         logger.info("Request POST /bidList, BodyRequest = " + bidListDto.toString());
         BidListDto bidListDtoValidation = bidService.create(bidListDto);
@@ -37,7 +37,7 @@ public class BidListControllerAPI {
         return bidListDtoValidation;
     }
 
-    @GetMapping(value = "/bidList")
+    @GetMapping(value = "${apiPrefix}/bidList")
     public BidListDto findById(@RequestParam(value = "bidListId") int idBidList) {
         logger.info("Request GET /bidList, RequestParam : idBidList = " + idBidList);
         BidListDto bidListDtoValidation = bidService.findById(idBidList);
@@ -45,7 +45,7 @@ public class BidListControllerAPI {
         return bidListDtoValidation;
     }
 
-    @PutMapping(value = "/bidList")
+    @PutMapping(value = "${apiPrefix}/bidList")
     public BidListDto updateById(
             @RequestParam(value = "bidListId") int bidListId,
             @RequestBody @Validated BidListDto bidListDto) {
@@ -55,7 +55,7 @@ public class BidListControllerAPI {
         return bidListDtoValidation;
     }
 
-    @DeleteMapping(value = "/bidList")
+    @DeleteMapping(value = "${apiPrefix}/bidList")
     public void deleteById(@RequestParam(value = "bidListId") int bidListId) {
         logger.info("Request DELETE /bidList, RequestParam bidListId = "+bidListId);
         bidService.delete(bidListId);

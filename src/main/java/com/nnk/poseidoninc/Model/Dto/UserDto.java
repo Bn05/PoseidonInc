@@ -1,5 +1,6 @@
 package com.nnk.poseidoninc.Model.Dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.nnk.poseidoninc.Security.ValidPassword.ValidPassword;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,17 +10,18 @@ import java.util.Objects;
 
 public class UserDto {
     private int userId;
-    @NotBlank(groups = BasicInfo.class, message = "Username is mandatory")
+    @NotBlank(message = "Username is mandatory")
     @Size(max = 125)
     private String userName;
-    @NotBlank(groups = BasicInfo.class, message = "Password is mandatory")
+
+
     @ValidPassword
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @NotBlank(groups = BasicInfo.class, message = "FullName is mandatory")
+    @NotBlank(message = "FullName is mandatory")
     @Size(max = 125)
     private String fullName;
-    @NotBlank(groups = AdvanceInfo.class,message = "Role is mandatory")
-    @Size(max = 125)
+
     private String role;
 
     public UserDto(String userName, String password, String fullName, String role) {

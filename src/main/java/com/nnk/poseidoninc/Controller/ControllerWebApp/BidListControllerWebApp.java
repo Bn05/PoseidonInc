@@ -2,6 +2,7 @@ package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,9 @@ public class BidListControllerWebApp {
     }
 
     @GetMapping(value = "/BidList")
-    public String home(Model model) {
+    public String home(Model model, Authentication authentication) {
+
+
 
         List<BidListDto> bidListDtoList = bidListService.findAll();
 

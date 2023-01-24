@@ -1,12 +1,16 @@
 package com.nnk.poseidoninc;
 
+import com.nnk.poseidoninc.Model.Dto.UserDto;
+import com.nnk.poseidoninc.Security.Configuration.RsaKeyProperties;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
 import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
 import com.nnk.poseidoninc.Service.Interface.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+@EnableConfigurationProperties(RsaKeyProperties.class)
 @SpringBootApplication
 public class PoseidonIncApplication implements CommandLineRunner {
     private IBidListService bidListListService;
@@ -25,6 +29,7 @@ public class PoseidonIncApplication implements CommandLineRunner {
         this.userService = userService;
     }
 
+
     public static void main(String[] args) {
         SpringApplication.run(PoseidonIncApplication.class, args);
     }
@@ -32,6 +37,7 @@ public class PoseidonIncApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+
 
         /*
 
@@ -73,13 +79,6 @@ public class PoseidonIncApplication implements CommandLineRunner {
         );
         ruleNameService.create(ruleNameDto);
 
-        UserDto userDto = new UserDto(
-                "emailTest",
-                "passwordTest",
-                "fullNameTest",
-                "roleTest"
-        );
-        userService.create(userDto);
 
          */
     }

@@ -20,7 +20,7 @@ public class TradeControllerAPI {
         this.tradeService = tradeService;
     }
 
-    @GetMapping(value = "/tradeList")
+    @GetMapping(value = "${apiPrefix}/tradeList")
     public List<TradeDto> findAll() {
         logger.info("Request GET /trades");
         List<TradeDto> tradeDtoListValidation = tradeService.findAll();
@@ -28,7 +28,7 @@ public class TradeControllerAPI {
         return tradeDtoListValidation;
     }
 
-    @PostMapping(value = "/trade")
+    @PostMapping(value = "${apiPrefix}/trade")
     public TradeDto create(@Validated @RequestBody TradeDto tradeDto) {
         logger.info("Request POST /trade, RequestBody : " + tradeDto.toString());
         TradeDto tradeDtoValidation = tradeService.create(tradeDto);
@@ -36,7 +36,7 @@ public class TradeControllerAPI {
         return tradeDtoValidation;
     }
 
-    @GetMapping(value = "/trade")
+    @GetMapping(value = "${apiPrefix}/trade")
     public TradeDto findById(@RequestParam(value = "tradeId") int tradeId) {
         logger.info("Request GET /trade, RequestParam tradeId = " + tradeId);
         TradeDto tradeDtoValidation = tradeService.findById(tradeId);
@@ -44,7 +44,7 @@ public class TradeControllerAPI {
         return tradeDtoValidation;
     }
 
-    @PutMapping(value = "/trade")
+    @PutMapping(value = "${apiPrefix}/trade")
     public TradeDto update(@RequestParam(value = "tradeId") int tradeId,
                            @Validated @RequestBody TradeDto tradeDto) {
         logger.info("Request PUT /trade RequestParam tradeId = " + tradeId + " || RequestBody : " + tradeDto.toString());
@@ -53,7 +53,7 @@ public class TradeControllerAPI {
         return tradeDtoValidation;
     }
 
-    @DeleteMapping(value = "/trade")
+    @DeleteMapping(value = "${apiPrefix}/trade")
     public void delete(@RequestParam(value = "tradeId") int tradeId) {
         logger.info("Request DELETE /trade, RequestParam = " + tradeId);
         tradeService.delete(tradeId);

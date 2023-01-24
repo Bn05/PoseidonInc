@@ -1,10 +1,8 @@
 package com.nnk.poseidoninc.Controller.ControllerWebApp;
 
-import com.nnk.poseidoninc.Model.Dto.AdvanceInfo;
-import com.nnk.poseidoninc.Model.Dto.BasicInfo;
+
 import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
-import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +37,7 @@ public class UserControllerWebApp {
     }
 
     @PostMapping(value = "/User/add")
-    public String addUser(@Validated(BasicInfo.class) UserDto userDto,
+    public String addUser(@Validated UserDto userDto,
                           BindingResult result) {
 
         userDto.setRole("USER");
@@ -50,7 +48,7 @@ public class UserControllerWebApp {
 
         userService.create(userDto);
 
-        return "redirect:/User";
+        return "redirect:/BidList";
     }
 
     @GetMapping(value = "/User/update/{id}")
@@ -65,7 +63,7 @@ public class UserControllerWebApp {
 
     @PostMapping(value = "/User/update/{id}")
     public String updateUser(@PathVariable(value = "id") int userId,
-                             @Validated({AdvanceInfo.class}) UserDto userDto,
+                             @Validated UserDto userDto,
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {

@@ -98,12 +98,13 @@ CREATE TABLE Rule_name
 CREATE TABLE Users
 (
     user_id   INTEGER NOT NULL AUTO_INCREMENT,
-    user_name     VARCHAR(125),
+    user_name     VARCHAR(125) UNIQUE,
     password  VARCHAR(125),
     full_name VARCHAR(125),
     role      VARCHAR(125),
-    provider  VARCHAR(7),
 
     PRIMARY KEY (user_id)
 );
+
+
 

@@ -20,7 +20,7 @@ public class RatingControllerAPI {
         this.ratingService = ratingService;
     }
 
-    @GetMapping(value = "/ratingList")
+    @GetMapping(value = "${apiPrefix}/ratingList")
     public List<RatingDto> findAll() {
         logger.info("Request GET /ratingList");
         List<RatingDto> ratingDtoListValidation = ratingService.findAll();
@@ -28,7 +28,7 @@ public class RatingControllerAPI {
         return ratingDtoListValidation;
     }
 
-    @PostMapping(value = "/rating")
+    @PostMapping(value = "${apiPrefix}/rating")
     public RatingDto create(@Validated @RequestBody RatingDto ratingDto) {
         logger.info("Request POST /rating, BodyRequest : " + ratingDto.toString());
         RatingDto ratingDtoValidation = ratingService.create(ratingDto);
@@ -36,7 +36,7 @@ public class RatingControllerAPI {
         return ratingDtoValidation;
     }
 
-    @GetMapping(value = "/rating")
+    @GetMapping(value = "${apiPrefix}/rating")
     public RatingDto findById(@RequestParam(value = "ratingId") int ratingId) {
         logger.info("Request GET /rating, RequestParam ratingId = " + ratingId);
         RatingDto ratingDtoValidation = ratingService.findById(ratingId);
@@ -44,7 +44,7 @@ public class RatingControllerAPI {
         return ratingDtoValidation;
     }
 
-    @PutMapping(value = "/rating")
+    @PutMapping(value = "${apiPrefix}/rating")
     public RatingDto update(@Validated @RequestBody RatingDto ratingDto,
                             @RequestParam(value = "ratingId") int ratingId) {
         logger.info("Request PUT /rating, RequestParam ratingId = " + ratingId + " || RequestBody : " + ratingDto.toString());
@@ -53,7 +53,7 @@ public class RatingControllerAPI {
         return ratingDtoValidation;
     }
 
-    @DeleteMapping(value = "/rating")
+    @DeleteMapping(value = "${apiPrefix}/rating")
     public void delete(@RequestParam(value = "ratingId") int ratingId) {
         logger.info("Request DELETE /rating, RequestParam : ratingId = " + ratingId);
         ratingService.delete(ratingId);
