@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <div th:if="${!admin}" class="form-group">
+            <div th:unless="${admin}" class="form-group">
                 <div class="col-sm-12">
                     <input type="hidden" th:field="*{userId}">
                     <a class="btn btn-danger btn-sm" href="/BidList">Cancel</a>

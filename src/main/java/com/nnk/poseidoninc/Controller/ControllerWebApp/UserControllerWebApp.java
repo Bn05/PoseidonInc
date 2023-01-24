@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,7 +47,7 @@ public class UserControllerWebApp {
     public String addUserPage(UserDto userDto, Authentication authentication, Model model) {
 
         Boolean authenticated = false;
-        if (authentication!=null) {
+        if (authentication != null) {
             authenticated = true;
         }
 
@@ -97,14 +98,19 @@ public class UserControllerWebApp {
                              BindingResult bindingResult,
                              Authentication authentication) {
 
-        if (bindingResult.hasErrors()) {
-            return "/user/update";
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            if (!fieldError.getField().equals("password")) {
+                return "/user/update";
+            }
+            if (!userDto.getPassword().isBlank()) {
+                return "/user/update";
+            }
         }
 
-        if (userDto.getPassword().isEmpty()) {
-            String password = userService.findById(userId).getPassword();
-            userDto.setPassword(password);
-        }
+        userDto.setPassword("Password1234!");
+
+
         userService.update(userDto, userId);
 
         UserDto userDtoSec = userService.getCurrentUser(authentication);
