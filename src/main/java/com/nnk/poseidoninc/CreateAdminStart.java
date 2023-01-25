@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateAdminStart implements CommandLineRunner {
 
+    //Create Admin at first Launch.
+    // Must be deleted in production.
+
     private UserServiceImpl userService;
     private UserRepository userRepository;
 

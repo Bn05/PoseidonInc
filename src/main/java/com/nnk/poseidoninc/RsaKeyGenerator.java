@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class RsaKeyGenerator {
 
+    // Create public and private RsaKeys for JWT
+
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         KeyPair keyPair = keyPairGenerator.generateKeyPair();

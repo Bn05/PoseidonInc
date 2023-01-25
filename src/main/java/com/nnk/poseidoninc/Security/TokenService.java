@@ -20,6 +20,10 @@ public class TokenService {
         this.encoder = encoder;
     }
 
+    /**
+     *
+     * @return Token access for API
+     */
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.joining(" "));
