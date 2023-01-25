@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,13 +25,15 @@ public class BidListServiceImpl implements IBidListService {
     private static final Logger logger = LogManager.getLogger(BidListServiceImpl.class);
 
     private BidListRepository bidListRepository;
+    private UserServiceImpl userService;
 
-    public BidListServiceImpl(BidListRepository bidListRepository) {
+    public BidListServiceImpl(BidListRepository bidListRepository, UserServiceImpl userService) {
         this.bidListRepository = bidListRepository;
+        this.userService = userService;
     }
 
 
-   @Override
+    @Override
     public List<BidListDto> findAll() {
 
         Iterable<BidList> bids = bidListRepository.findAll();
@@ -46,11 +49,14 @@ public class BidListServiceImpl implements IBidListService {
     @Override
     public BidListDto create(BidListDto bidListDto) {
 
+        var authentification = SecurityContextHolder.getContext().getAuthentication();
+        String creationName = userService.getCurrentUser(authentification).getUserName();
+
+
         BidList bidList = convertBidListDtoToBidList(bidListDto);
 
         bidList.setCreationDate(LocalDate.now());
-        // TODO : AutomaticName -> authentificationNameCreation (when spring Security on)
-        bidList.setCreationName("AutomaticNameCreation");
+        bidList.setCreationName(creationName);
 
         return (convertBidListToBidListDto(bidListRepository.save(bidList)));
     }
@@ -71,6 +77,8 @@ public class BidListServiceImpl implements IBidListService {
 
     @Override
     public BidListDto update(BidListDto bidListDto, int bidListId) {
+        var authentification = SecurityContextHolder.getContext().getAuthentication();
+        String revisionName = userService.getCurrentUser(authentification).getUserName();
 
         Optional<BidList> optionalBid = bidListRepository.findById(bidListId);
 
@@ -85,9 +93,7 @@ public class BidListServiceImpl implements IBidListService {
         bidList.setBidQuantity(bidListDto.getBidQuantity());
 
         bidList.setRevisionDate(LocalDate.now());
-        // TODO : AutomaticName -> AutomaticNameRevision (when spring Security on)
-        bidList.setRevisionName("AutomaticNameRevision");
-
+        bidList.setRevisionName(revisionName);
 
         return convertBidListToBidListDto(bidListRepository.save(bidList));
     }

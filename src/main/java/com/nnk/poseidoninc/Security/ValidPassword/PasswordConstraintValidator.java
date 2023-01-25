@@ -44,11 +44,11 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
             return true;
         }
         //Sending one message each time failed validation.
-       /* constraintValidatorContext.buildConstraintViolationWithTemplate(passwordValidator.getMessages(result).stream().findFirst().get())
+       constraintValidatorContext.buildConstraintViolationWithTemplate(passwordValidator.getMessages(result).stream().findFirst().get())
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
 
-        */
+
 
         return false;
     }
