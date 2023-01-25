@@ -1,10 +1,10 @@
 package com.nnk.poseidoninc;
 
 import com.nnk.poseidoninc.Model.Dto.UserDto;
+import com.nnk.poseidoninc.Model.User;
+import com.nnk.poseidoninc.Repository.UserRepository;
 import com.nnk.poseidoninc.Security.Configuration.RsaKeyProperties;
-import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
-import com.nnk.poseidoninc.Service.Implementation.TradeServiceImpl;
-import com.nnk.poseidoninc.Service.Interface.*;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,20 +13,13 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(RsaKeyProperties.class)
 @SpringBootApplication
 public class PoseidonIncApplication implements CommandLineRunner {
-    private IBidListService bidListListService;
-    private ITradeService tradeService;
-    private ICurvePointService curvePointService;
-    private IRatingService ratingService;
-    private IRuleNameService ruleNameService;
-    private IUserService userService;
 
-    public PoseidonIncApplication(BidListServiceImpl bidListListService, TradeServiceImpl tradeService, ICurvePointService curvePointService, IRatingService ratingService, IRuleNameService ruleNameService, IUserService userService) {
-        this.bidListListService = bidListListService;
-        this.tradeService = tradeService;
-        this.curvePointService = curvePointService;
-        this.ratingService = ratingService;
-        this.ruleNameService = ruleNameService;
+    private UserServiceImpl userService;
+    private UserRepository userRepository;
+
+    public PoseidonIncApplication(UserServiceImpl userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
@@ -38,49 +31,15 @@ public class PoseidonIncApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        String password = "Password1234!";
+        String passwordBCrypt = userService.passwordEncoder().encode(password);
+        UserDto userDto = new UserDto("admin", passwordBCrypt, "fullName", "ADMIN");
+        User user = userService.convertUserDtoToUser(userDto);
 
-        /*
+        if(userRepository.findUserByUserName(user.getUserName()).isEmpty()){
+            userRepository.save(user);
+        }
 
-        BidListDto bidListDto = new BidListDto(
-                "accountTest",
-                "typeTest",
-                45d
-        );
-        bidListListService.create(bidListDto);
-
-        TradeDto tradeDto = new TradeDto(
-                "accountTest",
-                "typeTest",
-                33d
-        );
-        tradeService.create(tradeDto);
-
-        CurvePointDto curvePointDto = new CurvePointDto(
-                25,
-                27
-        );
-        curvePointService.create(curvePointDto);
-
-        RatingDto ratingDto = new RatingDto(
-                "moodysTest",
-                "sandPRTEst",
-                "fitchTest",
-                2
-        );
-        ratingService.create(ratingDto);
-
-        RuleNameDto ruleNameDto = new RuleNameDto(
-                "nameTest",
-                "descriptionTest",
-                "JsonTest",
-                "templateTest",
-                "sqlStrTest",
-                "sqlPartTest"
-        );
-        ruleNameService.create(ruleNameDto);
-
-
-         */
     }
 
 

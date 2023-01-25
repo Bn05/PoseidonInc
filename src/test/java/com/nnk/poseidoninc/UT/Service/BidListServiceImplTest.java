@@ -3,8 +3,10 @@ package com.nnk.poseidoninc.UT.Service;
 import com.nnk.poseidoninc.Exception.NotFoundException;
 import com.nnk.poseidoninc.Model.BidList;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Repository.BidListRepository;
 import com.nnk.poseidoninc.Service.Implementation.BidListServiceImpl;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -29,6 +31,9 @@ class BidListServiceImplTest {
     @Mock
     BidListRepository bidListRepositoryMock;
 
+    @Mock
+    UserServiceImpl userServiceMock;
+
     BidListDto bidListDto1 = new BidListDto();
     BidListDto bidListDto2 = new BidListDto();
     BidListDto bidListDtoUpdate = new BidListDto();
@@ -42,6 +47,8 @@ class BidListServiceImplTest {
     Optional<BidList> bidListOptional2;
     List<BidList> bidListIterable = new ArrayList<>();
     List<BidListDto> bidListDtoList = new ArrayList<>();
+
+    UserDto userDto1 = new UserDto();
 
 
     @BeforeAll
@@ -87,6 +94,12 @@ class BidListServiceImplTest {
         bidListUpdate.setAccount("accountTestUpdate");
         bidListUpdate.setType("typeTestUpdate");
         bidListUpdate.setBidQuantity(50d);
+
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("ADMIN");
     }
 
     @Test
@@ -101,8 +114,8 @@ class BidListServiceImplTest {
 
     @Test
     void create() {
-
         when(bidListRepositoryMock.save(any())).thenReturn(bidList1);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
         BidListDto bidListDtoResult = bidListListService.create(bidListDto1);
 
@@ -140,6 +153,7 @@ class BidListServiceImplTest {
 
         when(bidListRepositoryMock.findById(1)).thenReturn(bidListOptional1);
         when(bidListRepositoryMock.save(any())).thenReturn(bidListUpdate);
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
 
         BidListDto bidListDtoResult = bidListListService.update(bidListDtoUpdate, 1);
 
@@ -151,7 +165,7 @@ class BidListServiceImplTest {
     @Test
     void updateNoExistId() {
         when(bidListRepositoryMock.findById(1)).thenReturn(bidListOptional0);
-
+        when(userServiceMock.getCurrentUser(any())).thenReturn(userDto1);
         boolean errorTest = true;
 
         try {
@@ -174,7 +188,7 @@ class BidListServiceImplTest {
 
         bidListListService.delete(1);
 
-        verify(bidListRepositoryMock,times(1)).deleteById(1);
+        verify(bidListRepositoryMock, times(1)).deleteById(1);
     }
 
     @Test
@@ -184,13 +198,13 @@ class BidListServiceImplTest {
 
         boolean errorTest = true;
 
-        try{
+        try {
             bidListListService.delete(1);
-        }catch (NotFoundException e){
+        } catch (NotFoundException e) {
             errorTest = false;
         }
 
-        verify(bidListRepositoryMock,times(0)).deleteById(any());
+        verify(bidListRepositoryMock, times(0)).deleteById(any());
         assertFalse(errorTest);
     }
 

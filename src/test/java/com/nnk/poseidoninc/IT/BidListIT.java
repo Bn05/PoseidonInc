@@ -3,24 +3,32 @@ package com.nnk.poseidoninc.IT;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nnk.poseidoninc.Model.Dto.BidListDto;
+import com.nnk.poseidoninc.Model.Dto.UserDto;
 import com.nnk.poseidoninc.Security.TokenService;
+import com.nnk.poseidoninc.Service.Implementation.UserServiceImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +43,9 @@ public class BidListIT {
     MockMvc mockMvc;
     @Autowired
     TokenService tokenService;
+
+    @MockBean
+    UserServiceImpl userService;
 
 
     BidListDto bidListDto1 = new BidListDto();
@@ -55,6 +66,8 @@ public class BidListIT {
     String bidListDtoListJson;
 
     String token;
+
+    UserDto userDto1 = new UserDto();
 
     @BeforeAll
     void buildTest() throws JsonProcessingException {
@@ -99,12 +112,19 @@ public class BidListIT {
         bidListDtoUpdateJson = objectMapper.writeValueAsString(bidListDtoUpdate);
         bidListDtoListJson = objectMapper.writeValueAsString(bidListDtoList);
 
+        userDto1.setUserId(1);
+        userDto1.setUserName("user");
+        userDto1.setPassword("Password1234!");
+        userDto1.setFullName("fullnameTest1");
+        userDto1.setRole("ADMIN");
 
         token = tokenService.generateToken(new UsernamePasswordAuthenticationToken("test", "Password1234!"));
     }
 
     @Test
     public void bidListIT() throws Exception {
+
+        when(userService.getCurrentUser(any())).thenReturn(userDto1);
 
         //add bidList
         mockMvc.perform(post("/api/bidList")
