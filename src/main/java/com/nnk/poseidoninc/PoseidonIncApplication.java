@@ -9,37 +9,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 @EnableConfigurationProperties(RsaKeyProperties.class)
 @SpringBootApplication
-public class PoseidonIncApplication implements CommandLineRunner {
-
-    private UserServiceImpl userService;
-    private UserRepository userRepository;
-
-    public PoseidonIncApplication(UserServiceImpl userService, UserRepository userRepository) {
-        this.userService = userService;
-        this.userRepository = userRepository;
-    }
-
+public class PoseidonIncApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(PoseidonIncApplication.class, args);
-    }
-
-
-    @Override
-    public void run(String... args) {
-
-        String password = "Password1234!";
-        String passwordBCrypt = userService.passwordEncoder().encode(password);
-        UserDto userDto = new UserDto("admin", passwordBCrypt, "fullName", "ADMIN");
-        User user = userService.convertUserDtoToUser(userDto);
-
-        if(userRepository.findUserByUserName(user.getUserName()).isEmpty()){
-            userRepository.save(user);
-        }
-
     }
 
 
