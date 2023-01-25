@@ -31,13 +31,11 @@ public class SpringSecurityConfig {
 
     private final RsaKeyProperties rsaKeys;
 
-    private MyUserDetailsService myUserDetailsService;
 
-
-    public SpringSecurityConfig(RsaKeyProperties rsaKeys, MyUserDetailsService myUserDetailsService) {
+    public SpringSecurityConfig(RsaKeyProperties rsaKeys) {
         this.rsaKeys = rsaKeys;
 
-        this.myUserDetailsService = myUserDetailsService;
+
     }
 
     @Bean
@@ -85,7 +83,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .requestMatchers("", "/", "/home", "/login", "/User/add", "/bootstrap.min.css","/error").permitAll()
+                .requestMatchers("", "/", "/home", "/login", "/User/add", "/bootstrap.min.css", "/error").permitAll()
                 .requestMatchers("/User", "User/delete").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
