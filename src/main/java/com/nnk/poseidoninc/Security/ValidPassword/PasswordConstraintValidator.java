@@ -1,5 +1,6 @@
 package com.nnk.poseidoninc.Security.ValidPassword;
 
+import com.nnk.poseidoninc.Exception.BadParamException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.passay.*;
@@ -9,6 +10,11 @@ import java.util.Arrays;
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String> {
     @Override
     public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
+
+        if(password==null){
+            return  false;
+        }
+
 
         PasswordValidator passwordValidator = new PasswordValidator(
                 Arrays.asList(
@@ -38,9 +44,11 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
             return true;
         }
         //Sending one message each time failed validation.
-        constraintValidatorContext.buildConstraintViolationWithTemplate(passwordValidator.getMessages(result).stream().findFirst().get())
+       /* constraintValidatorContext.buildConstraintViolationWithTemplate(passwordValidator.getMessages(result).stream().findFirst().get())
                 .addConstraintViolation()
                 .disableDefaultConstraintViolation();
+
+        */
 
         return false;
     }

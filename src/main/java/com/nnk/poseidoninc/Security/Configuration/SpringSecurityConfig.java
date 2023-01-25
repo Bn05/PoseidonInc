@@ -63,14 +63,14 @@ public class SpringSecurityConfig {
         return http
                 .csrf().disable()
                 .securityMatcher("/api/**")
-                .authorizeHttpRequests().requestMatchers(HttpMethod.POST, "/api/user").permitAll()
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/user").hasAuthority("SCOPE_ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/user").hasAuthority("SCOPE_ADMIN")
                 .requestMatchers("/api/userList").hasAuthority("SCOPE_ADMIN")
                 .and()
                 .authorizeHttpRequests()
                 .anyRequest().authenticated()
-
                 .and()
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -85,7 +85,7 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .requestMatchers("", "/", "/home", "/login", "/User/add").permitAll()
+                .requestMatchers("", "/", "/home", "/login", "/User/add", "/bootstrap.min.css","/error").permitAll()
                 .requestMatchers("/User", "User/delete").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()

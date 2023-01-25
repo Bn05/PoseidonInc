@@ -1,27 +1,20 @@
 package com.nnk.poseidoninc.Controller.ControllerAPI;
 
 import com.nnk.poseidoninc.Exception.BadParamException;
-import com.nnk.poseidoninc.Exception.NotFoundException;
-
 import com.nnk.poseidoninc.Model.Dto.UserDto;
+import com.nnk.poseidoninc.Security.ValidPassword.PasswordConstraintValidator;
+import com.nnk.poseidoninc.Security.ValidPassword.ValidPassword;
 import com.nnk.poseidoninc.Service.Interface.IUserService;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.passay.PasswordData;
-import org.passay.PasswordValidator;
-import org.passay.RuleResult;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 public class UserControllerAPI {
@@ -30,8 +23,10 @@ public class UserControllerAPI {
 
     private IUserService userService;
 
+
     public UserControllerAPI(IUserService userService) {
         this.userService = userService;
+
     }
 
 
@@ -54,17 +49,38 @@ public class UserControllerAPI {
     }
 
     @GetMapping(value = "${apiPrefix}/user")
-    public UserDto findById(@RequestParam(value = "userId") int userId) {
+    public UserDto findById(@RequestParam(required = false, value = "userId") int userId, Authentication authentication) {
         logger.info("Request GET /user, RequestParam userId = " + userId);
         UserDto userDtoValidation = userService.findById(userId);
         logger.trace("Response to Request : " + userDtoValidation.toString());
         return userDtoValidation;
     }
 
+    @GetMapping(value = "${apiPrefix}/user/me")
+    public UserDto findMe(Authentication authentication) {
+        logger.info("Request GET /user/me");
+        UserDto userDto = userService.getCurrentUser(authentication);
+        logger.trace("Response to Request : " + userDto.toString());
+        return userDto;
+
+    }
+
     @PutMapping(value = "${apiPrefix}/user")
-    public UserDto update(@RequestBody @Validated UserDto userDto,
-                          @RequestParam(value = "userId") int userId
+    public UserDto update(@RequestParam(value = "userId") int userId,
+                          @RequestBody @Valid UserDto userDto, BindingResult bindingResult,
+                          Authentication authentication
+
     ) {
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            if (!fieldError.getField().equals("password")) {
+                throw new BadParamException();
+            }
+            if (userDto.getPassword() != null) {
+                throw new BadParamException();
+            }
+        }
+
         logger.info("Request PUT /user, RequestParam userId = " + userId + " || RequestBody : " + userDto.toString());
         UserDto userDtoValidation = userService.update(userDto, userId);
         logger.trace("Response to Request : " + userDtoValidation.toString());

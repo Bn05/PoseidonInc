@@ -107,10 +107,6 @@ public class UserControllerWebApp {
                 return "/user/update";
             }
         }
-
-        userDto.setPassword("Password1234!");
-
-
         userService.update(userDto, userId);
 
         UserDto userDtoSec = userService.getCurrentUser(authentication);

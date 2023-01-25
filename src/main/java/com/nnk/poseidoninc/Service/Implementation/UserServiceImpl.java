@@ -114,8 +114,9 @@ public class UserServiceImpl implements IUserService {
         user.setUserName(userDto.getUserName());
         user.setFullName(userDto.getFullName());
 
+
         String password = userDto.getPassword();
-        if (!Objects.equals(password, null)) {
+        if (!Objects.equals(password, null) && !password.equals("")) {
 
             String passwordBcrypt = passwordEncoder().encode(password);
             user.setPassword(passwordBcrypt);
