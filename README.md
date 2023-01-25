@@ -22,8 +22,8 @@ Check that you have :
 1. Connect to your mysql Datasources
 2. Run data.sql
 
-3. Set environment variables "spring.datasource.username" -> your mySQL username
-4. Set environment variables "spring.datasource.password" -> your mySql password
+3. Set environment variables "spring.datasource.username" -> your mySQL username (username in comment in application.properties)
+4. Set environment variables "spring.datasource.password" -> your mySql password (password in comment in application.properties)
 
 5. Select the PoseidonInc directory
 6. To run test and package

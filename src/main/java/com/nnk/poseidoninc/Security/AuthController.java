@@ -9,6 +9,7 @@ public class AuthController {
 
     private TokenService tokenService;
 
+    //EndPoint for get Token (protect by httpBasic)
     public AuthController(TokenService tokenService) {
         this.tokenService = tokenService;
     }

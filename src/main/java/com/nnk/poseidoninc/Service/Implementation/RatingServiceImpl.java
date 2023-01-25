@@ -28,6 +28,10 @@ public class RatingServiceImpl implements IRatingService {
         this.ratingRepository = ratingRepository;
     }
 
+    /**
+     * @return List<RatingDto>
+     *     return all RatingDto in db
+     */
     @Override
     public List<RatingDto> findAll() {
         Iterable<Rating> ratingIterable = ratingRepository.findAll();
@@ -40,6 +44,11 @@ public class RatingServiceImpl implements IRatingService {
         return ratingDtoList;
     }
 
+    /**
+     * @param ratingDto we want ta add to db
+     * @return RatingDto added
+     * Create new Rating in db
+     */
     @Override
     public RatingDto create(RatingDto ratingDto) {
 
@@ -50,6 +59,11 @@ public class RatingServiceImpl implements IRatingService {
         return convertRatingToRatingDto(rating);
     }
 
+    /**
+     * @param ratingId of Rating we are looking for
+     * @return RatingDto
+     * Find RatingDto By Id
+     */
     @Override
     public RatingDto findById(int ratingId) {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
@@ -62,15 +76,22 @@ public class RatingServiceImpl implements IRatingService {
         return convertRatingToRatingDto(ratingOptional.get());
     }
 
+    /**
+     * @param ratingDto with new param
+     * @param ratingId of Rating we want update
+     * @return Rating with modif
+     */
     @Override
     public RatingDto update(RatingDto ratingDto, int ratingId) {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
+        //verify Rating exist.
         if (ratingOptional.isEmpty()) {
             logger.warn("NotFoundRatingWithThisId");
             throw new NotFoundException();
         }
 
+       //Update Rating
         Rating rating = ratingOptional.get();
         rating.setMoodysRating(ratingDto.getMoodysRating());
         rating.setSandPRating(ratingDto.getSandPRating());
@@ -82,10 +103,14 @@ public class RatingServiceImpl implements IRatingService {
         return convertRatingToRatingDto(rating);
     }
 
+    /**
+     * @param ratingId of Rating we want delete
+     */
     @Override
     public void delete(int ratingId) {
         Optional<Rating> ratingOptional = ratingRepository.findById(ratingId);
 
+        //verify Rating Exist
         if (ratingOptional.isEmpty()) {
             logger.warn("NotFoundRatingWithThisId");
             throw new NotFoundException();

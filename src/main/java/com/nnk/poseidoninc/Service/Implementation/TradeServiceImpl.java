@@ -29,6 +29,10 @@ public class TradeServiceImpl implements ITradeService {
         this.tradeRepository = tradeRepository;
     }
 
+    /**
+     * @return List<TradeDto>
+     * return all Trade in db
+     */
     @Override
     public List<TradeDto> findAll() {
 
@@ -43,20 +47,28 @@ public class TradeServiceImpl implements ITradeService {
         return tradeDtoList;
     }
 
+    /**
+     * @param tradeDto we want to add to db
+     * @return TradeDto added
+     * Create new Trade in db
+     */
     @Override
     public TradeDto create(TradeDto tradeDto) {
 
         Trade trade = convertTradeDtoToTrade(tradeDto);
 
         trade.setCreationDate(LocalDate.now());
-        // TODO : AutomaticName -> AutomaticNameCreation (when spring Security on)
-        trade.setCreationName("AutomaticNameCreation");
 
         trade = tradeRepository.save(trade);
 
         return convertTradeToTradeDto(trade);
     }
 
+    /**
+     * @param tradeId of TradeDto we are looking for
+     * @return TradeDto
+     * Find TradeDto By Id
+     */
     @Override
     public TradeDto findById(int tradeId) {
 
@@ -70,33 +82,42 @@ public class TradeServiceImpl implements ITradeService {
         return convertTradeToTradeDto(tradeOptional.get());
     }
 
+    /**
+     * @param tradeDto with new param
+     * @param tradeId  of TradeDto we want update
+     * @return TradeDto with modif
+     */
     @Override
     public TradeDto update(TradeDto tradeDto, int tradeId) {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
+        //verify TradeDto exist
         if (tradeOptional.isEmpty()) {
             logger.warn("NotFoundTradeWithThisId");
             throw new NotFoundException();
         }
 
+        //update TradeDto
         Trade trade = tradeOptional.get();
         trade.setAccount(tradeDto.getAccount());
         trade.setType(tradeDto.getType());
         trade.setBuyQuantity(tradeDto.getBuyQuantity());
 
         trade.setRevisionDate(LocalDate.now());
-        // TODO : AutomaticName -> AutomaticNameRevision (when spring Security on)
-        trade.setRevisionName("AutomaticNameRevision");
 
         trade = tradeRepository.save(trade);
 
         return convertTradeToTradeDto(trade);
     }
 
+    /**
+     * @param tradeId of TradeDto we want delete
+     */
     @Override
     public void delete(int tradeId) {
         Optional<Trade> tradeOptional = tradeRepository.findById(tradeId);
 
+        //verify TradeDto exist
         if (tradeOptional.isEmpty()) {
             logger.warn("NotFoundTradeWithThisId");
             throw new NotFoundException();

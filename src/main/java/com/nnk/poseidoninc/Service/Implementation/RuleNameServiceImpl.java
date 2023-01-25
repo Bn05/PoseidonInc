@@ -28,6 +28,10 @@ public class RuleNameServiceImpl implements IRuleNameService {
         this.ruleNameRepository = ruleNameRepository;
     }
 
+    /**
+     * @return List<RuleNameDto>
+     *     return all RuleName in db
+     */
     @Override
     public List<RuleNameDto> findAll() {
         Iterable<RuleName> ruleNameIterable = ruleNameRepository.findAll();
@@ -40,6 +44,11 @@ public class RuleNameServiceImpl implements IRuleNameService {
         return ruleNameDtoList;
     }
 
+    /**
+     * @param ruleNameDto we want to add to db
+     * @return RuleNameDto added
+     * Create new RuleName in db
+     */
     @Override
     public RuleNameDto create(RuleNameDto ruleNameDto) {
         RuleName ruleName = convertRuleNameDtoToRuleName(ruleNameDto);
@@ -48,6 +57,11 @@ public class RuleNameServiceImpl implements IRuleNameService {
         return convertRuleNameToRuleNameDto(ruleName);
     }
 
+    /**
+     * @param ruleNameId of RuleName we are looking for
+     * @return RuleNameDto
+     * Find RuleName By Id
+     */
     @Override
     public RuleNameDto findById(int ruleNameId) {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
@@ -60,15 +74,22 @@ public class RuleNameServiceImpl implements IRuleNameService {
         return convertRuleNameToRuleNameDto(ruleNameOptional.get());
     }
 
+    /**
+     * @param ruleNameDto with new param
+     * @param ruleNameId of RuleName we want update
+     * @return RuleName with modif
+     */
     @Override
     public RuleNameDto update(RuleNameDto ruleNameDto, int ruleNameId) {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
+        //verify RuleName exist
         if (ruleNameOptional.isEmpty()) {
             logger.warn("NotFoundRuleNameWithThisId");
             throw new NotFoundException();
         }
 
+        //update RuleName
         RuleName ruleName = ruleNameOptional.get();
         ruleName.setName(ruleNameDto.getName());
         ruleName.setDescription(ruleNameDto.getDescription());
@@ -82,10 +103,14 @@ public class RuleNameServiceImpl implements IRuleNameService {
         return convertRuleNameToRuleNameDto(ruleName);
     }
 
+    /**
+     * @param ruleNameId of RuleName we want delete
+     */
     @Override
     public void delete(int ruleNameId) {
         Optional<RuleName> ruleNameOptional = ruleNameRepository.findById(ruleNameId);
 
+        //verify RuleName Exist
         if (ruleNameOptional.isEmpty()) {
             logger.warn("NotFoundRuleNameWithThisId");
             throw new NotFoundException();

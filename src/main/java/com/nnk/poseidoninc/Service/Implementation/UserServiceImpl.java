@@ -44,6 +44,10 @@ public class UserServiceImpl implements IUserService {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * @return List<UserDto>
+     *     return all User in db
+     */
     @Override
     public List<UserDto> findAll() {
         Iterable<User> userIterable = userRepository.findAll();
@@ -56,6 +60,11 @@ public class UserServiceImpl implements IUserService {
         return userDtoList;
     }
 
+    /**
+     * @param userDto we want to add to db
+     * @return User added
+     * Create new User in db
+     */
     @Override
     public UserDto create(UserDto userDto) {
         Optional<User> userOptional = userRepository.findUserByUserName(userDto.getUserName());
@@ -66,6 +75,7 @@ public class UserServiceImpl implements IUserService {
 
         User user = convertUserDtoToUser(userDto);
 
+        //Crypt password
         String password = user.getPassword();
         String passwordBcrypt = passwordEncoder().encode(password);
 
@@ -78,6 +88,11 @@ public class UserServiceImpl implements IUserService {
         return convertUserToUserDto(user);
     }
 
+    /**
+     * @param userId of User we are looking for
+     * @return User
+     * Find User By Id
+     */
     @Override
     public UserDto findById(int userId) {
         Optional<User> userOptional = userRepository.findById(userId);
@@ -90,6 +105,11 @@ public class UserServiceImpl implements IUserService {
         return convertUserToUserDto(userOptional.get());
     }
 
+    /**
+     * @param userDto with new param
+     * @param userId of User we want update
+     * @return User with modif
+     */
     @Override
     public UserDto update(UserDto userDto, int userId) {
 
@@ -97,12 +117,14 @@ public class UserServiceImpl implements IUserService {
         UserDto userSecurity = getCurrentUser(authentication);
         String role = userSecurity.getRole();
 
+        //only ADMIN can update another user.
         if (role.equals("USER")) {
             if (userSecurity.getUserId() != userId) {
                 throw new BadParamException();
             }
         }
 
+        //verify User exist
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
             logger.warn("NotFoundUserWithThisId");
@@ -114,7 +136,8 @@ public class UserServiceImpl implements IUserService {
         user.setUserName(userDto.getUserName());
         user.setFullName(userDto.getFullName());
 
-
+        //If new password -> encrypt
+        //If NO new password, keep the old password
         String password = userDto.getPassword();
         if (!Objects.equals(password, null) && !password.equals("")) {
 
@@ -122,6 +145,7 @@ public class UserServiceImpl implements IUserService {
             user.setPassword(passwordBcrypt);
         }
 
+        //Only ADMIN can change role
         String roleUpdate = userDto.getRole();
         if (role.equals("ADMIN") && !Objects.equals(roleUpdate, null)) {
             user.setRole(roleUpdate);
@@ -133,6 +157,9 @@ public class UserServiceImpl implements IUserService {
         return convertUserToUserDto(user);
     }
 
+    /**
+     * @param userId of User we want delete
+     */
     @Override
     public void delete(int userId) {
         Optional<User> userOptional = userRepository.findById(userId);

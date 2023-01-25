@@ -34,8 +34,6 @@ public class SpringSecurityConfig {
 
     public SpringSecurityConfig(RsaKeyProperties rsaKeys) {
         this.rsaKeys = rsaKeys;
-
-
     }
 
     @Bean
@@ -43,6 +41,7 @@ public class SpringSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    //Protect the endPoint /token with httpBasic
     @Bean
     @Order(1)
     public SecurityFilterChain tokenFilterChain(HttpSecurity http) throws Exception {
@@ -55,6 +54,8 @@ public class SpringSecurityConfig {
                 .build();
     }
 
+    //Protect API (start with /api) with jwt (StateLess)
+    //Different rules between ADMIN and USER, for user endPoints
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain2(HttpSecurity http) throws Exception {
@@ -78,6 +79,8 @@ public class SpringSecurityConfig {
     }
 
 
+    //Protect WebApp with session (StateFull)
+    //Different rules between ADMIN and USER.
     @Bean
     @Order(3)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -29,6 +29,9 @@ public class CurvePointServiceImpl implements ICurvePointService {
         this.curvePointRepository = curvePointRepository;
     }
 
+    /**
+     * @return List<CurvePointDto> all curvePoint in db
+     */
     @Override
     public List<CurvePointDto> findAll() {
         Iterable<CurvePoint> curvePointIterable = curvePointRepository.findAll();
@@ -42,6 +45,11 @@ public class CurvePointServiceImpl implements ICurvePointService {
         return curvePointDtoList;
     }
 
+    /**
+     * @param curvePointDto we want to add to db
+     * @return CurvePoint added
+     * Create new CurvePoint in db
+     */
     @Override
     public CurvePointDto create(CurvePointDto curvePointDto) {
         CurvePoint curvePoint = convertCurvePointDtoToCurvePoint(curvePointDto);
@@ -53,6 +61,11 @@ public class CurvePointServiceImpl implements ICurvePointService {
         return convertCurvePointToCurvePointDto(curvePoint);
     }
 
+    /**
+     * @param curvePointId of CurvePoint we are looking for
+     * @return CurvePointDto
+     * Find CurvePoint By Id
+     */
     @Override
     public CurvePointDto findById(int curvePointId) {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
@@ -65,17 +78,23 @@ public class CurvePointServiceImpl implements ICurvePointService {
         return convertCurvePointToCurvePointDto(curvePointOptional.get());
     }
 
+    /**
+     * @param curvePointDto with new param
+     * @param curvePointId  of CurvePoint we want update
+     * @return CurvePoint with modif
+     */
     @Override
     public CurvePointDto update(CurvePointDto curvePointDto, int curvePointId) {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
+        //verify CurvePoint exist.
         if (curvePointOptional.isEmpty()) {
             logger.warn("NotFoundCurvePointWithThisId");
             throw new NotFoundException();
         }
 
         CurvePoint curvePoint = curvePointOptional.get();
-
+        //update CurvePoint
         curvePoint.setTerm(curvePointDto.getTerm());
         curvePoint.setValue(curvePointDto.getValue());
 
@@ -84,10 +103,14 @@ public class CurvePointServiceImpl implements ICurvePointService {
         return convertCurvePointToCurvePointDto(curvePoint);
     }
 
+    /**
+     * @param curvePointId of CurvePoint we want delete
+     */
     @Override
     public void delete(int curvePointId) {
         Optional<CurvePoint> curvePointOptional = curvePointRepository.findById(curvePointId);
 
+        //verify CurvePoint exist
         if (curvePointOptional.isEmpty()) {
             logger.warn("NotFoundCurvePointWithThisId");
             throw new NotFoundException();

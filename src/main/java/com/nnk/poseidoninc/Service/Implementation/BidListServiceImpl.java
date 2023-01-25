@@ -34,6 +34,10 @@ public class BidListServiceImpl implements IBidListService {
     }
 
 
+    /**
+     * @return List<BidListDto>
+     * return all BidList in db
+     */
     @Override
     public List<BidListDto> findAll() {
 
@@ -47,6 +51,11 @@ public class BidListServiceImpl implements IBidListService {
         return bidList;
     }
 
+    /**
+     * @param bidListDto we want to add to db
+     * @return BidListDto added
+     * Create new BidList in db
+     */
     @Override
     public BidListDto create(BidListDto bidListDto) {
 
@@ -62,6 +71,11 @@ public class BidListServiceImpl implements IBidListService {
         return (convertBidListToBidListDto(bidListRepository.save(bidList)));
     }
 
+    /**
+     * @param id of BidList we are looking for
+     * @return BidListDto
+     * Find BidListDto By Id
+     */
     @Override
     public BidListDto findById(int id) {
         Optional<BidList> bid = bidListRepository.findById(id);
@@ -76,6 +90,11 @@ public class BidListServiceImpl implements IBidListService {
 
     }
 
+    /**
+     * @param bidListDto with new param
+     * @param bidListId  of BidList we want update
+     * @return BidList with modif
+     */
     @Override
     public BidListDto update(BidListDto bidListDto, int bidListId) {
         var authentification = SecurityContextHolder.getContext().getAuthentication();
@@ -83,11 +102,13 @@ public class BidListServiceImpl implements IBidListService {
 
         Optional<BidList> optionalBid = bidListRepository.findById(bidListId);
 
+        //verify BidList exist.
         if (optionalBid.isEmpty()) {
             logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
         }
 
+        //update BidList
         BidList bidList = optionalBid.get();
         bidList.setAccount(bidListDto.getAccount());
         bidList.setType(bidListDto.getType());
@@ -99,9 +120,13 @@ public class BidListServiceImpl implements IBidListService {
         return convertBidListToBidListDto(bidListRepository.save(bidList));
     }
 
+    /**
+     * @param id of BidList we want delete
+     */
     @Override
     public void delete(int id) {
 
+        // verify BidList Exist
         if (bidListRepository.findById(id).isEmpty()) {
             logger.warn("NotFoundBidListWithThisId");
             throw new NotFoundException();
