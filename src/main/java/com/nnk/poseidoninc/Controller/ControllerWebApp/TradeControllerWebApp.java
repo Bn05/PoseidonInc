@@ -46,7 +46,7 @@ public class TradeControllerWebApp {
     public String addTrade(@Validated TradeDto tradeDto,
                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "/trade/add";
+            return "trade/add";
         }
         tradeService.create(tradeDto);
 

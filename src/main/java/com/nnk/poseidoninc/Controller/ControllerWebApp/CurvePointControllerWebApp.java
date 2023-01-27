@@ -77,7 +77,7 @@ public class CurvePointControllerWebApp {
     ) {
 
         if (bindingResult.hasErrors()) {
-            return "/curvePoint/update";
+            return "curvePoint/update";
         }
         curvePointService.update(curvePointDto, curePointId);
         return "redirect:/CurvePoint";

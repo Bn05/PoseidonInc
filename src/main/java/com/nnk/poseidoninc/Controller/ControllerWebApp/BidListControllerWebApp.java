@@ -54,7 +54,7 @@ public class BidListControllerWebApp {
                              BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "/bidList/add";
+            return "bidList/add";
         }
         bidListService.create(bidListDto);
 

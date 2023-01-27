@@ -64,7 +64,7 @@ public class UserControllerWebApp {
         userDto.setRole("USER");
 
         if (result.hasErrors()) {
-            return "/user/add";
+            return "user/add";
         }
 
         userService.create(userDto);
@@ -101,10 +101,10 @@ public class UserControllerWebApp {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
             if (!fieldError.getField().equals("password")) {
-                return "/user/update";
+                return "user/update";
             }
             if (!userDto.getPassword().isBlank()) {
-                return "/user/update";
+                return "user/update";
             }
         }
         userService.update(userDto, userId);
